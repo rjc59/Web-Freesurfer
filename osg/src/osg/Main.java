@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 
 public class Main {
-	private String message=new String("TESTIsdfNG");
+	private String message=new String("Intro message");
 
 	public static void main(String[] args){
 		
