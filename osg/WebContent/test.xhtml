@@ -20,11 +20,11 @@
 	<h:outputLabel>First Name</h:outputLabel>
 	<h:inputText id="firstName" value="#{main.name}"></h:inputText>
 	<h:outputLabel>Last Name</h:outputLabel>
-	<h:inputText></h:inputText>
+	<h:inputText id= "lastName" value="#{main.surname}"></h:inputText>
 	<h:outputLabel>Email</h:outputLabel>
-	<h:inputText></h:inputText>
+	<h:inputText id = "email" value="#{main.email}"></h:inputText>
 	<h:outputLabel>Phone number</h:outputLabel>
-	<h:inputText></h:inputText>
+	<h:inputText id = "phoneNumber" value="#{main.phone}"></h:inputText>
 	<h:commandButton value="Create Account" actionListener="#{main.newAccount()}"/>
 	
 	</h:panelGrid>

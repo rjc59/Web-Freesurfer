@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 import osg.Model.JobsDTO;
@@ -11,6 +13,9 @@ import osg.Model.JobsDTO;
 public class Main {
 	private String message=new String("Intro message");
 	private String name= new String("");
+	private String surname=new String("");
+	private String email=new String("");
+	private String phone=new String("");
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
 	
 	public Main(){
@@ -24,7 +29,10 @@ public class Main {
 	
 	
 	public void newAccount(){
-		message=new String("Hello "+name);
+		System.out.println("Test");
+		UIInput component = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("j_idt8:firstName");
+		message= new String("Hello "+component.getValue());
+		name= (String) component.getValue();
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 		} catch (IOException e) {
@@ -59,6 +67,36 @@ public class Main {
 
 	public void setJobList(List<JobsDTO> jobList) {
 		this.jobList = jobList;
+	}
+
+
+	public String getSurname() {
+		return surname;
+	}
+
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public String getPhone() {
+		return phone;
+	}
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 
