@@ -12,11 +12,13 @@
 	<title>OSG 0.0</title>
 </h:head> 
 <h:body> 
+<a href="index.xhtml">Go Home</a>
+
 	<h:form>
 	
 	<h:panelGrid>
 	<h:outputLabel>First Name</h:outputLabel>
-	<h:inputText></h:inputText>
+	<h:inputText id="firstName" value="#{main.name}"></h:inputText>
 	<h:outputLabel>Last Name</h:outputLabel>
 	<h:inputText></h:inputText>
 	<h:outputLabel>Email</h:outputLabel>
