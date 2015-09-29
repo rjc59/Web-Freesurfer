@@ -1,8 +1,13 @@
 package osgtesting;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -17,6 +22,7 @@ public class base {
 	private String email=new String("");
 	private String phone=new String("");
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
+	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	
 	public base(){
 		jobList.add(new JobsDTO("11eef764","Mr. Smith","Complete","9-28-2015 11:15"));
@@ -41,6 +47,15 @@ public class base {
 		}
 	}
 	
+	public void upload(){
+		Calendar c = Calendar.getInstance();
+		Date date=c.getTime();
+		String strDate=df.format(date);
+		String status="Uploaded";
+		String id=UUID.randomUUID().toString();
+		jobList.add(new JobsDTO(id,name,status,strDate));
+	}
+	  
 	public String getMessage() {
 		return message;
 	}

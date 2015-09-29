@@ -13,11 +13,13 @@
 </h:head> 
 <body>
 <a href="index.xhtml">Go Home</a>
-<h:form>
+<h:form enctype="multipart/form-data">
 <h:panelGrid>
-<h:inputFile>CLick</h:inputFile>
+<h:inputFile></h:inputFile>
 </h:panelGrid>
+<h:commandButton actionListener="#{base.upload()}" value="Upload Job"></h:commandButton>
 </h:form>
+
 
 </body>
 </html>
