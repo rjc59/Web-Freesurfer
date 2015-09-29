@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:c="http://java.sun.com/jsf/core"
+	  xmlns:ui = "http://java.sun.com/jsf/facelets"
+	  xmlns:h = "http://java.sun.com/jsf/html">
+	  
+<h:head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Conpatible" content="IE=edge" />
+	<title>OSG 0.0</title>
+</h:head> 
+<h:body> 
+<a href="index.xhtml">Go Home</a>
+
+	<h:form>
+	
+	<h:panelGrid>
+	<h:outputLabel>First Name</h:outputLabel>
+	<h:inputText id="firstName" value="#{base.name}"></h:inputText>
+	<h:outputLabel>Last Name</h:outputLabel>
+	<h:inputText id= "lastName" value="#{base.surname}"></h:inputText>
+	<h:outputLabel>Email</h:outputLabel>
+	<h:inputText id = "email" value="#{base.email}"></h:inputText>
+	<h:outputLabel>Phone number</h:outputLabel>
+	<h:inputText id = "phoneNumber" value="#{base.phone}"></h:inputText>
+	<h:commandButton value="Create Account" actionListener="#{base.newAccount()}"/>
+	
+	</h:panelGrid>
+	
+	
+	</h:form>
+</h:body> 
+</html>
