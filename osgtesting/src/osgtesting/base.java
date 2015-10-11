@@ -14,6 +14,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 import osgtesting.Model.JobsDTO;
+import osgtesting.dao.userDao;
 
 public class base {
 	private String message=new String("Intro message");
@@ -23,6 +24,7 @@ public class base {
 	private String phone=new String("");
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+	private userDao userDao=new userDao();
 	
 	public base(){
 		jobList.add(new JobsDTO("11eef764","Mr. Smith","Complete","9-28-2015 11:15"));
@@ -36,11 +38,12 @@ public class base {
 	
 	public void newAccount(){
 		System.out.println("Test");
-		UIInput component = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("j_idt6:firstName");
+		UIInput component = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:firstName");
 		message= new String("Hello "+component.getValue());
 		name= (String) component.getValue();
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			userDao.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
