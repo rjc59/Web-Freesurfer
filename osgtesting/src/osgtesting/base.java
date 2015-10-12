@@ -12,14 +12,18 @@ import java.util.UUID;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 
 import osgtesting.Model.JobsDTO;
 import osgtesting.dao.userDao;
 
 public class base {
 	private String message=new String("Intro message");
+	private String username=new String("");
+	private String pass=new String("");
 	private String name= new String("");
 	private String surname=new String("");
+	private String inst=new String("");
 	private String email=new String("");
 	private String phone=new String("");
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
@@ -77,6 +81,13 @@ public class base {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void validatePass(ComponentSystemEvent e){
+		
+		FacesContext fc=FacesContext.getCurrentInstance();
+		UIComponent comp= e.getComponent();
+		
+	
 	}
 	  
 	public String getMessage() {
@@ -145,6 +156,36 @@ public class base {
 
 	public void setLoggedout(boolean loggedout) {
 		this.loggedout = loggedout;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+	public String getPass() {
+		return pass;
+	}
+
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+
+	public String getInst() {
+		return inst;
+	}
+
+
+	public void setInst(String inst) {
+		this.inst = inst;
 	}
 	
 

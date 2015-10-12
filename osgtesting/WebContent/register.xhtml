@@ -16,15 +16,41 @@
 
 	<h:form id="accountform">
 	
-	<h:panelGrid>
-	<h:outputLabel>First Name</h:outputLabel>
-	<h:inputText id="firstName" value="#{base.name}"></h:inputText>
-	<h:outputLabel>Last Name</h:outputLabel>
-	<h:inputText id= "lastName" value="#{base.surname}"></h:inputText>
-	<h:outputLabel>Email</h:outputLabel>
-	<h:inputText id = "email" value="#{base.email}"></h:inputText>
-	<h:outputLabel>Phone number</h:outputLabel>
-	<h:inputText id = "phoneNumber" value="#{base.phone}"></h:inputText>
+	<h:panelGrid columns="3">
+	
+	<c:event listener="#{base.validatePass}" type="postValidate"/>
+	
+	<h:outputLabel for="userName" value="Username "/>
+	<h:inputText id="userName" value="#{base.username}" required="True" requiredMessage="Please enter a username"/>
+	<h:message for="userName" style="color:red;"/>
+	
+	<h:outputLabel for="firstpass" value="Password"/>
+	<h:inputSecret id="firstpass" value="#{base.pass}" required="True" requiredMessage="Please enter a password"/>
+	<h:message for="firstpass" style="color:red;"/>
+	
+	<h:outputLabel for="secondpass" value="Confirm Password"/>
+	<h:inputSecret id="secondpass" value="#{base.pass}" required="True" requiredMessage="Please Confirm Password"/>
+	<h:message for="secondpass" style="color:red;"/>
+	
+	<h:outputLabel for="firstName" value="First Name"/>
+	<h:inputText id="firstName" value="#{base.name}" required="True" requiredMessage="Please enter your name"/>
+	<h:message for="firstName" style="color:red;"/>
+	
+	<h:outputLabel for="lastName" value="Last Name"/>
+	<h:inputText id= "lastName" value="#{base.surname}" required="True" requiredMessage="Please enter your surname"/>
+	<h:message for="lastName" style="color:red;"/>
+	
+	<h:outputLabel for="email" value="Email"/>
+	<h:inputText id = "email" value="#{base.email}" required="True" requiredMessage="Please enter an email"/>
+	<h:message for="email" style="color:red;"/>
+	
+	<h:outputLabel for="inst" value="Institution"/>
+	<h:inputText id="inst" value="#{base.inst}" required="True" requiredMessage="Please enter your institution"/>
+	<h:message for="inst" style="color:red;"/>
+	
+	<h:outputLabel for="phoneNumber" value="Phone number"/>
+	<h:inputText id = "phoneNumber" value="#{base.phone}" required="True" requiredMessage="Please enter a phone number"/>
+	<h:message for="phoneNumber" style="color:red;"/>
 	<h:commandButton value="Create Account" actionListener="#{base.newAccount()}"/>
 	
 	</h:panelGrid>
