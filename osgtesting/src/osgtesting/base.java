@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -87,7 +88,25 @@ public class base {
 		FacesContext fc=FacesContext.getCurrentInstance();
 		UIComponent comp= e.getComponent();
 		
-	
+		UIInput passIn=(UIInput) comp.findComponent("firstpass");
+		String pass=passIn.getLocalValue() == null ? ""
+				: passIn.getLocalValue().toString();
+		String passID=passIn.getClientId();
+		
+		UIInput passIncon=(UIInput) comp.findComponent("secondpass");
+		String conpass=passIncon.getLocalValue() == null ? ""
+				: passIncon.getLocalValue().toString();
+		
+		if(pass.isEmpty() || conpass.isEmpty())
+			return;
+		
+	if(!pass.equals(conpass)){
+		FacesMessage msg = new FacesMessage("Passwords must match");
+		msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+		fc.addMessage(passID, msg);
+		fc.renderResponse();
+	}
+		
 	}
 	  
 	public String getMessage() {
