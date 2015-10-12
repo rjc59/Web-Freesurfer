@@ -25,6 +25,7 @@ public class base {
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private userDao userDao=new userDao();
+	private boolean loggedout=true;
 	
 	public base(){
 		jobList.add(new JobsDTO("11eef764","Mr. Smith","Complete","9-28-2015 11:15"));
@@ -48,7 +49,7 @@ public class base {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	} 
 	
 	public void upload(){
 		Calendar c = Calendar.getInstance();
@@ -57,6 +58,25 @@ public class base {
 		String status="Uploaded";
 		String id=UUID.randomUUID().toString();
 		jobList.add(new JobsDTO(id,name,status,strDate));
+	}
+	
+	public void login(){
+		try {
+			loggedout=false;
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void logout(){
+		try {
+			loggedout=true; 
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	  
 	public String getMessage() {
@@ -115,6 +135,16 @@ public class base {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+
+	public boolean isLoggedout() {
+		return loggedout;
+	}
+
+
+	public void setLoggedout(boolean loggedout) {
+		this.loggedout = loggedout;
 	}
 	
 

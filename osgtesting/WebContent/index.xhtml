@@ -13,13 +13,23 @@
 </h:head> 
 <h:body > 
 <a href="index.xhtml">Go Home</a>
-
+<h:form>
+<h:commandButton value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}"></h:commandButton>
+</h:form>
 		
 		<h:form id="mainform">
 		<h:panelGrid style="margin: 0 auto;">
 		<h:outputLabel style="text-align:center" value="WELCOME TO THE OPEN SCIENCE GRID"/>
 		<h:outputLabel value="#{base.message}"/>
-		<a href="register.xhtml">Register an Account</a>
+		<h:outputLabel value="Username" rendered="#{base.loggedout}"/>
+		<h:inputText id="username" label="Enter Username" rendered="#{base.loggedout}" ></h:inputText>
+		<h:outputLabel value="Password" rendered="#{base.loggedout}"/>
+		<h:inputSecret id="password" label="Enter Password" rendered="#{base.loggedout}"></h:inputSecret>
+		<h:commandButton value="Login" actionListener="#{base.login}" rendered="#{base.loggedout}"></h:commandButton>
+		<br/>
+		<a href="register.xhtml" >Register an Account</a>
+		<br/>
+		<br/>
 		<a href="status.xhtml">Check job status</a>
 		<a href="upload.xhtml">Upload a Job</a>
 		</h:panelGrid>

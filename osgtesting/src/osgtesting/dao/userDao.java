@@ -19,10 +19,15 @@ public class userDao {
 	
 	public ArrayList<String> read(){
 		try {
-			PreparedStatement pstmt=con.prepareStatement("Select * from osgtestdb.users");
+			PreparedStatement pstmt=con.prepareStatement("Select * from freesurfer_interface.users");
 			ResultSet rs=pstmt.executeQuery();
-			if(rs.equals(null)){
+			//ResultSet rs = con.getMetaData().getTables(null, null, "%", null);
+			//while (rs.next()) {
+			 // System.out.println(rs.getString(3));
+			//}
+			if(!rs.equals(null)){
 				System.out.println("It got something");
+				System.out.println(rs.getFetchSize());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
