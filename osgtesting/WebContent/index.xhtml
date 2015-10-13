@@ -14,7 +14,8 @@
 <h:body > 
 <a href="index.xhtml">Go Home</a>
 <h:form>
-<h:commandButton value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}"></h:commandButton>
+<h:commandButton value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}"/>
+<h:commandButton value="Edit Account" actionListener="#{base.editAccount}" rendered="#{!base.loggedout}"/>
 </h:form>
 		
 		<h:form id="mainform">

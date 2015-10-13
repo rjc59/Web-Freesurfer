@@ -33,6 +33,19 @@ public class userDao {
 		
 		
 	}
+	
+	public ResultSet edit(String username){
+		PreparedStatement pst;
+		ResultSet rs=null;
+		try{
+			pst=con.prepareStatement("Select * from freesurfer_interface.users where username=?");
+			pst.setString(1,username);
+			rs=pst.executeQuery();
+		}catch(SQLException e){
+		e.printStackTrace();}
+		
+		return rs;
+	}
 
 	public void Write(UserDTO account){
 		PreparedStatement pst;

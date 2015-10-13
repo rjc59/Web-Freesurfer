@@ -148,6 +148,7 @@ public class base {
 			{ 
 				System.out.println("Password matches");	 
 				message="Welcome "+uname;
+				username=uname;
 			}
 			else
 			{
@@ -164,15 +165,28 @@ public class base {
 			
 			loggedout=false;
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public void editAccount() throws SQLException{
+		System.out.println(username);
+		ResultSet account=userDao.edit(username);
+		if(!account.next()){
+			System.out.println("whoops     "); 
+			return;
+		}
+		System.out.println((account.getString(3)));
+		
+	}
 	public void logout(){
 		try {
-			message="Intro message";
-			loggedout=true; 
+			message="Intro message"; 
+			loggedout=true;
+			username="";
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
