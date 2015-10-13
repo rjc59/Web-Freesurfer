@@ -191,6 +191,7 @@ public class base {
 
 	public void logout(){
 		try {
+			currentuser=null;
 			message="Intro message"; 
 			loggedout=true;
 			username="";
