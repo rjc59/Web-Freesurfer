@@ -16,6 +16,8 @@
 	
 	<h:panelGrid columns="3">
 	
+	  <c:event listener="#{base.revalidatePass}" type="postValidate"/>
+	
 	<h:outputLabel for="userName" value="Username "/>
 	<h:inputText id="userName" value="#{base.currentuser.userName}" required="True" requiredMessage="Please enter a username"/>
 	<h:message for="userName" style="color:red;"/>

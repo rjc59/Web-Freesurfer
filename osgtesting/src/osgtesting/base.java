@@ -242,7 +242,13 @@ public class base {
 		if(pass.isEmpty() || conpass.isEmpty() ||oldPass.isEmpty())
 			return;
 
-
+		if(!checkPassword(currentuser.getPass().trim(),currentuser.getSalt().trim(),oldPass)){
+			System.out.println("INCORRECT PASSWORD");
+			FacesMessage msg = new FacesMessage("Incorrect Password");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(oldpassID, msg);
+			fc.renderResponse();
+		}
 
 		if(!pass.equals(conpass)){
 			FacesMessage msg = new FacesMessage("Passwords must match");
