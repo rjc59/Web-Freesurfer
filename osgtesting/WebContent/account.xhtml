@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:c="http://java.sun.com/jsf/core"
+	  xmlns:ui = "http://java.sun.com/jsf/facelets"
+	  xmlns:h = "http://java.sun.com/jsf/html">
+	  
+<h:head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Conpatible" content="IE=edge" />
+	<title>OSG 0.0</title>
+</h:head> 
+<body>
+<h:form id="accountform">
+	
+	<h:panelGrid columns="3">
+	
+	<h:outputLabel for="userName" value="Username "/>
+	<h:inputText id="userName" value="#{base.currentuser.userName}" required="True" requiredMessage="Please enter a username"/>
+	<h:message for="userName" style="color:red;"/>
+	
+	<h:outputLabel for="oldpass" value="Current Password"/>
+	<h:inputSecret id="oldpass" value="#{base.pass}" required="True" requiredMessage="Please enter your old password"/>
+	<h:message for="oldpass" style="color:red;"/>
+	
+	<h:outputLabel for="newpass" value="New Password"/>
+	<h:inputSecret id="newpass" value="#{base.pass}" required="True" requiredMessage="Please enter a password"/>
+	<h:message for="newpass" style="color:red;"/>
+	
+	<h:outputLabel for="conpass" value="Confirm New Password"/>
+	<h:inputSecret id="conpass" value="#{base.pass}" required="True" requiredMessage="Please Confirm Password"/>
+	<h:message for="conpass" style="color:red;"/>
+	
+	<h:outputLabel for="firstName" value="First Name"/>
+	<h:inputText id="firstName" value="#{base.currentuser.name}" required="True" requiredMessage="Please enter your name"/>
+	<h:message for="firstName" style="color:red;"/>
+	
+	<h:outputLabel for="lastName" value="Last Name"/>
+	<h:inputText id= "lastName" value="#{base.currentuser.surname}" required="True" requiredMessage="Please enter your surname"/>
+	<h:message for="lastName" style="color:red;"/>
+	
+	<h:outputLabel for="email" value="Email"/>
+	<h:inputText id = "email" value="#{base.currentuser.email}" required="True" requiredMessage="Please enter an email"/>
+	<h:message for="email" style="color:red;"/>
+	
+	<h:outputLabel for="inst" value="Institution"/>
+	<h:inputText id="inst" value="#{base.currentuser.inst}" required="True" requiredMessage="Please enter your institution"/>
+	<h:message for="inst" style="color:red;"/>
+	
+	<h:outputLabel for="phoneNumber" value="Phone number"/>
+	<h:inputText id = "phoneNumber" value="#{base.currentuser.phone}" required="True" requiredMessage="Please enter a phone number"/>
+	<h:message for="phoneNumber" style="color:red;"/>
+	
+	<h:commandButton value="Update Account" actionListener="#{base.updateAccount()}"/>
+	
+	</h:panelGrid>
+	
+	
+	</h:form>
+
+</body>
+</html>

@@ -41,6 +41,7 @@ public class base {
 	private userDao userDao=new userDao();
 	private boolean loggedout=true;
 	private MessageDigest digest;
+	private UserDTO currentuser;
 	String algorithm = "PBKDF2WithHmacSHA1";
 	int derivedKeyLength = 64;
 	SecretKeyFactory f;
@@ -179,9 +180,19 @@ public class base {
 			System.out.println("whoops     "); 
 			return;
 		}
-		System.out.println((account.getString(3)));
+		currentuser=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+		System.out.println(currentuser.getName());
 		
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("account.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	public void updateAccount() throws SQLException{
+		System.out.println("Account update Method");
+	}
+
 	public void logout(){
 		try {
 			message="Intro message"; 
@@ -217,6 +228,15 @@ public class base {
 		fc.renderResponse();
 	}
 		
+	}
+	
+	public UserDTO getCurrentuser() {
+		return currentuser;
+	}
+
+
+	public void setCurrentuser(UserDTO currentuser) {
+		this.currentuser = currentuser;
 	}
 	  
 	public String getMessage() {
