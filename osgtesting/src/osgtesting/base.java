@@ -46,7 +46,7 @@ public class base {
 	int derivedKeyLength = 64;
 	SecretKeyFactory f;
 	int iterations = 1000;
-	
+
 	public base() throws NoSuchAlgorithmException{
 		digest = MessageDigest.getInstance("SHA-256");
 		f=SecretKeyFactory.getInstance(algorithm);
@@ -55,12 +55,12 @@ public class base {
 		jobList.add(new JobsDTO("3fj89932","Mr. Pitt","In progress","9-23-2015 07:35"));
 		jobList.add(new JobsDTO("i344j90f","Mr. Stanford","Started","9-25-2015 18:25"));
 
- 
+
 	}
-	
-	
-	
-	
+
+
+
+
 	public void upload(){
 		Calendar c = Calendar.getInstance();
 		Date date=c.getTime();
@@ -81,24 +81,24 @@ public class base {
 		String passText=(String)passcomp.getValue();
 		String newPass=null,newSalt=null;
 		try{
-		
-		byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
-		String passHashStr = new String(passHash, "UTF-8");
-		//Create Salt
-		//Get current time
-		Date creationTime = new Date();
-		byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
-		newSalt=new String(salt);
-		//Hash password plus salt with pbkdf2
 
-		KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
-		byte[] passwordToStore = f.generateSecret(spec).getEncoded();
-		newPass= new String(passwordToStore);
+			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
+			String passHashStr = new String(passHash, "UTF-8");
+			//Create Salt
+			//Get current time
+			Date creationTime = new Date();
+			byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
+			newSalt=new String(salt);
+			//Hash password plus salt with pbkdf2
+
+			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
+			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
+			newPass= new String(passwordToStore);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
+
+
 		UserDTO newAcct = new UserDTO(((String) usercomp.getValue()),
 				newPass,
 				((String) namecomp.getValue()),
@@ -107,10 +107,10 @@ public class base {
 				((String) instcomp.getValue()),
 				((String) phonecomp.getValue()),
 				newSalt);
-		
+
 		userDao.Write(newAcct);
-		
-		
+
+
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			userDao.read();
@@ -119,15 +119,15 @@ public class base {
 			e.printStackTrace();
 		}
 	} 
-	
+
 	public void login() throws SQLException{
-		 
+
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:username");
 		UIInput passcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:password");
-		
+
 		String uname= (String) usercomp.getValue();
 		String pass= (String) passcomp.getValue();
-		
+
 		ResultSet result=userDao.login(uname, pass);
 
 		if(!result.next()){
@@ -135,17 +135,8 @@ public class base {
 			return;
 		}
 		else {  
-			try{
-			String attemptText=pass;
-			String retpass=result.getString(2).trim();
-			String retsalt=result.getString(3).trim();
-			byte[] oldsalt=retsalt.getBytes();
-			byte[] oldpass=retpass.getBytes();
-			byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
-			String attemptHashStr = new String(attemptHash, "UTF-8");
-			KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
-			byte[] attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
-			if (Arrays.equals(oldpass, attemptToCheck))
+
+			if (checkPassword(result.getString(2).trim(), result.getString(3).trim(),pass))
 			{ 
 				System.out.println("Password matches");	 
 				message="Welcome "+uname;
@@ -156,14 +147,11 @@ public class base {
 				System.out.println("Password does not match");
 				return;
 			}
-			}catch(Exception e){
-				e.printStackTrace();
-			}
 		}
-		
+
 		try {
-			
-			
+
+
 			loggedout=false;
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 
@@ -172,7 +160,7 @@ public class base {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void editAccount() throws SQLException{
 		System.out.println(username);
 		ResultSet account=userDao.edit(username);
@@ -182,12 +170,14 @@ public class base {
 		}
 		currentuser=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
 		System.out.println(currentuser.getName());
-		
+
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("account.xhtml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+
 	}
 	public void updateAccount() throws SQLException{
 		System.out.println("Account update Method");
@@ -205,31 +195,82 @@ public class base {
 		}
 	}
 	public void validatePass(ComponentSystemEvent e){
-		
+
 		FacesContext fc=FacesContext.getCurrentInstance();
 		UIComponent comp= e.getComponent();
-		
+
 		UIInput passIn=(UIInput) comp.findComponent("firstpass");
 		String pass=passIn.getLocalValue() == null ? ""
 				: passIn.getLocalValue().toString();
 		String passID=passIn.getClientId();
-		
+
 		UIInput passIncon=(UIInput) comp.findComponent("secondpass");
 		String conpass=passIncon.getLocalValue() == null ? ""
 				: passIncon.getLocalValue().toString();
-		
+
 		if(pass.isEmpty() || conpass.isEmpty())
 			return;
-		
-	if(!pass.equals(conpass)){
-		FacesMessage msg = new FacesMessage("Passwords must match");
-		msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-		fc.addMessage(passID, msg);
-		fc.renderResponse();
+
+		if(!pass.equals(conpass)){
+			FacesMessage msg = new FacesMessage("Passwords must match");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(passID, msg);
+			fc.renderResponse();
+		}
+
 	}
-		
+
+	public void revalidatePass(ComponentSystemEvent e){
+
+		FacesContext fc=FacesContext.getCurrentInstance();
+		UIComponent comp= e.getComponent();
+
+		UIInput passOld=(UIInput) comp.findComponent("oldpass");
+		String oldPass=passOld.getLocalValue() == null ? ""
+				: passOld.getLocalValue().toString();
+		String oldpassID=passOld.getClientId();
+
+		UIInput passIn=(UIInput) comp.findComponent("newpass");
+		String pass=passIn.getLocalValue() == null ? ""
+				: passIn.getLocalValue().toString();
+		String passID=passIn.getClientId();
+
+		UIInput passIncon=(UIInput) comp.findComponent("conpass");
+		String conpass=passIncon.getLocalValue() == null ? ""
+				: passIncon.getLocalValue().toString();
+
+		if(pass.isEmpty() || conpass.isEmpty() ||oldPass.isEmpty())
+			return;
+
+
+
+		if(!pass.equals(conpass)){
+			FacesMessage msg = new FacesMessage("Passwords must match");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(passID, msg);
+			fc.renderResponse();
+		}
+
 	}
-	
+
+	public boolean checkPassword(String retpass, String retsalt,String checkpass){
+		byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
+		try{
+			String attemptText=checkpass;
+			oldsalt=retsalt.getBytes();
+			oldpass=retpass.getBytes();
+			byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
+			String attemptHashStr = new String(attemptHash, "UTF-8");
+			KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
+			attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
+			
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return Arrays.equals(oldpass, attemptToCheck);
+	}
+
 	public UserDTO getCurrentuser() {
 		return currentuser;
 	}
@@ -238,7 +279,7 @@ public class base {
 	public void setCurrentuser(UserDTO currentuser) {
 		this.currentuser = currentuser;
 	}
-	  
+
 	public String getMessage() {
 		return message;
 	}
@@ -336,6 +377,6 @@ public class base {
 	public void setInst(String inst) {
 		this.inst = inst;
 	}
-	
+
 
 }
