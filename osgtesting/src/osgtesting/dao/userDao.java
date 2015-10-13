@@ -64,8 +64,6 @@ public class userDao {
 			// System.out.println(rs.getString(3));
 			//}
 			if(!rs.equals(null)){
-				System.out.println("It got something");
-				System.out.println(rs.getFetchSize());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

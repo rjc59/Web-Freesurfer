@@ -58,6 +58,16 @@ public class base {
 	}
 	
 	
+	
+	
+	public void upload(){
+		Calendar c = Calendar.getInstance();
+		Date date=c.getTime();
+		String strDate=df.format(date);
+		String status="Uploaded";
+		String id=UUID.randomUUID().toString();
+		jobList.add(new JobsDTO(id,name,status,strDate));
+	}
 	public void newAccount(){
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:userName");
 		UIInput passcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:firstpass");
@@ -88,7 +98,6 @@ public class base {
 		}
 		
 		
-		
 		UserDTO newAcct = new UserDTO(((String) usercomp.getValue()),
 				newPass,
 				((String) namecomp.getValue()),
@@ -100,7 +109,6 @@ public class base {
 		
 		userDao.Write(newAcct);
 		
-		System.out.println(newAcct.getName());
 		
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
@@ -110,15 +118,6 @@ public class base {
 			e.printStackTrace();
 		}
 	} 
-	
-	public void upload(){
-		Calendar c = Calendar.getInstance();
-		Date date=c.getTime();
-		String strDate=df.format(date);
-		String status="Uploaded";
-		String id=UUID.randomUUID().toString();
-		jobList.add(new JobsDTO(id,name,status,strDate));
-	}
 	
 	public void login() throws SQLException{
 		 
@@ -132,28 +131,28 @@ public class base {
 
 		if(!result.next()){
 			System.out.println("NO USERNAME");
+			return;
 		}
-		else { 
+		else {  
 			try{
 			String attemptText=pass;
 			String retpass=result.getString(2).trim();
-			System.out.println(retpass);
-			String retsalt=result.getString(3);
+			String retsalt=result.getString(3).trim();
 			byte[] oldsalt=retsalt.getBytes();
 			byte[] oldpass=retpass.getBytes();
 			byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
 			String attemptHashStr = new String(attemptHash, "UTF-8");
 			KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
 			byte[] attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
-			System.out.println(new String(oldpass));
-			System.out.println(new String(attemptToCheck));
 			if (Arrays.equals(oldpass, attemptToCheck))
 			{ 
-				System.out.println("Password matches");	
+				System.out.println("Password matches");	 
+				message="Welcome "+uname;
 			}
 			else
 			{
 				System.out.println("Password does not match");
+				return;
 			}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -172,6 +171,7 @@ public class base {
 	}
 	public void logout(){
 		try {
+			message="Intro message";
 			loggedout=true; 
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 		} catch (IOException e) {
