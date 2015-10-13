@@ -181,6 +181,12 @@ public class base {
 	}
 	public void updateAccount() throws SQLException{
 		System.out.println("Account update Method");
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void logout(){
