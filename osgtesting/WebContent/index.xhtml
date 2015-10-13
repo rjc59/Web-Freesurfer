@@ -21,11 +21,17 @@
 		<h:panelGrid style="margin: 0 auto;">
 		<h:outputLabel style="text-align:center" value="WELCOME TO THE OPEN SCIENCE GRID"/>
 		<h:outputLabel value="#{base.message}"/>
-		<h:outputLabel value="Username" rendered="#{base.loggedout}"/>
-		<h:inputText id="username" label="Enter Username" rendered="#{base.loggedout}" ></h:inputText>
-		<h:outputLabel value="Password" rendered="#{base.loggedout}"/>
-		<h:inputSecret id="password" label="Enter Password" rendered="#{base.loggedout}"></h:inputSecret>
-		<h:commandButton value="Login" actionListener="#{base.login}" rendered="#{base.loggedout}"></h:commandButton>
+		
+		<h:outputLabel for="username" value="Username" rendered="#{base.loggedout}"/>
+		<h:inputText id="username" rendered="#{base.loggedout}" required="true" requiredMessage="Please enter your Username" />
+		<h:message for="username" style="color:red;"/>
+		
+		
+		<h:outputLabel for="password" value="Password" rendered="#{base.loggedout}"/>
+		<h:inputSecret id="password" rendered="#{base.loggedout}" required="true" requiredMessage="Please enter your Password"/>
+		<h:message for="password" style="color:red;"/>
+		
+		<h:commandButton value="Login" actionListener="#{base.login}" rendered="#{base.loggedout}"/>
 		<br/>
 		<a href="register.xhtml" >Register an Account</a>
 		<br/>
