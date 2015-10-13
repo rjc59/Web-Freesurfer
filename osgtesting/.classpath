@@ -19,5 +19,7 @@
 			<attribute name="owner.project.facets" value="jst.jsf"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/BobC/Documents/1530/webfreesurfer/osgtesting/lib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/BobC/Documents/1530/webfreesurfer/osgtesting/lib/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
