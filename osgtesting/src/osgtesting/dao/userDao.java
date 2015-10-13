@@ -10,6 +10,7 @@ public class userDao {
 
 	public userDao(){
 		try{
+			DriverManager.registerDriver(new org.postgresql.Driver());
 			con = DriverManager.getConnection("jdbc:postgresql://webfreesurferdb.cbiow68bwd0c.us-east-1.rds.amazonaws.com:5432/osgtestdb","administrator","osgtestdatabase");
 			System.out.println(con.equals(null));
 		}

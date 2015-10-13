@@ -1,5 +1,7 @@
 package osgtesting.Model;
 
+import java.util.*;
+
 public class JobsDTO{
 	private String id;
 	private String author;
