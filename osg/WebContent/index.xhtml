@@ -6,26 +6,87 @@
 	  xmlns:h = "http://java.sun.com/jsf/html">
 	  
 <h:head>
+	
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta http-equiv="X-UA-Conpatible" content="IE=edge" />
-	<title>OSG 0.0</title>
-</h:head> 
-<h:body > 
-<a href="index.xhtml">Go Home</a>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+    <link rel="icon" href="http://www.opensciencegrid.org/wp-content/themes/osg/images/new_osglogo.78x40.png" />
 
+    <title>Open Science Grid Interface</title>
+
+    <link href="./index_files/bootstrap.min.css" rel="stylesheet" />
+
+   
+    <script src="./index_files/ie-emulation-modes-warning.js" type="text/javascript"></script>
+
+    <link href="./index_files/carousel.css" rel="stylesheet" />
+</h:head> 
+<h:body >
+	<div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="index.xhtml"><img src="http://www.opensciencegrid.org/wp-content/themes/osg/images/new_osglogo.78x40.png" alt="Open Science Grid" style="width:39px;height:20px;" /></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="index.xhtml">Home</a></li>
+				<li><a href="about.xhtml">About</a></li>
+				<li><a href="upload.xhtml">Upload</a></li>
+                <li class="dropdown">
+                  <a href="index.xhtml" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><h:form><h:link value="Register" rendered="#{base.loggedout}" outcome="register.xhtml"/></h:form></li>
+                    <li><h:form><h:link value="Job Statuses" rendered="#{!base.loggedout}" outcome="status.xhtml"/></h:form></li>
+				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{base.editAccount}" rendered="#{!base.loggedout}" outcome="account.xhtml"/></h:form></li>
+					<li><h:form><h:commandLink value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}" outcome="index.xhtml"/></h:form></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>		
+	<br/><br/><br/><br/><br/>
+	
+	<h:form id="mainform">
+	<h:panelGrid style="margin: 0 auto;">
+	<h:outputLabel style="text-align:center" value="WELCOME TO THE OPEN SCIENCE GRID"/>
+	<h:outputLabel value="#{base.message}" rendered="#{!base.loggedout}"/>
+	
+	<h:outputLabel for="username" value="Username" rendered="#{base.loggedout}"/>
+	<h:inputText id="username" rendered="#{base.loggedout}" required="true" requiredMessage="Please enter your Username" />
+	<h:message for="username" style="color:red;"/>
+	
+	
+	<h:outputLabel for="password" value="Password" rendered="#{base.loggedout}"/>
+	<h:inputSecret id="password" rendered="#{base.loggedout}" required="true" requiredMessage="Please enter your Password"/>
+	<h:message for="password" style="color:red;"/>
+	
+	<h:commandButton value="Login" actionListener="#{base.login}" rendered="#{base.loggedout}"/>
+	<br/>
+	</h:panelGrid>
+	</h:form>
 		
-		<h:form>
-		<h:panelGrid style="margin: 0 auto;">
-		<h:outputLabel style="text-align:center" value="WELCOME TO THE OPEN SCIENCE GRID"/>
-		<h:outputLabel value="#{main.message}"/>
-		<a href="test.xhtml">Register an Account</a>
-		<a href="status.xhtml">Check job status</a>
-		<a href="upload.xhtml">Upload a Job</a>
-		</h:panelGrid>
-		</h:form>
-		
-		
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./index_files/jquery.min.js" type="text/javascript"></script>
+    <script src="./index_files/bootstrap.min.js" type="text/javascript"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./index_files/holder.min.js" type="text/javascript"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./index_files/ie10-viewport-bug-workaround.js" type="text/javascript"></script>	
 	
 </h:body> 
 </html>
