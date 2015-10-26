@@ -22,6 +22,8 @@ public class UserDTO {
 		this.phone = phone;
 		this.salt=salt;
 	}
+	public UserDTO() {
+	}
 	public String getUserName() {
 		return userName;
 	}

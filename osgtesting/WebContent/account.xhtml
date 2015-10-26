@@ -48,6 +48,7 @@
                     <li><h:form><h:link value="Register" rendered="#{base.loggedout}" outcome="register.xhtml"/></h:form></li>
                     <li><h:form><h:link value="Job Statuses" rendered="#{!base.loggedout}" outcome="status.xhtml"/></h:form></li>
 				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{base.editAccount}" rendered="#{!base.loggedout}" outcome="account.xhtml"/></h:form></li>
+				    <li><h:form><h:commandLink value = "Change Password" actionListener="#{base.editPass}" rendered="#{!base.loggedout}" outcome="password.xhtml"/></h:form></li>
 					<li><h:form><h:commandLink value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}" outcome="index.xhtml"/></h:form></li>
                   </ul>
                 </li>
@@ -58,27 +59,14 @@
       </div>
     </div>		
 	<br/><br/><br/><br/><br/>
-<h:form id="accountform">
+<h:form id="accountupdateform">
 	
 	<h:panelGrid columns="3">
 	
-	  <c:event listener="#{base.revalidatePass}" type="postValidate"/>
 	
 	<h:outputLabel for="userName" value="Username "/>
-	<h:inputText id="userName" value="#{base.currentuser.userName}" required="True" requiredMessage="Please enter a username"/>
+	<h:inputText id="userName" value="#{base.currentuser.userName}" required="True" requiredMessage="Please enter a username" disabled="true"/>
 	<h:message for="userName" style="color:red;"/>
-	
-	<h:outputLabel for="oldpass" value="Current Password"/>
-	<h:inputSecret id="oldpass" value="#{base.pass}" required="True" requiredMessage="Please enter your old password"/>
-	<h:message for="oldpass" style="color:red;"/>
-	
-	<h:outputLabel for="newpass" value="New Password"/>
-	<h:inputSecret id="newpass" value="#{base.pass}" required="True" requiredMessage="Please enter a password"/>
-	<h:message for="newpass" style="color:red;"/>
-	
-	<h:outputLabel for="conpass" value="Confirm New Password"/>
-	<h:inputSecret id="conpass" value="#{base.pass}" required="True" requiredMessage="Please Confirm Password"/>
-	<h:message for="conpass" style="color:red;"/>
 	
 	<h:outputLabel for="firstName" value="First Name"/>
 	<h:inputText id="firstName" value="#{base.currentuser.name}" required="True" requiredMessage="Please enter your name"/>

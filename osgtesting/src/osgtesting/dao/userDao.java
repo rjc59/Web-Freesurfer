@@ -89,6 +89,42 @@ public class userDao {
 
 	}
 
+	public void update(UserDTO update) {
+		try {
+			PreparedStatement pstmt=con.prepareStatement("update freesurfer_interface.users set first_name=?,last_name=?,email=?,institution=?,phone=?"
+					+ " where username=?");
+			pstmt.setString(1, update.getName());
+			pstmt.setString(2, update.getSurname());
+			pstmt.setString(3, update.getEmail());
+			pstmt.setString(4, update.getInst());
+			pstmt.setString(5, update.getPhone());
+			pstmt.setString(6, update.getUserName());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+	}
+
+	public void updatePassword(String userName, String newPass, String newSalt) {
+		try {
+			PreparedStatement pstmt=con.prepareStatement("update freesurfer_interface.users set password=?, salt=? "
+					+ " where username=?");
+			pstmt.setString(1, newPass);
+			pstmt.setString(2, newSalt);
+			pstmt.setString(3, userName);
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 
 
 }
