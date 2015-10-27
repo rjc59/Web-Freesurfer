@@ -8,13 +8,13 @@ import java.util.Arrays;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class Crypto {
+public class CryptoToolbox {
 	private String algorithm = "PBKDF2WithHmacSHA1";
 	private int derivedKeyLength = 64;
 	private SecretKeyFactory f;
 	private MessageDigest digest;
 	private int iterations = 1000;
-	public Crypto()
+	public CryptoToolbox()
 	{
 		try{
 			digest = MessageDigest.getInstance("SHA-256");
