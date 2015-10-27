@@ -109,8 +109,7 @@ public class base {
 		String passText=(String)passcomp.getValue();
 		String newPass=null,newSalt=null;
 		
-		//Stuff for tokens
-		JWT jwt = new JWT();
+		//Variables for json web tokens
 		String id = (String)usercomp.getValue();
 		String issuer = "webfreesurfer";
 		String subject = (String)emailcomp.getValue();
@@ -128,10 +127,11 @@ public class base {
 			//Hash password plus salt with pbkdf2
 
 			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
-			jwt.createKey(spec);
-			token = jwt.getJWT(id, issuer, subject, expirationtime); //sets the variable "token" to the json token
-			//jwt.verifyJWT(token);
+
 			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
+			JWT jwt = new JWT(passwordToStore); //initialize jwt creator with secret key byte array
+			token = jwt.getJWT(id, issuer, subject, expirationtime); //sets the variable "token" to the json token
+			jwt.verifyJWT(token); // verify token (for testing purposes, remove later)
 			newPass= new String(passwordToStore);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -537,7 +537,6 @@ public class base {
 			e.printStackTrace();
 		}
 	}
-
 
 	/**
 	 * Compares the entered password with the encoded one contained
