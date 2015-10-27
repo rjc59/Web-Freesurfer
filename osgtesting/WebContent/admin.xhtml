@@ -23,7 +23,7 @@
     <link href="./index_files/carousel.css" rel="stylesheet" />
 </h:head> 
 <h:body >
-	<div class="navbar-wrapper">
+<div class="navbar-wrapper">
       <div class="container">
 
         <nav class="navbar navbar-inverse navbar-static-top">
@@ -49,9 +49,9 @@
                     <li><h:form><h:link value="Job Statuses" rendered="#{!base.loggedout}" outcome="status.xhtml"/></h:form></li>
 				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{base.editAccount}" rendered="#{!base.loggedout}" outcome="account.xhtml"/></h:form></li>
 					<li><h:form><h:commandLink value = "Change Password" actionListener="#{base.editPass}" rendered="#{!base.loggedout}" outcome="password.xhtml"/></h:form></li>
-					<li><h:form><h:commandLink value = "Admin Functions" actionListener="#{base.adminPower}" rendered="#{base.admin}" outcome="admin.xhtml"/></h:form></li>					
+					<li><h:form><h:commandLink value = "Change Password" actionListener="#{base.adminPower}" rendered="#{!base.loggedout}" outcome="password.xhtml"/></h:form></li>					
 					<li><h:form><h:commandLink value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}" outcome="index.xhtml"/></h:form></li>
-                  </ul> 
+                  </ul>
                 </li>
               </ul>
             </div>
@@ -61,34 +61,9 @@
     </div>		
 	<br/><br/><br/><br/><br/>
 	
-	<h:form id="mainform">
-	<h:panelGrid style="margin: 0 auto;">
-	<h:outputLabel style="text-align:center" value="WELCOME TO THE OPEN SCIENCE GRID"/>
-	<h:outputLabel value="#{base.message}" rendered="#{!base.loggedout}"/>
-	
-	<h:outputLabel for="username" value="Username" rendered="#{base.loggedout}"/>
-	<h:inputText id="username" rendered="#{base.loggedout}" required="true" requiredMessage="Please enter your Username" />
-	<h:message for="username" style="color:red;"/>
-	
-	
-	<h:outputLabel for="password" value="Password" rendered="#{base.loggedout}"/>
-	<h:inputSecret id="password" rendered="#{base.loggedout}" required="true" requiredMessage="Please enter your Password"/>
-	<h:message for="password" style="color:red;"/>
-	
-	<h:commandButton value="Login" actionListener="#{base.login}" rendered="#{base.loggedout}"/>
-	<br/>
-	</h:panelGrid>
+	<h:form id="adminform">
+	THIS IS THE ADMIN PAGE
+
 	</h:form>
-		
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./index_files/jquery.min.js" type="text/javascript"></script>
-    <script src="./index_files/bootstrap.min.js" type="text/javascript"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <script src="./index_files/holder.min.js" type="text/javascript"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./index_files/ie10-viewport-bug-workaround.js" type="text/javascript"></script>	
-	
-</h:body> 
+</h:body>
 </html>

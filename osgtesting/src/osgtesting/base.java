@@ -40,6 +40,7 @@ public class base {
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private userDao userDao=new userDao();
 	private boolean loggedout=true;
+	private boolean admin=false;
 	private MessageDigest digest;
 	private UserDTO currentuser;
 	String algorithm = "PBKDF2WithHmacSHA1";
@@ -81,7 +82,7 @@ public class base {
 		String passText=(String)passcomp.getValue();
 		String newPass=null,newSalt=null;
 
-		
+
 
 		try{
 
@@ -100,7 +101,7 @@ public class base {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		System.out.println(newPass);
 		System.out.println(newSalt);
 
@@ -147,6 +148,9 @@ public class base {
 				System.out.println("Password matches");	 
 				message="Welcome "+uname;
 				username=uname;
+				if(username.equals("admin")){
+					admin=true;
+				}
 			}
 			else
 			{
@@ -259,7 +263,7 @@ public class base {
 
 
 		userDao.updatePassword(currentuser.getUserName(),newPass,newSalt);
-		
+
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 		} catch (IOException e) {
@@ -354,7 +358,7 @@ public class base {
 			fc.addMessage(oldpassID, msg);
 			fc.renderResponse();
 		}
-		
+
 		if(pass.length()<6){
 			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -371,130 +375,161 @@ public class base {
 
 	}
 
-	public boolean checkPassword(String retpass, String retsalt,String checkpass){
-		byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
-		try{ 
-			String attemptText=checkpass;
-			oldsalt=retsalt.getBytes();
-			oldpass=retpass.getBytes();
-			byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
-			String attemptHashStr = new String(attemptHash, "UTF-8");
-			KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
-			attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
+	public void adminPower() throws SQLException{
+		ResultSet account=userDao.edit(username);
+		if(!account.next()){
+			System.out.println("whoops     "); 
+			return;
+		}
+		currentuser=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+		System.out.println(currentuser.getName());
 
-
-		}catch(Exception e){
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("admin.xhtml");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return Arrays.equals(oldpass, attemptToCheck);
-	}
-
-	public UserDTO getCurrentuser() {
-		return currentuser;
 	}
 
 
-	public void setCurrentuser(UserDTO currentuser) {
-		this.currentuser = currentuser;
+public boolean checkPassword(String retpass, String retsalt,String checkpass){
+	byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
+	try{ 
+		String attemptText=checkpass;
+		oldsalt=retsalt.getBytes();
+		oldpass=retpass.getBytes();
+		byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
+		String attemptHashStr = new String(attemptHash, "UTF-8");
+		KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
+		attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
+
+
+	}catch(Exception e){
+		e.printStackTrace();
 	}
+	return Arrays.equals(oldpass, attemptToCheck);
+}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
+public UserDTO getCurrentuser() {
+	return currentuser;
+}
 
 
-	public String getName() {
-		return name;
-	}
+public void setCurrentuser(UserDTO currentuser) {
+	this.currentuser = currentuser;
+}
+
+public String getMessage() {
+	return message;
+}
+
+public void setMessage(String message) {
+	this.message = message;
+}
 
 
-	public void setName(String name) {
-		this.name = name;
-	}
+public String getName() {
+	return name;
+}
 
 
-	public List<JobsDTO> getJobList() {
-		return jobList;
-	}
+public void setName(String name) {
+	this.name = name;
+}
 
 
-	public void setJobList(List<JobsDTO> jobList) {
-		this.jobList = jobList;
-	}
+public List<JobsDTO> getJobList() {
+	return jobList;
+}
 
 
-	public String getSurname() {
-		return surname;
-	}
+public void setJobList(List<JobsDTO> jobList) {
+	this.jobList = jobList;
+}
 
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+public String getSurname() {
+	return surname;
+}
 
 
-	public String getEmail() {
-		return email;
-	}
+public void setSurname(String surname) {
+	this.surname = surname;
+}
 
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+public String getEmail() {
+	return email;
+}
 
 
-	public String getPhone() {
-		return phone;
-	}
+public void setEmail(String email) {
+	this.email = email;
+}
 
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+public String getPhone() {
+	return phone;
+}
 
 
-	public boolean isLoggedout() {
-		return loggedout;
-	}
+public void setPhone(String phone) {
+	this.phone = phone;
+}
 
 
-	public void setLoggedout(boolean loggedout) {
-		this.loggedout = loggedout;
-	}
+public boolean isLoggedout() {
+	return loggedout;
+}
 
 
-	public String getUsername() {
-		return username;
-	}
+public void setLoggedout(boolean loggedout) {
+	this.loggedout = loggedout;
+}
 
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+public String getUsername() {
+	return username;
+}
 
 
-	public String getPass() {
-		return pass;
-	}
+public void setUsername(String username) {
+	this.username = username;
+}
 
 
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
+public String getPass() {
+	return pass;
+}
 
 
-	public String getInst() {
-		return inst;
-	}
+public void setPass(String pass) {
+	this.pass = pass;
+}
 
 
-	public void setInst(String inst) {
-		this.inst = inst;
-	}
+public String getInst() {
+	return inst;
+}
+
+
+public void setInst(String inst) {
+	this.inst = inst;
+}
+
+
+
+
+public boolean isAdmin() {
+	return admin;
+}
+
+
+
+
+public void setAdmin(boolean admin) {
+	this.admin = admin;
+}
 
 
 }
