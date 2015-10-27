@@ -8,12 +8,11 @@ import javax.mail.internet.*;
 import java.lang.NullPointerException;
 import javax.mail.PasswordAuthentication;
 
-
 public class Emailer {
-	public String To;
-	public String Subject = "default";
-	public String Message = "Hello world!";
-	private final String From = "opensciencegridtesting@gmail.com";
+	private String to;
+	private String subject = "default";
+	private String message = "Hello world!";
+	private final String from = "opensciencegridtesting@gmail.com";
 	private MimeMessage email;
 	public Emailer()
 	{
@@ -40,7 +39,7 @@ public class Emailer {
 	 */
 	public void send()
 	{
-		if (To == null)
+		if (to == null)
 		{
 			throw new NullPointerException();
 		}
@@ -48,10 +47,10 @@ public class Emailer {
 		{
 			try
 			{
-				email.setFrom(From);
-				email.addRecipient(RecipientType.TO, new InternetAddress(To));
-				email.setSubject(Subject);
-				email.setText(Message);
+				email.setFrom(from);
+				email.addRecipient(RecipientType.TO, new InternetAddress(to));
+				email.setSubject(subject);
+				email.setText(message);
 				Transport.send(email);
 				
 			}
@@ -62,5 +61,27 @@ public class Emailer {
 		}
 	}
 	
+	public void setTo(String to){
+		to = to;
+	}
 	
+	public String getTo(){
+		return to;
+	}
+	
+	public void setSubject(String subject){
+		subject = subject;
+	}
+	
+	public String getSubject(){
+		return subject;
+	}
+	
+	public void setMessage(String message){
+		message = message;
+	}
+	
+	public String getMessage(){
+		return message;
+	}
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.application.FacesMessage;
@@ -25,7 +26,12 @@ import javax.faces.event.ComponentSystemEvent;
 
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
+<<<<<<< Upstream, based on origin/master
 import osgtesting.dao.UserDao;
+=======
+import osgtesting.dao.userDao;
+import osgtesting.email.JWT;
+>>>>>>> 147e855 Fixed classpath to point to lib, added JWT generation 
 
 public class base {
 	private String message=new String("Intro message");
@@ -48,6 +54,7 @@ public class base {
 	int derivedKeyLength = 64;
 	SecretKeyFactory f;
 	int iterations = 1000;
+	private String token = "";
 
 	public base() throws NoSuchAlgorithmException{
 		digest = MessageDigest.getInstance("SHA-256");
@@ -85,6 +92,7 @@ public class base {
 		UIInput emailcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:email");
 		UIInput instcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:inst");
 		UIInput phonecomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:phoneNumber");
+<<<<<<< Upstream, based on origin/master
 		
 		UserDTO newAcct = new UserDTO( ((String) usercomp.getValue()), 
 									   "",
@@ -96,6 +104,55 @@ public class base {
 									   "" );
 		
 		newAccountBackEnd( newAcct, (String)passcomp.getValue() );
+=======
+
+		String passText=(String)passcomp.getValue();
+		String newPass=null,newSalt=null;
+		
+		//Stuff for tokens
+		JWT jwt = new JWT();
+		String id = (String)usercomp.getValue();
+		String issuer = "webfreesurfer";
+		String subject = (String)emailcomp.getValue();
+		long expirationtime = 86400000;
+
+		try{
+
+			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
+			String passHashStr = new String(passHash, "UTF-8");
+			//Create Salt
+			//Get current time
+			Date creationTime = new Date();
+			byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
+			newSalt=new String(salt);
+			//Hash password plus salt with pbkdf2
+
+			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
+			jwt.createKey(spec);
+			token = jwt.getJWT(id, issuer, subject, expirationtime); //sets the variable "token" to the json token
+			//jwt.verifyJWT(token);
+			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
+			newPass= new String(passwordToStore);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		System.out.println(newPass);
+		System.out.println(newSalt);
+
+
+		UserDTO newAcct = new UserDTO(((String) usercomp.getValue()),
+				newPass,
+				((String) namecomp.getValue()),
+				((String) surnamecomp.getValue()),
+				((String) emailcomp.getValue()),
+				((String) instcomp.getValue()),
+				((String) phonecomp.getValue()),
+				newSalt);
+
+		userDao.Write(newAcct);
+
+>>>>>>> 147e855 Fixed classpath to point to lib, added JWT generation 
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
