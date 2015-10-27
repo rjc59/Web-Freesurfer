@@ -81,7 +81,7 @@ public class base {
 		String passText=(String)passcomp.getValue();
 		String newPass=null,newSalt=null;
 
-
+		
 
 		try{
 
@@ -100,6 +100,9 @@ public class base {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
+		System.out.println(newPass);
+		System.out.println(newSalt);
 
 
 		UserDTO newAcct = new UserDTO(((String) usercomp.getValue()),
@@ -171,7 +174,6 @@ public class base {
 			return;
 		}
 		currentuser=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
-		System.out.println(currentuser.getName());
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("account.xhtml");
@@ -179,7 +181,7 @@ public class base {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void updateAccount() throws SQLException{
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountupdateform:userName");
 		UIInput namecomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountupdateform:firstName");
@@ -198,7 +200,7 @@ public class base {
 			update.setInst((String)instcomp.getValue());
 			update.setPhone((String)phonecomp.getValue());
 			System.out.println(update.getName());
-			
+
 			userDao.update(update);
 		}
 
@@ -209,7 +211,7 @@ public class base {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void editPass() throws SQLException{
 		ResultSet account=userDao.edit(username);
 		if(!account.next()){
@@ -225,12 +227,15 @@ public class base {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void updatePassword(){
-		
+
 		UIInput passcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("passwordupdateform:newPass");
 		String passText=(String)passcomp.getValue();
+		System.out.println(passText);
 		String newPass=null,newSalt=null;
+
+
 
 		try{
 
@@ -249,9 +254,18 @@ public class base {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+		System.out.println(newPass);
+		System.out.println(newSalt);
+
+
 		userDao.updatePassword(currentuser.getUserName(),newPass,newSalt);
 		
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void logout(){
@@ -295,6 +309,13 @@ public class base {
 			fc.renderResponse();
 		}
 
+		if(pass.length()<6){
+			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(passID, msg);
+			fc.renderResponse();
+		}
+
 		if(!pass.equals(conpass)){
 			FacesMessage msg = new FacesMessage("Passwords must match");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -333,6 +354,13 @@ public class base {
 			fc.addMessage(oldpassID, msg);
 			fc.renderResponse();
 		}
+		
+		if(pass.length()<6){
+			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(passID, msg);
+			fc.renderResponse();
+		}
 
 		if(!pass.equals(conpass)){
 			FacesMessage msg = new FacesMessage("Passwords must match");
@@ -345,7 +373,7 @@ public class base {
 
 	public boolean checkPassword(String retpass, String retsalt,String checkpass){
 		byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
-		try{
+		try{ 
 			String attemptText=checkpass;
 			oldsalt=retsalt.getBytes();
 			oldpass=retpass.getBytes();
@@ -353,9 +381,7 @@ public class base {
 			String attemptHashStr = new String(attemptHash, "UTF-8");
 			KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
 			attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
-			System.out.println(new String(attemptToCheck));
-			System.out.println(retpass);
-			System.out.println(retsalt);
+
 
 		}catch(Exception e){
 			e.printStackTrace();
