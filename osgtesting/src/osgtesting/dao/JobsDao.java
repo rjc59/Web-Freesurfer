@@ -39,9 +39,9 @@ public class JobsDao {
 	public void Write(JobsDTO job){
 		//create request body
 		RequestBody requestBody = new MultipartBuilder().type(MultipartBuilder.FORM)
-			.addFormDataPart("userid", userid)
+			.addFormDataPart("userid", job.getAuthor().getId())
 			.addFormDataPart("token", token)
-			.addFormDataPart("filename", filename)
+			//.addFormDataPart("filename", job.getFileName())
 			.addFormDataPart("singlecore", "1")
 			.addFormDataPart("jobname", jobname)
 			.addFormDataPart("jobfile", filename, RequestBody.create(MediaType.parse("application/plain", job.GetFile()))

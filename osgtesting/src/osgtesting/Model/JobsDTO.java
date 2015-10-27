@@ -1,29 +1,24 @@
 package osgtesting.Model;
 
 import java.util.*;
-import osgtesting.Util.CryptoToolbox
-import osgtesting.Model.UserTDO
+import osgtesting.Util.CryptoToolbox;
+import osgtesting.Model.UserDTO;
 public class JobsDTO{
 	private String id;
-	private UserTDO author;
+	private UserDTO author;
 	private String status;
 	private String updated;
 	private String timestamp;
 	private String token;
-	private UserTDO user;
 	
 	
-	public JobsDTO(String id, UserTDO author, String status, String updated){
+	public JobsDTO(String id, UserDTO author, String status, String updated){
 		this.id=id;
 		this.author=author;
 		this.status=status;
 		this.updated=updated;
 	}
 
-
-	public UserTDO getUser(){
-		return user;
-	}
 
 	public String getId() {
 		return id;
@@ -39,14 +34,14 @@ public class JobsDTO{
 
 
 
-	public String getAuthor() {
+	public UserDTO getAuthor() {
 		return author;
 	}
 
 
 
 
-	public void setAuthor(String author) {
+	public void setAuthor(UserDTO author) {
 		this.author = author;
 	}
 
