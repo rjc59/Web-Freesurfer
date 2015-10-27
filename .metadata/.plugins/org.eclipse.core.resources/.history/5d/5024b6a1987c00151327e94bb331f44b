@@ -121,7 +121,7 @@ public class userDao {
 	 * @param update DTO with updated infro based on user input
 	 */
 
-	public void update(UserDTO update) /*throws SQLException */{
+	public void update(UserDTO update) {
 		try {
 			PreparedStatement pstmt=con.prepareStatement("update freesurfer_interface.users set first_name=?,last_name=?,email=?,institution=?,phone=?"
 					+ " where username=?");
@@ -148,7 +148,7 @@ public class userDao {
 	 * @param newPass New encoded password
 	 * @param newSalt New salt
 	 */
-	public void updatePassword(String userName, String newPass, String newSalt) /*throws SQLException */{
+	public void updatePassword(String userName, String newPass, String newSalt) {
 		try {
 			PreparedStatement pstmt=con.prepareStatement("update freesurfer_interface.users set password=?, salt=? "
 					+ " where username=?");
