@@ -8,6 +8,9 @@ import osgtesting.Model.UserDTO;
 public class userDao {
 	private Connection con;
 
+	/**
+	 * Constructor: creates connection to application db
+	 */
 	public userDao(){
 		try{
 			DriverManager.registerDriver(new org.postgresql.Driver());
@@ -20,6 +23,13 @@ public class userDao {
 		}
 	}
 	
+	/**
+	 * Queries DB for account based on username
+	 * 
+	 * @param username Username entered by user
+	 * @param Password Password entered by user
+	 * @return ResultSet containing single entry, matched to username of username, password and salt
+	 */
 	public ResultSet login(String username, String Password){
 		PreparedStatement pst;
 		ResultSet rs=null;
@@ -34,7 +44,12 @@ public class userDao {
 		
 		
 	}
-	
+	/**
+	 * Queries account based on username
+	 * 
+	 * @param username Username provided by user
+	 * @return Single entry containing all account info matching username provided
+	 */
 	public ResultSet edit(String username){
 		PreparedStatement pst;
 		ResultSet rs=null;
@@ -48,6 +63,11 @@ public class userDao {
 		return rs;
 	}
 
+	/**
+	 * Writes new account DTO to db
+	 * 
+	 * @param account DTO created by obtaining information from input boxes
+	 */
 	public void Write(UserDTO account){
 		PreparedStatement pst;
 		try {
@@ -69,6 +89,11 @@ public class userDao {
 		}
 	}
 
+	/**
+	 * Method to ensure db connection and users exist
+	 * 
+	 * @return All values from users db
+	 */
 	public ArrayList<String> read(){
 		try {
 			PreparedStatement pstmt=con.prepareStatement("Select * from freesurfer_interface.users");
@@ -88,6 +113,12 @@ public class userDao {
 		return null;
 
 	}
+	
+	/**
+	 * Takes updated DTO, finds corresponding row and updates that row.
+	 * 
+	 * @param update DTO with updated infro based on user input
+	 */
 
 	public void update(UserDTO update) {
 		try {
@@ -109,6 +140,13 @@ public class userDao {
 		
 	}
 
+	/**
+	 * Finds corresponding account based on username and updates login information
+	 * 
+	 * @param userName Username of account
+	 * @param newPass New encoded password
+	 * @param newSalt New salt
+	 */
 	public void updatePassword(String userName, String newPass, String newSalt) {
 		try {
 			PreparedStatement pstmt=con.prepareStatement("update freesurfer_interface.users set password=?, salt=? "

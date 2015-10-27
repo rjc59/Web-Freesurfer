@@ -70,6 +70,12 @@ public class base {
 		String id=UUID.randomUUID().toString();
 		jobList.add(new JobsDTO(id,name,status,strDate));
 	}
+	
+	/**
+	 * Creates a new userDTO containing the information from the form
+	 * places new account into db
+	 * 
+	 */
 	public void newAccount() throws SQLException{
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:userName");
 		UIInput passcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:firstpass");
@@ -127,6 +133,13 @@ public class base {
 		}
 	} 
 
+	
+	/**
+	 * Retreives values from login boxes.
+	 * Queries DB for match of username.
+	 * Performs password check.
+	 * @throws SQLException
+	 */
 	public void login() throws SQLException{
 
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:username");
@@ -171,6 +184,10 @@ public class base {
 		}
 	}
 
+	/**
+	 * Retreives account info for current user.
+	 * @throws SQLException
+	 */
 	public void editAccount() throws SQLException{
 		ResultSet account=userDao.edit(username);
 		if(!account.next()){
@@ -186,6 +203,14 @@ public class base {
 		}
 	}
 
+	
+	/**
+	 * Retrieves updated information from form inputs.
+	 * Creates new object based on such information.
+	 * Updates row in db table with new information.
+	 * 
+	 * @throws SQLException
+	 */
 	public void updateAccount() throws SQLException{
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountupdateform:userName");
 		UIInput namecomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountupdateform:firstName");
@@ -216,6 +241,11 @@ public class base {
 		}
 	}
 
+	
+	/**
+	 * sets current user based on username
+	 * @throws SQLException
+	 */
 	public void editPass() throws SQLException{
 		ResultSet account=userDao.edit(username);
 		if(!account.next()){
@@ -231,7 +261,11 @@ public class base {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Obtains info from input.
+	 * Creates new encoded password and salt.
+	 * Updates values in db
+	 */
 	public void updatePassword(){
 
 		UIInput passcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("passwordupdateform:newPass");
@@ -272,6 +306,11 @@ public class base {
 		}
 	}
 
+	/**
+	 * Logs user out of system.
+	 * Nullifys current user object.
+	 * 
+	 */
 	public void logout(){
 		try {
 			currentuser=null;
@@ -284,6 +323,14 @@ public class base {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Validates password for new accounts, Must be 7 or more characters.
+	 * Must match confirm password entry.
+	 * 
+	 * @param e The event triggerd after initial validation of inputs
+	 * @throws SQLException
+	 */
 	public void validatePass(ComponentSystemEvent e) throws SQLException{
 
 		FacesContext fc=FacesContext.getCurrentInstance();
@@ -329,6 +376,12 @@ public class base {
 
 	}
 
+	/**
+	 * Form checking of reset password page. Confrims current password.
+	 * Error checks new passwords
+	 * 
+	 * @param e Event triggered post validation of inputs.
+	 */
 	public void revalidatePass(ComponentSystemEvent e){
 
 		FacesContext fc=FacesContext.getCurrentInstance();
@@ -375,6 +428,10 @@ public class base {
 
 	}
 
+	/**
+	 * Validation of admin credentials
+	 * @throws SQLException
+	 */
 	public void adminPower() throws SQLException{
 		ResultSet account=userDao.edit(username);
 		if(!account.next()){
@@ -392,6 +449,15 @@ public class base {
 	}
 
 
+	/**
+	 * Compares the entered password with the encoded one contained
+	 * within the db
+	 * 
+	 * @param retpass Encoded password retrieved from database
+	 * @param retsalt Salt retrieved from database
+	 * @param checkpass Plain string of entered password
+	 * @return true if passwords match, false otherwise
+	 */
 public boolean checkPassword(String retpass, String retsalt,String checkpass){
 	byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
 	try{ 

@@ -35,6 +35,9 @@ public class Emailer {
 		});
 	    email = new MimeMessage(session);
 	}
+	/**
+	 * Initiates send on mail server
+	 */
 	public void send()
 	{
 		if (To == null)
