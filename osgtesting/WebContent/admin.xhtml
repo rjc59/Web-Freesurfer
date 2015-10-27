@@ -62,8 +62,33 @@
 	<br/><br/><br/><br/><br/>
 	
 	<h:form id="adminform">
-	THIS IS THE ADMIN PAGE
-
+	<h:dataTable value="#{base.adminList}" var="users" columnClasses="col1,col2,col3,col4,col5,col6">
+	<h:column >
+	<c:facet name="header">Username</c:facet>
+	#{users.userName}
+	</h:column>
+	<h:column >
+	<c:facet name="header">Name</c:facet>
+	#{users.name}
+	</h:column>
+	<h:column >
+	<c:facet name="header">Surname</c:facet>
+	#{users.surname}
+	</h:column>
+	<h:column >
+	<c:facet name="header">Email</c:facet>
+	#{users.email}
+	</h:column>
+	<h:column >
+	<c:facet name="header">Institution</c:facet>
+	#{users.inst}
+	</h:column>
+	<h:column >
+	<c:facet name="header">Phone number</c:facet>
+	#{users.phone}
+	</h:column>
+		
+</h:dataTable>
 	</h:form>
 </h:body>
 </html>
