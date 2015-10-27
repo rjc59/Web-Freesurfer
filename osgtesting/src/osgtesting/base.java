@@ -37,6 +37,7 @@ public class base {
 	private String email=new String("");
 	private String phone=new String("");
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
+	private List<UserDTO> adminList=new ArrayList<UserDTO>();
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private userDao userDao=new userDao();
 	private boolean loggedout=true;
@@ -441,6 +442,7 @@ public class base {
 		currentuser=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
 		System.out.println(currentuser.getName());
 
+		adminList=userDao.read();
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("admin.xhtml");
 		} catch (IOException e) {
@@ -595,6 +597,20 @@ public boolean isAdmin() {
 
 public void setAdmin(boolean admin) {
 	this.admin = admin;
+}
+
+
+
+
+public List<UserDTO> getAdminList() {
+	return adminList;
+}
+
+
+
+
+public void setAdminList(List<UserDTO> adminList) {
+	this.adminList = adminList;
 }
 
 

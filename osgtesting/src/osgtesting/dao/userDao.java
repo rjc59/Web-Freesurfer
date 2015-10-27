@@ -2,6 +2,7 @@ package osgtesting.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import osgtesting.Model.UserDTO;
 
@@ -94,14 +95,14 @@ public class userDao {
 	 * 
 	 * @return All values from users db
 	 */
-	public ArrayList<String> read(){
+	public List<UserDTO> read(){
+		List<UserDTO> results= new ArrayList<UserDTO>();
 		try {
 			PreparedStatement pstmt=con.prepareStatement("Select * from freesurfer_interface.users");
 			ResultSet rs=pstmt.executeQuery();
-			//ResultSet rs = con.getMetaData().getTables(null, null, "%", null);
-			//while (rs.next()) {
-			// System.out.println(rs.getString(3));
-			//}
+			while (rs.next()) {
+			results.add(new UserDTO(rs.getString(2),rs.getString(8),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(9)));
+			}
 			if(!rs.equals(null)){
 			}
 		} catch (SQLException e) {
@@ -110,7 +111,7 @@ public class userDao {
 		}
 
 
-		return null;
+		return results;
 
 	}
 	
