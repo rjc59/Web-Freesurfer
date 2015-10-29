@@ -39,7 +39,7 @@ public class base {
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
 	private List<UserDTO> adminList=new ArrayList<UserDTO>();
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-	private UserDao userDao=new UserDao();
+	private UserDao UserDao=new UserDao();
 	private boolean loggedout=true;
 	private boolean admin=false;
 	private MessageDigest digest;
@@ -99,7 +99,7 @@ public class base {
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-			userDao.read();
+			UserDao.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,7 +147,7 @@ public class base {
 		newAcct.setPass(newPass);
 		newAcct.setSalt(newSalt);
 		
-		userDao.Write(newAcct);
+		UserDao.Write(newAcct);
 	}
 
 	
@@ -189,7 +189,7 @@ public class base {
 	 *  @return      - a boolean value indicating login success
 	 */
 	private boolean loginBackEnd( String uname, String pass ) throws SQLException {
-		ResultSet result=userDao.login(uname, pass);
+		ResultSet result=UserDao.login(uname, pass);
 
 		if(!result.next()){
 			System.out.println("NO USERNAME");
@@ -220,7 +220,7 @@ public class base {
 	 * @throws SQLException
 	 */
 	public void editAccount() throws SQLException{
-		ResultSet account=userDao.edit(username);
+		ResultSet account=UserDao.edit(username);
 		if(!account.next()){
 			System.out.println("whoops     "); 
 			return;
@@ -250,7 +250,7 @@ public class base {
 		UIInput instcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountupdateform:inst");
 		UIInput phonecomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountupdateform:phoneNumber");
 
-		ResultSet result=userDao.edit((String)usercomp.getValue());
+		ResultSet result=UserDao.edit((String)usercomp.getValue());
 		if(result.next()){
 			UserDTO update = new UserDTO();
 			update.setUserName((String)usercomp.getValue());
@@ -261,7 +261,7 @@ public class base {
 			update.setPhone((String)phonecomp.getValue());
 			System.out.println(update.getName());
 
-			userDao.update(update);
+			UserDao.update(update);
 		}
 
 		try {
@@ -278,7 +278,7 @@ public class base {
 	 * @throws SQLException
 	 */
 	public void editPass() throws SQLException{
-		ResultSet account=userDao.edit(username);
+		ResultSet account=UserDao.edit(username);
 		if(!account.next()){
 			System.out.println("whoops     "); 
 			return;
@@ -328,7 +328,7 @@ public class base {
 		System.out.println(newSalt);
 
 
-		userDao.updatePassword(currentuser.getUserName(),newPass,newSalt);
+		UserDao.updatePassword(currentuser.getUserName(),newPass,newSalt);
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
@@ -384,7 +384,7 @@ public class base {
 		if(pass.isEmpty() || conpass.isEmpty())
 			return;
 
-		ResultSet rs = userDao.edit(username);
+		ResultSet rs = UserDao.edit(username);
 		if(rs.next()){
 			FacesMessage msg = new FacesMessage("Username already exists");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -465,7 +465,7 @@ public class base {
 	 * @throws SQLException
 	 */
 	public void adminPower() throws SQLException{
-		ResultSet account=userDao.edit(username);
+		ResultSet account=UserDao.edit(username);
 		if(!account.next()){
 			System.out.println("whoops     "); 
 			return;
@@ -473,7 +473,7 @@ public class base {
 		currentuser=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
 		System.out.println(currentuser.getName());
 
-		adminList=userDao.read();
+		adminList=UserDao.read();
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("admin.xhtml");
 		} catch (IOException e) {

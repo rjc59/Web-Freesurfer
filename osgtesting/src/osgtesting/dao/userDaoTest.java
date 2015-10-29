@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import org.junit.Test;
 import osgtesting.Model.UserDTO;
 
-public class userDaoTest {
+public class UserDaoTest {
 
 	/*******************/
 	/** Creation Test **/
 	/*******************/
 	@Test
 	public void testUserDaoCreation() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		
 		assertNotNull( tester );
 	}
@@ -25,7 +25,7 @@ public class userDaoTest {
 	/*  Valid User Login Test  */
 	@Test
 	public void testUserDaoLoginValid() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		try {
 			ResultSet rs = tester.login("test", "test123");
 			Statement st;
@@ -39,7 +39,7 @@ public class userDaoTest {
 	
 	/* Invalid User Login Test */
 	public void testUserDaoLoginInvalid() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		try {
 			ResultSet rs = tester.login("thisusernamewillneverbeused", "test123");
 			Statement st;
@@ -55,7 +55,7 @@ public class userDaoTest {
 	/***************/
 	@Test
 	public void testUserDaoEdit() throws SQLException {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		ResultSet rs = tester.edit("test2");
 		Statement st;
 		st = rs.getStatement();
@@ -68,7 +68,7 @@ public class userDaoTest {
 	/***************/
 	@Test
 	public void testUserDaoRead() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		List<UserDTO> users = tester.read();
 		
 		assertNotNull( users );
@@ -82,7 +82,7 @@ public class userDaoTest {
 	/****************************************************************/
 	@Test(timeout=500)
 	public void testUserDaoWrite() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		UserDTO account = new UserDTO("test", "test123", "testfirst", "testlast", "test@test.com", "tester", "1231231234", "abcd");
 		try {
 			tester.Write(account);	
@@ -99,7 +99,7 @@ public class userDaoTest {
 	/****************************************************************/
 	@Test(timeout=500)
 	public void testUserDaoUpdateAccount() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		UserDTO account = new UserDTO("test", "test123", "testfirst", "testlast", "test@test.com", "tester", "1231231234", "abcd");
 		try {
 			tester.update(account);	
@@ -116,7 +116,7 @@ public class userDaoTest {
 	/****************************************************************/
 	@Test(timeout=500)
 	public void testUserDaoUpdatePassword() {
-		userDao tester = new userDao();
+		UserDao tester = new UserDao();
 		try {
 			tester.updatePassword( "test", "test123", "abcd" );	
 		} catch ( Exception e ) {
