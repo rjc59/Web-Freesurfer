@@ -19,17 +19,35 @@ public class userDaoTest {
 		assertNotNull( tester );
 	}
 	
-	/****************/
-	/** Login Test **/
-	/****************/
+	/***************************/
+	/**      Login Test       **/
+	/***************************/
+	/*  Valid User Login Test  */
 	@Test
-	public void testUserDaoLogin() throws SQLException {
+	public void testUserDaoLoginValid() {
 		userDao tester = new userDao();
-		ResultSet rs = tester.login("test", "test123");
-		Statement st;
-		st = rs.getStatement();
-		assertEquals("Statement in rs is what is expected",
-				st.toString(), "Select username,password,salt from freesurfer_interface.users Where username='test'");
+		try {
+			ResultSet rs = tester.login("test", "test123");
+			Statement st;
+			st = rs.getStatement();
+			assertEquals("Statement in rs is what is expected",
+					st.toString(), "Select username,password,salt from freesurfer_interface.users Where username='test'");
+		} catch ( Exception e ) {
+			fail();
+		}
+	}
+	
+	/* Invalid User Login Test */
+	public void testUserDaoLoginInvalid() {
+		userDao tester = new userDao();
+		try {
+			ResultSet rs = tester.login("thisusernamewillneverbeused", "test123");
+			Statement st;
+			st = rs.getStatement();
+			fail();
+		} catch ( Exception e ) {
+			assertTrue( true );
+		}
 	}
 
 	/***************/

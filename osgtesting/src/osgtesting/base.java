@@ -85,45 +85,17 @@ public class base {
 		UIInput emailcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:email");
 		UIInput instcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:inst");
 		UIInput phonecomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:phoneNumber");
-
-		String passText=(String)passcomp.getValue();
-		String newPass=null,newSalt=null;
-
-
-
-		try{
-
-			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
-			String passHashStr = new String(passHash, "UTF-8");
-			//Create Salt
-			//Get current time
-			Date creationTime = new Date();
-			byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
-			newSalt=new String(salt);
-			//Hash password plus salt with pbkdf2
-
-			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
-			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
-			newPass= new String(passwordToStore);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-		System.out.println(newPass);
-		System.out.println(newSalt);
-
-
-		UserDTO newAcct = new UserDTO(((String) usercomp.getValue()),
-				newPass,
-				((String) namecomp.getValue()),
-				((String) surnamecomp.getValue()),
-				((String) emailcomp.getValue()),
-				((String) instcomp.getValue()),
-				((String) phonecomp.getValue()),
-				newSalt);
-
-		userDao.Write(newAcct);
-
+		
+		UserDTO newAcct = new UserDTO( ((String) usercomp.getValue()), 
+									   "",
+									   ((String) namecomp.getValue()),
+									   ((String) surnamecomp.getValue()),
+									   ((String) emailcomp.getValue()),
+									   ((String) instcomp.getValue()),
+									   ((String) phonecomp.getValue()),
+									   "" );
+		
+		newAccountBackEnd( newAcct, (String)passcomp.getValue() );
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
@@ -133,6 +105,50 @@ public class base {
 			e.printStackTrace();
 		}
 	} 
+	
+	
+	/** newAccountBackEnd
+	 *  Takes a new UserDTO and inserts it into the database
+	 *  after generating salt and hashing the password with it
+	 *  
+	 *  @throws SQLException
+	 *  
+	 *  @param newAcct - A UserDTO already holding the user's
+	 *                   entered information excluding valid
+	 *                   salt and password
+	 *  @param passtext - The plain text password
+	 */
+	private void newAccountBackEnd( UserDTO newAcct, String passText ) throws SQLException {
+		String newPass=null, newSalt=null;
+		try{
+//take from here
+			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
+			String passHashStr = new String(passHash, "UTF-8");
+			//Create Salt
+			//Get current time
+			Date creationTime = new Date();
+			byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
+			newSalt=new String(salt);
+			//Hash password plus salt with pbkdf2
+//to here into a makeSalt function
+			
+//take from here
+			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
+			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
+			newPass= new String(passwordToStore);
+//to here into a hashPass function
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		System.out.println(newPass);
+		System.out.println(newSalt);
+
+		newAcct.setPass(newPass);
+		newAcct.setSalt(newSalt);
+		
+		userDao.Write(newAcct);
+	}
 
 	
 	/**
@@ -146,14 +162,38 @@ public class base {
 		UIInput usercomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:username");
 		UIInput passcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:password");
 
-		String uname= (String) usercomp.getValue();
-		String pass= (String) passcomp.getValue();
+		if( !( loginBackEnd( (String)(usercomp.getValue()), (String)(passcomp.getValue()) ) ) ) return;//return if login fails
 
+		try {
+			loggedout=false;
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/** loginBackEnd
+	 *  Attempts a user login by:
+	 *    Checking if username is entered then
+	 *    Checking if the password matches
+	 *  Returns false if the passwords don't match or if no username
+	 *  was entered in submission.
+	 *  
+	 *  @throws SQLException
+	 *  
+	 *  @param uname - plain text of user's username
+	 *  @param pass  - plain text of user's password
+	 *  
+	 *  @return      - a boolean value indicating login success
+	 */
+	private boolean loginBackEnd( String uname, String pass ) throws SQLException {
 		ResultSet result=userDao.login(uname, pass);
 
 		if(!result.next()){
 			System.out.println("NO USERNAME");
-			return;
+			return false;
 		}
 		else {  
 
@@ -165,23 +205,13 @@ public class base {
 				if(username.equals("admin")){
 					admin=true;
 				}
+				return true;
 			}
 			else
 			{
 				System.out.println("Password does not match");
-				return;
+				return false;
 			}
-		}
-
-		try {
-
-
-			loggedout=false;
-			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -277,7 +307,7 @@ public class base {
 
 
 		try{
-
+//replace this chunk with the to-be-made makeSalt function
 			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
 			String passHashStr = new String(passHash, "UTF-8");
 			//Create Salt
@@ -287,6 +317,7 @@ public class base {
 			newSalt=new String(salt);
 			//Hash password plus salt with pbkdf2
 
+//replace this chunk with the to-be-made hashPass function
 			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
 			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
 			newPass= new String(passwordToStore);
