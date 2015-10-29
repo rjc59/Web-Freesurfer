@@ -1,8 +1,8 @@
 #CONVENTIONS
 ##Style
-ClassName - Snake case
-functionName - Camel case
-variablename - Lower case
+ClassName
+functionName
+variable_name
 
 ##Naming
 Please be as verbose as necessary in naming:
