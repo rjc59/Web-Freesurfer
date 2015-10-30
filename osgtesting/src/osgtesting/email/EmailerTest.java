@@ -23,7 +23,7 @@ public class EmailerTest {
 	public void testEmailerSendValid() {
 		boolean works = true;
 		Emailer test = new Emailer();
-		test.To = "opensciencegridtesting@gmail.com";
+		test.to = "opensciencegridtesting@gmail.com";
 		
 		try {
 			test.send();

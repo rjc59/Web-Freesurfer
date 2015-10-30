@@ -9,11 +9,12 @@ import java.lang.NullPointerException;
 import javax.mail.PasswordAuthentication;
 
 public class Emailer {
-	private String to;
-	private String subject = "default";
-	private String message = "Hello world!";
-	private final String from = "opensciencegridtesting@gmail.com";
-	private MimeMessage email;
+	public String to;
+	public String subject = "default";
+	public String message = "Hello world!";
+	public final String from = "opensciencegridtesting@gmail.com";
+	public MimeMessage email;
+	
 	public Emailer()
 	{
 

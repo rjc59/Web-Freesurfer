@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.application.FacesMessage;
@@ -26,12 +25,7 @@ import javax.faces.event.ComponentSystemEvent;
 
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
-<<<<<<< Upstream, based on origin/master
 import osgtesting.dao.UserDao;
-=======
-import osgtesting.dao.userDao;
-import osgtesting.email.JWT;
->>>>>>> 147e855 Fixed classpath to point to lib, added JWT generation 
 
 public class base {
 	private String message=new String("Intro message");
@@ -54,7 +48,6 @@ public class base {
 	int derivedKeyLength = 64;
 	SecretKeyFactory f;
 	int iterations = 1000;
-	private String token = "";
 
 	public base() throws NoSuchAlgorithmException{
 		digest = MessageDigest.getInstance("SHA-256");
@@ -92,7 +85,6 @@ public class base {
 		UIInput emailcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:email");
 		UIInput instcomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:inst");
 		UIInput phonecomp = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("accountform:phoneNumber");
-<<<<<<< Upstream, based on origin/master
 		
 		UserDTO newAcct = new UserDTO( ((String) usercomp.getValue()), 
 									   "",
@@ -104,55 +96,6 @@ public class base {
 									   "" );
 		
 		newAccountBackEnd( newAcct, (String)passcomp.getValue() );
-=======
-
-		String passText=(String)passcomp.getValue();
-		String newPass=null,newSalt=null;
-		
-		//Variables for json web tokens
-		String id = (String)usercomp.getValue();
-		String issuer = "webfreesurfer";
-		String subject = (String)emailcomp.getValue();
-		long expirationtime = 86400000;
-
-		try{
-
-			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
-			String passHashStr = new String(passHash, "UTF-8");
-			//Create Salt
-			//Get current time
-			Date creationTime = new Date();
-			byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
-			newSalt=new String(salt);
-			//Hash password plus salt with pbkdf2
-
-			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
-
-			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
-			JWT jwt = new JWT(passwordToStore); //initialize jwt creator with secret key byte array
-			token = jwt.getJWT(id, issuer, subject, expirationtime); //sets the variable "token" to the json token
-			jwt.verifyJWT(token); // verify token (for testing purposes, remove later)
-			newPass= new String(passwordToStore);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-		System.out.println(newPass);
-		System.out.println(newSalt);
-
-
-		UserDTO newAcct = new UserDTO(((String) usercomp.getValue()),
-				newPass,
-				((String) namecomp.getValue()),
-				((String) surnamecomp.getValue()),
-				((String) emailcomp.getValue()),
-				((String) instcomp.getValue()),
-				((String) phonecomp.getValue()),
-				newSalt);
-
-		userDao.Write(newAcct);
-
->>>>>>> 147e855 Fixed classpath to point to lib, added JWT generation 
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
@@ -178,7 +121,7 @@ public class base {
 	private void newAccountBackEnd( UserDTO newAcct, String passText ) throws SQLException {
 		String newPass=null, newSalt=null;
 		try{
-//take from here
+			//take from here
 			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
 			String passHashStr = new String(passHash, "UTF-8");
 			//Create Salt
@@ -187,13 +130,13 @@ public class base {
 			byte[] salt = digest.digest(creationTime.toString().getBytes("UTF-8"));
 			newSalt=new String(salt);
 			//Hash password plus salt with pbkdf2
-//to here into a makeSalt function
+			//to here into a makeSalt function
 			
-//take from here
+			//take from here
 			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
 			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
 			newPass= new String(passwordToStore);
-//to here into a hashPass function
+			//to here into a hashPass function
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -364,7 +307,7 @@ public class base {
 
 
 		try{
-//replace this chunk with the to-be-made makeSalt function
+			//replace this chunk with the to-be-made makeSalt function
 			byte[] passHash = digest.digest(passText.getBytes("UTF-8"));
 			String passHashStr = new String(passHash, "UTF-8");
 			//Create Salt
@@ -374,7 +317,7 @@ public class base {
 			newSalt=new String(salt);
 			//Hash password plus salt with pbkdf2
 
-//replace this chunk with the to-be-made hashPass function
+			//replace this chunk with the to-be-made hashPass function
 			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
 			byte[] passwordToStore = f.generateSecret(spec).getEncoded();
 			newPass= new String(passwordToStore);
@@ -538,6 +481,7 @@ public class base {
 		}
 	}
 
+
 	/**
 	 * Compares the entered password with the encoded one contained
 	 * within the db
@@ -547,158 +491,158 @@ public class base {
 	 * @param checkpass Plain string of entered password
 	 * @return true if passwords match, false otherwise
 	 */
-public boolean checkPassword(String retpass, String retsalt,String checkpass){
-	byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
-	try{ 
-		String attemptText=checkpass;
-		oldsalt=retsalt.getBytes();
-		oldpass=retpass.getBytes();
-		byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
-		String attemptHashStr = new String(attemptHash, "UTF-8");
-		KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
-		attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
+	public boolean checkPassword(String retpass, String retsalt,String checkpass){
+		byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
+		try{ 
+			String attemptText=checkpass;
+			oldsalt=retsalt.getBytes();
+			oldpass=retpass.getBytes();
+			byte[] attemptHash = digest.digest(attemptText.getBytes("UTF-8"));
+			String attemptHashStr = new String(attemptHash, "UTF-8");
+			KeySpec attemptSpec = new PBEKeySpec(attemptHashStr.toCharArray(), oldsalt, iterations, derivedKeyLength);
+			attemptToCheck = f.generateSecret(attemptSpec).getEncoded();
 
 
-	}catch(Exception e){
-		e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return Arrays.equals(oldpass, attemptToCheck);
 	}
-	return Arrays.equals(oldpass, attemptToCheck);
-}
 
-public UserDTO getCurrentuser() {
-	return currentuser;
-}
-
-
-public void setCurrentuser(UserDTO currentuser) {
-	this.currentuser = currentuser;
-}
-
-public String getMessage() {
-	return message;
-}
-
-public void setMessage(String message) {
-	this.message = message;
-}
-
-
-public String getName() {
-	return name;
-}
-
-
-public void setName(String name) {
-	this.name = name;
-}
-
-
-public List<JobsDTO> getJobList() {
-	return jobList;
-}
-
-
-public void setJobList(List<JobsDTO> jobList) {
-	this.jobList = jobList;
-}
-
-
-public String getSurname() {
-	return surname;
-}
-
-
-public void setSurname(String surname) {
-	this.surname = surname;
-}
-
-
-public String getEmail() {
-	return email;
-}
-
-
-public void setEmail(String email) {
-	this.email = email;
-}
-
-
-public String getPhone() {
-	return phone;
-}
-
-
-public void setPhone(String phone) {
-	this.phone = phone;
-}
-
-
-public boolean isLoggedout() {
-	return loggedout;
-}
-
-
-public void setLoggedout(boolean loggedout) {
-	this.loggedout = loggedout;
-}
-
-
-public String getUsername() {
-	return username;
-}
-
-
-public void setUsername(String username) {
-	this.username = username;
-}
-
-
-public String getPass() {
-	return pass;
-}
-
-
-public void setPass(String pass) {
-	this.pass = pass;
-}
-
-
-public String getInst() {
-	return inst;
-}
-
-
-public void setInst(String inst) {
-	this.inst = inst;
-}
-
-
-
-
-public boolean isAdmin() {
-	return admin;
-}
-
-
-
-
-public void setAdmin(boolean admin) {
-	this.admin = admin;
-}
-
-
-
-
-public List<UserDTO> getAdminList() {
-	return adminList;
-}
-
-
-
-
-public void setAdminList(List<UserDTO> adminList) {
-	this.adminList = adminList;
-}
-
-
+	public UserDTO getCurrentuser() {
+		return currentuser;
+	}
+	
+	
+	public void setCurrentuser(UserDTO currentuser) {
+		this.currentuser = currentuser;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	public List<JobsDTO> getJobList() {
+		return jobList;
+	}
+	
+	
+	public void setJobList(List<JobsDTO> jobList) {
+		this.jobList = jobList;
+	}
+	
+	
+	public String getSurname() {
+		return surname;
+	}
+	
+	
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
+	public String getPhone() {
+		return phone;
+	}
+	
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	
+	public boolean isLoggedout() {
+		return loggedout;
+	}
+	
+	
+	public void setLoggedout(boolean loggedout) {
+		this.loggedout = loggedout;
+	}
+	
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	
+	public String getPass() {
+		return pass;
+	}
+	
+	
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	
+	
+	public String getInst() {
+		return inst;
+	}
+	
+	
+	public void setInst(String inst) {
+		this.inst = inst;
+	}
+	
+	
+	
+	
+	public boolean isAdmin() {
+		return admin;
+	}
+	
+	
+	
+	
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+	
+	
+	
+	
+	public List<UserDTO> getAdminList() {
+		return adminList;
+	}
+	
+	
+	
+	
+	public void setAdminList(List<UserDTO> adminList) {
+		this.adminList = adminList;
+	}
+	
+	
 }
