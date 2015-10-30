@@ -8,7 +8,6 @@ import java.security.Key;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import java.util.Date;
 
 public class JWT {
