@@ -52,11 +52,6 @@ public class base {
 	public base() throws NoSuchAlgorithmException{
 		digest = MessageDigest.getInstance("SHA-256");
 		f=SecretKeyFactory.getInstance(algorithm);
-		jobList.add(new JobsDTO("11eef764","Mr. Smith","Complete","9-28-2015 11:15"));
-		jobList.add(new JobsDTO("129j3f64","Mrs. Smith","Error","9-26-2015 12:13"));
-		jobList.add(new JobsDTO("3fj89932","Mr. Pitt","In progress","9-23-2015 07:35"));
-		jobList.add(new JobsDTO("i344j90f","Mr. Stanford","Started","9-25-2015 18:25"));
-
 
 	}
 
@@ -69,7 +64,7 @@ public class base {
 		String strDate=df.format(date);
 		String status="Uploaded";
 		String id=UUID.randomUUID().toString();
-		jobList.add(new JobsDTO(id,name,status,strDate));
+		//jobList.add(new JobsDTO(id,name,status,strDate));
 	}
 	
 	/**

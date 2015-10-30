@@ -9,7 +9,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import java.io.IOException;
 public class JobsDao {
 	private Connection con;
 	private String dbURL;
@@ -24,7 +23,7 @@ public class JobsDao {
 		hasher = new CryptoToolbox();
 		timeStamp = Long.toString((System.currentTimeMillis() / 1000L));
 		
-		byte[] tokenBytes = hasher.HashSHA256(user.getSalt().concat(timeStamp).getBytes());
+		byte[] tokenBytes = hasher.hashSHA256(user.getSalt().concat(timeStamp).getBytes());
 		token = new String(tokenBytes);
 		try{
 			DriverManager.registerDriver(new org.postgresql.Driver());
