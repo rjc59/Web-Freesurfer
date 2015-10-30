@@ -9,6 +9,7 @@ public class UserDTO {
 	private String inst;
 	private String phone;
 	private String salt;
+	private String id;
 	
 	public UserDTO(String userName, String pass, String name, String surname,
 			String email, String inst, String phone,String salt) {
@@ -23,6 +24,14 @@ public class UserDTO {
 		this.salt=salt;
 	}
 	public UserDTO() {
+	}
+	public String getId()
+	{
+		return id;
+	}
+	public void setId(String id)
+	{
+		this.id = id;
 	}
 	public String getUserName() {
 		return userName;

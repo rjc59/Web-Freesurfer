@@ -13,7 +13,7 @@ import java.io.IOException;
 public class JobsDao {
 	private Connection con;
 	private String dbURL;
-	private String osgConnectURL;
+	private String osg_interface_url;
 	private OkHttpClient client;
 	private CryptoToolbox hasher;
 	private String timeStamp;
@@ -38,21 +38,29 @@ public class JobsDao {
 	}
 	public void Write(JobsDTO job){
 		//create request body
-		RequestBody requestBody = new MultipartBuilder().type(MultipartBuilder.FORM)
-			.addFormDataPart("userid", job.getAuthor().getId())
-			.addFormDataPart("token", token)
-			//.addFormDataPart("filename", job.getFileName())
-			.addFormDataPart("singlecore", "1")
-			.addFormDataPart("jobname", jobname)
-			.addFormDataPart("jobfile", filename, RequestBody.create(MediaType.parse("application/plain", job.GetFile()))
-			.build();
+		RequestBody file_body = RequestBody.create(MediaType.parse("application/plain"), job.getJobFile());
+		RequestBody request_body = new MultipartBuilder().type(MultipartBuilder.FORM)
+				.addFormDataPart("userid", job.getAuthor().getId())
+				.addFormDataPart("token", token)
+				.addFormDataPart("singlecore", "1")
+				.addFormDataPart("jobname", job.getJobFile().getName())
+				.addFormDataPart("jobfile", job.getJobFile().getName(), file_body)
+				.build();
 		//create post request
-		Request request = new Request.Builder()
-			.url(osgConnectURL+ "/freesurfer/jobs")
-			.post(body)
+		String request_url = osg_interface_url+ "/freesurfer/jobs";
+		Request http_request = new Request.Builder()
+			.url(request_url)
+			.post(request_body)
 			.build();
 		//make RESTful calls to OSGConnect freesurfer_interface
-		
+		Response http_response;
+		try{
+			http_response = client.newCall(http_request).execute();	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
 

@@ -3,13 +3,13 @@ package osgtesting.Model;
 import java.util.*;
 import osgtesting.Util.CryptoToolbox;
 import osgtesting.Model.UserDTO;
+import java.io.File;
 public class JobsDTO{
 	private String id;
 	private UserDTO author;
 	private String status;
 	private String updated;
-	private String timestamp;
-	private String token;
+	private File job_file;
 	
 	
 	public JobsDTO(String id, UserDTO author, String status, String updated){
@@ -19,12 +19,17 @@ public class JobsDTO{
 		this.updated=updated;
 	}
 
-
+	public File getJobFile(){
+		return job_file;
+	}
+	
+	public void setJobFile(File job_file){
+		this.job_file=job_file;
+	}
+	
 	public String getId() {
 		return id;
 	}
-
-
 
 
 	public void setId(String id) {
@@ -32,13 +37,9 @@ public class JobsDTO{
 	}
 
 
-
-
 	public UserDTO getAuthor() {
 		return author;
 	}
-
-
 
 
 	public void setAuthor(UserDTO author) {
@@ -46,13 +47,9 @@ public class JobsDTO{
 	}
 
 
-
-
 	public String getStatus() {
 		return status;
 	}
-
-
 
 
 	public void setStatus(String status) {
@@ -60,20 +57,12 @@ public class JobsDTO{
 	}
 
 
-
-
 	public String getUpdated() {
 		return updated;
 	}
 
 
-
-
 	public void setUpdated(String updated) {
 		this.updated = updated;
-	}
-	
-	
-	
-	
+	}	
 }

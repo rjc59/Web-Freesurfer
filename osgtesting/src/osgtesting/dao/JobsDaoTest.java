@@ -4,26 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import junit.framework.Assert;
+
 public class JobsDaoTest {
 
 	@Test
 	public void testWrite() {
-		
-	}
-	@Test
-	public void test(){
 
-	}
-	@Test
-	public void test(){
-		
-	}
-	@Test
-	public void test(){
-		
-	}
-	@Test
-	public void test(){
-		
+		assertTrue(true);
 	}
 }

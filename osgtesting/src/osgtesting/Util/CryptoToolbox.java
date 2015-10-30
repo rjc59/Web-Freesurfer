@@ -10,33 +10,33 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class CryptoToolbox {
 	private String algorithm = "PBKDF2WithHmacSHA1";
-	private int derivedKeyLength = 64;
-	private SecretKeyFactory f;
+	private int derived_key_length = 64;
+	private SecretKeyFactory factory;
 	private MessageDigest digest;
 	private int iterations = 1000;
 	public CryptoToolbox()
 	{
 		try{
 			digest = MessageDigest.getInstance("SHA-256");
-			f=SecretKeyFactory.getInstance(algorithm);	
+			factory=SecretKeyFactory.getInstance(algorithm);	
 		}
 		catch(NoSuchAlgorithmException e)
 		{
-			System.err.println("Bad Algorithm, Check your JDK version > 1.8");
+			System.err.println("Bad Algorithm, Check your JDK version >= 1.7");
 			e.printStackTrace();
 		}
 		
 	}
-	public byte[] HashSHA256(byte[] toHash)
+	public byte[] hashSHA256(byte[] toHash)
 	{
 		return digest.digest(toHash);
 	}
-	public byte[] PasswordHash(String passText, byte[]salt)
+	public byte[] passwordHash(String password_text, byte[]salt)
 	{
 		try{
-			String passHashStr = new String(HashSHA256(passText.getBytes("UTF-8")));
-			KeySpec spec = new PBEKeySpec(passHashStr.toCharArray(), salt, iterations, derivedKeyLength);
-			return f.generateSecret(spec).getEncoded();
+			String password_hash_str = new String(hashSHA256(password_text.getBytes("UTF-8")));
+			KeySpec spec = new PBEKeySpec(password_hash_str.toCharArray(), salt, iterations, derived_key_length);
+			return factory.generateSecret(spec).getEncoded();
 		}
 		catch(Exception e)
 		{
@@ -45,18 +45,17 @@ public class CryptoToolbox {
 		}
 		
 	}
-	public boolean CheckPassword(String retpass, String retsalt,String checkpass){
-		byte[] oldsalt=null,oldpass=null,attemptToCheck=null;
+	public boolean checkPassword(String retpass, String retsalt,String attempt_text){
+		byte[] old_salt=null,oldpass=null,attempt_to_check=null;
 		try{
-			String attemptText=checkpass;
-			oldsalt=retsalt.getBytes();
+			old_salt=retsalt.getBytes();
 			oldpass=retpass.getBytes();
-			attemptToCheck = PasswordHash(attemptText, oldsalt);
+			attempt_to_check = passwordHash(attempt_text, old_salt);
 
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return Arrays.equals(oldpass, attemptToCheck);
+		return Arrays.equals(oldpass, attempt_to_check);
 	}
 
 }
