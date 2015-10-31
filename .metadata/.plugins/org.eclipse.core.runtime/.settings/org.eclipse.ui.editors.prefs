@@ -1,2 +1,9 @@
+AbstractTextEditor.Color.Background=48,48,48
+AbstractTextEditor.Color.Background.SystemDefault=false
+AbstractTextEditor.Color.FindScope=75,75,75
+AbstractTextEditor.Color.SelectionForeground.SystemDefault=false
+currentLineColor=95,95,95
 eclipse.preferences.version=1
+lineNumberRuler=true
 overviewRuler_migration=migrated_3.1
+printMarginColor=65,65,65

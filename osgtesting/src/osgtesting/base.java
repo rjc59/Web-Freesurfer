@@ -26,6 +26,7 @@ import javax.faces.event.ComponentSystemEvent;
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.dao.UserDao;
+import osgtesting.Util.CryptoToolbox;
 
 public class base {
 	private String message=new String("Intro message");
@@ -404,7 +405,7 @@ public class base {
 	}
 
 	/**
-	 * Form checking of reset password page. Confrims current password.
+	 * Form checking of reset password page. Confirms current password.
 	 * Error checks new passwords
 	 * 
 	 * @param e Event triggered post validation of inputs.
