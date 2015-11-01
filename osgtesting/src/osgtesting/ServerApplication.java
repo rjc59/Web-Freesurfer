@@ -4,9 +4,14 @@ import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.crypto.SecretKeyFactory;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
 
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
@@ -15,25 +20,8 @@ import osgtesting.dao.UserDao;
 
 public class ServerApplication {
 	//global declarations
-	private String message      = new String("Intro message");
-	private String username     = new String("");
-	private String password     = new String("");
-	private String name         = new String("");
-	private String surname      = new String("");
-	private String institution  = new String("");
-	private String email        = new String("");
-	private String phone_number = new String("");
-	
-	private List<JobsDTO> job_list   = new ArrayList<JobsDTO>();
-	private List<UserDTO> admin_list = new ArrayList<UserDTO>();
-	
 	private DateFormat date    = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private ServerLogic site = new ServerLogic();
-	
-	private boolean logged_out   = true;
-	private boolean admin        = false;
-	
-	private UserDTO currentuser;
 	
 	//functions
 	public ServerApplication () {
@@ -41,14 +29,20 @@ public class ServerApplication {
 	}
 	
 	public void login() {
-		if( site.loginLogic() ) {
-			System.out.println("Password matches");	 
-			message="Welcome "+uname;
-			username=uname;
-			if(username.equals("admin")){
-				admin=true;
-			}
+		UIInput username_component = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:username");
+		UIInput password_component = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("mainform:password");
+		if( site.login((String)username_component.getValue(), (String)password_component.getValue()) ) {
+			System.out.println("Password matches");
+			site.setMessage("Welcome "+ site.getUsername());
 		}
 	}
 	
+	public void upload(){
+		Calendar c = Calendar.getInstance();
+		Date date=c.getTime();
+		String strDate=df.format(date);
+		String status="Uploaded";
+		String id=UUID.randomUUID().toString();
+		//jobList.add(new JobsDTO(id,name,status,strDate));
+	}
 }
