@@ -143,7 +143,7 @@ public class base {
 		newAcct.setPass(newPass);
 		newAcct.setSalt(newSalt);
 		
-		userDao.Write(newAcct);
+		userDao.write(newAcct);
 	}
 
 	

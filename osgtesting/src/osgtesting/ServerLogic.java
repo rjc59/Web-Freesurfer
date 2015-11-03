@@ -37,7 +37,7 @@ public class ServerLogic {
 		
 	}
 	
-	public boolean login( String form_username, String form_password ) {0
+	public boolean login( String form_username, String form_password ) {
 		ResultSet result = userDao.login(form_username, form_password);
 		try {
 			if(!result.next()){
@@ -91,16 +91,17 @@ public class ServerLogic {
 		String new_salt = new String(salt);
 		
 		byte[] password_to_store = crypto.passwordHash( password_text, salt );
-		String new_password    = new String(password_to_store);
+		String new_password      = new String(password_to_store);
 
 		System.out.println(new_password);
 		System.out.println(new_salt);
 
 		new_account.setPass(new_password);
-		new_account.setSalt(new_password);
+		new_account.setSalt(new_salt);
 		
 		try {
-			userDao.Write(new_account);
+			userDao.write(new_account);
+			userDao.read();
 			return true;
 		} catch ( Exception e ) {
 			e.printStackTrace();

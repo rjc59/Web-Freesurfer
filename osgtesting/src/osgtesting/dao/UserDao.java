@@ -69,7 +69,7 @@ public class UserDao {
 	 * 
 	 * @param account DTO created by obtaining information from input boxes
 	 */
-	public void Write(UserDTO account) throws SQLException {
+	public void write(UserDTO account) throws SQLException {
 		PreparedStatement pst;
 		pst = con.prepareStatement("INSERT INTO freesurfer_interface.users (username,first_name,last_name,email,institution,phone,password,salt)"
 				+ " Values(?,?,?,?,?,?,?,?)");
