@@ -188,6 +188,19 @@ public class ServerLogic {
 		System.out.println(password_to_check.toString());
 		return Arrays.equals(return_password.getBytes(), password_to_check);
 	}
+	
+	public boolean validatePassword( String form_username ) {
+		ResultSet edit = userDao.edit( form_username );
+		try {
+			if ( edit.next() ) {
+				return true;
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 
 	public String getMessage() {
 		return message;

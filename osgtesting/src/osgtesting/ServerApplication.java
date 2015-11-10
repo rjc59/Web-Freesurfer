@@ -117,70 +117,68 @@ public class ServerApplication {
 	}
 	
 	
-	/**********************************************************************************/
-	/**                            Questionable Contents                             **/
-	/**********************************************************************************/
-	public void validatePass(ComponentSystemEvent e) throws SQLException{
+	public void validatePass(ComponentSystemEvent e) {
 
-		FacesContext fc=FacesContext.getCurrentInstance();
-		UIComponent comp= e.getComponent();
+		FacesContext faces_context=FacesContext.getCurrentInstance();
+		UIComponent page_component= e.getComponent();
 
-		UIInput uname=(UIInput) comp.findComponent("userName");
-		String username=(String) uname.getLocalValue();
-		String unameId=uname.getClientId();
+		UIInput username_input = (UIInput) page_component.findComponent("userName");
+		String username        = (String) username_input.getLocalValue();
+		String username_id     = username_input.getClientId();
 
-		UIInput passIn=(UIInput) comp.findComponent("firstpass");
-		String pass=passIn.getLocalValue() == null ? ""
-				: passIn.getLocalValue().toString();
-		String passID=passIn.getClientId();
+		UIInput password_input = (UIInput) page_component.findComponent("firstpass");
+		String password        = password_input.getLocalValue() == null ? ""
+					           : password_input.getLocalValue().toString();
+		String password_id     = password_input.getClientId();
+		
+		UIInput password_input_2 = (UIInput) page_component.findComponent("secondpass");
+		String password_2		 = password_input_2.getLocalValue() == null ? ""
+								 : password_input_2.getLocalValue().toString();
 
-		UIInput passIncon=(UIInput) comp.findComponent("secondpass");
-		String conpass=passIncon.getLocalValue() == null ? ""
-				: passIncon.getLocalValue().toString();
-
-		if(pass.isEmpty() || conpass.isEmpty())
+		if(password.isEmpty() || password_2.isEmpty())
 			return;
 
-		ResultSet rs = userDao.edit(username);
-		if(rs.next()){
-			FacesMessage msg = new FacesMessage("Username already exists");
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(unameId, msg);
-			fc.renderResponse();
+		if( site.validatePassword( username ) ) {
+			FacesMessage message = new FacesMessage("Username already exists");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			faces_context.addMessage(username_id, message);
+			faces_context.renderResponse();
 		}
 
-		if(pass.length()<6){
-			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(passID, msg);
-			fc.renderResponse();
+		if(password.length()<6){
+			FacesMessage message = new FacesMessage("Password must be atleast 6 characters");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			faces_context.addMessage(password_id, message);
+			faces_context.renderResponse();
 		}
 
-		if(!pass.equals(conpass)){
-			FacesMessage msg = new FacesMessage("Passwords must match");
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(passID, msg);
-			fc.renderResponse();
+		if(!password.equals(password_2)){
+			FacesMessage message = new FacesMessage("Passwords must match");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			faces_context.addMessage(password_id, message);
+			faces_context.renderResponse();
 		}
 
 	}
 	
+	
+	//gotta finish fixing this
 	public void revalidatePass(ComponentSystemEvent e){
 
-		FacesContext fc=FacesContext.getCurrentInstance();
-		UIComponent comp= e.getComponent();
+		FacesContext faces_context=FacesContext.getCurrentInstance();
+		UIComponent page_component= e.getComponent();
 
-		UIInput passOld=(UIInput) comp.findComponent("oldPass");
+		UIInput passOld=(UIInput) page_component.findComponent("oldPass");
 		String oldPass=passOld.getLocalValue() == null ? ""
 				: passOld.getLocalValue().toString();
 		String oldpassID=passOld.getClientId();
 
-		UIInput passIn=(UIInput) comp.findComponent("newPass");
+		UIInput passIn=(UIInput) page_component.findComponent("newPass");
 		String pass=passIn.getLocalValue() == null ? ""
 				: passIn.getLocalValue().toString();
 		String passID=passIn.getClientId();
 
-		UIInput passIncon=(UIInput) comp.findComponent("conPass");
+		UIInput passIncon=(UIInput) page_component.findComponent("conPass");
 		String conpass=passIncon.getLocalValue() == null ? ""
 				: passIncon.getLocalValue().toString();
 
@@ -191,22 +189,22 @@ public class ServerApplication {
 			System.out.println("INCORRECT PASSWORD");
 			FacesMessage msg = new FacesMessage("Incorrect Password");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(oldpassID, msg);
-			fc.renderResponse();
+			faces_context.addMessage(oldpassID, msg);
+			faces_context.renderResponse();
 		}
 
 		if(pass.length()<6){
 			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(passID, msg);
-			fc.renderResponse();
+			faces_context.addMessage(passID, msg);
+			faces_context.renderResponse();
 		}
 
 		if(!pass.equals(conpass)){
 			FacesMessage msg = new FacesMessage("Passwords must match");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(passID, msg);
-			fc.renderResponse();
+			faces_context.addMessage(passID, msg);
+			faces_context.renderResponse();
 		}
 
 	}
