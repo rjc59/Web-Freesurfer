@@ -69,25 +69,20 @@ public class UserDao {
 	 * 
 	 * @param account DTO created by obtaining information from input boxes
 	 */
-	public void Write(UserDTO account){
+	public void write(UserDTO account) throws SQLException {
 		PreparedStatement pst;
-		try {
-			pst = con.prepareStatement("INSERT INTO freesurfer_interface.users (username,first_name,last_name,email,institution,phone,password,salt)"
-					+ " Values(?,?,?,?,?,?,?,?)");
-			pst.setString(1, account.getUserName());
-			pst.setString(2, account.getName());
-			pst.setString(3, account.getSurname());
-			pst.setString(4, account.getEmail());
-			pst.setString(5, account.getInst());
-			pst.setString(6, account.getPhone());
-			pst.setString(7, account.getPass());
-			pst.setString(8, account.getSalt());
-			
-			pst.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		pst = con.prepareStatement("INSERT INTO freesurfer_interface.users (username,first_name,last_name,email,institution,phone,password,salt)"
+				+ " Values(?,?,?,?,?,?,?,?)");
+		pst.setString(1, account.getUserName());
+		pst.setString(2, account.getName());
+		pst.setString(3, account.getSurname());
+		pst.setString(4, account.getEmail());
+		pst.setString(5, account.getInst());
+		pst.setString(6, account.getPhone());
+		pst.setString(7, account.getPass());
+		pst.setString(8, account.getSalt());
+		
+		pst.execute();
 	}
 
 	/**
