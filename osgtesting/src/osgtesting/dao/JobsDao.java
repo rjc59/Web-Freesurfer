@@ -40,7 +40,7 @@ public class JobsDao {
 		}
 		
 		freesurfer_interface = "localhost";
-		port = 8083;
+		port = 8085;
 	}
 	/** GetJobs
 	 *  Takes a UserDTO and returns the a list of all jobs
@@ -61,6 +61,7 @@ public class JobsDao {
 				.addQueryParameter("token", token)
 				.build();
 		//create post request
+		System.err.println("URL: "+ request_url);
 		Request http_request = new Request.Builder()
 			.url(request_url)
 			.get()
@@ -111,6 +112,7 @@ public class JobsDao {
 				.addQueryParameter("jobname", job_file.getName())
 				.build();
 		//create post request
+		System.err.println("URL: "+ request_url);
 		Request http_request = new Request.Builder()
 			.url(request_url)
 			.post(request_body)
