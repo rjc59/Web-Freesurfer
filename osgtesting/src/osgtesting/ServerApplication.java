@@ -148,45 +148,44 @@ public class ServerApplication {
 	//gotta finish fixing this
 	public void revalidatePass(ComponentSystemEvent e){
 
-		FacesContext faces_context=FacesContext.getCurrentInstance();
-		UIComponent page_component= e.getComponent();
+		FacesContext faces_context = FacesContext.getCurrentInstance();
+		UIComponent page_component = e.getComponent();
 
-		UIInput passOld=(UIInput) page_component.findComponent("oldPass");
-		String oldPass=passOld.getLocalValue() == null ? ""
-				: passOld.getLocalValue().toString();
-		String oldpassID=passOld.getClientId();
+		UIInput old_password_input = (UIInput) page_component.findComponent("oldPass");
+		String  old_password       = old_password_input.getLocalValue() == null ? ""
+				                   : old_password_input.getLocalValue().toString();
+		String  old_password_id    = old_password_input.getClientId();
+		
+		UIInput password_input     = (UIInput) page_component.findComponent("newPass");
+		String  password           = password_input.getLocalValue() == null ? ""
+					               : password_input.getLocalValue().toString();
+		String  password_id        = password_input.getClientId();
+		
+		UIInput password_input_2   = (UIInput) page_component.findComponent("conPass");
+		String  password_2         = password_input_2.getLocalValue() == null ? ""
+								   : password_input_2.getLocalValue().toString();
 
-		UIInput passIn=(UIInput) page_component.findComponent("newPass");
-		String pass=passIn.getLocalValue() == null ? ""
-				: passIn.getLocalValue().toString();
-		String passID=passIn.getClientId();
-
-		UIInput passIncon=(UIInput) page_component.findComponent("conPass");
-		String conpass=passIncon.getLocalValue() == null ? ""
-				: passIncon.getLocalValue().toString();
-
-		if(pass.isEmpty() || conpass.isEmpty() ||oldPass.isEmpty())
+		if( password.isEmpty() || password_2.isEmpty() || old_password.isEmpty() )
 			return;
 
-		if(!checkPassword(currentuser.getPass().trim(),currentuser.getSalt().trim(),oldPass)){
+		if(!checkPassword(currentuser.getPass().trim(),currentuser.getSalt().trim(),old_password)){
 			System.out.println("INCORRECT PASSWORD");
 			FacesMessage msg = new FacesMessage("Incorrect Password");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(oldpassID, msg);
+			faces_context.addMessage(old_password_id, msg);
 			faces_context.renderResponse();
 		}
 
-		if(pass.length()<6){
+		if(password.length()<6){
 			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(passID, msg);
+			faces_context.addMessage(password_id, msg);
 			faces_context.renderResponse();
 		}
 
-		if(!pass.equals(conpass)){
 			FacesMessage msg = new FacesMessage("Passwords must match");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(passID, msg);
+			faces_context.addMessage(password_id, msg);
 			faces_context.renderResponse();
 		}
 

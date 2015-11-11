@@ -2,6 +2,7 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="osgtesting.Util.CryptoToolbox"/>
-<fullyQualifiedTypeName name="osgtesting.dao.UserDao"/>
 <fullyQualifiedTypeName name="javax.faces.component.UIInput"/>
+<fullyQualifiedTypeName name="osgtesting.dao.UserDao"/>
+<fullyQualifiedTypeName name="javax.faces.context.FacesContext"/>
 </qualifiedTypeNameHistroy>
