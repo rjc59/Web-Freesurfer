@@ -117,48 +117,31 @@ public class ServerApplication {
 	}
 	
 	
-	public void validatePass(ComponentSystemEvent e) {
+	public void validatePassword(ComponentSystemEvent e) {
 
-		FacesContext faces_context=FacesContext.getCurrentInstance();
-		UIComponent page_component= e.getComponent();
+		FacesContext faces_context = FacesContext.getCurrentInstance();
+		UIComponent page_component = e.getComponent();
 
-		UIInput username_input = (UIInput) page_component.findComponent("userName");
-		String username        = (String) username_input.getLocalValue();
-		String username_id     = username_input.getClientId();
+		UIInput username_input     = (UIInput) page_component.findComponent("userName");
+		String username            = (String) username_input.getLocalValue();
+		String username_id         = username_input.getClientId();
 
-		UIInput password_input = (UIInput) page_component.findComponent("firstpass");
-		String password        = password_input.getLocalValue() == null ? ""
-					           : password_input.getLocalValue().toString();
-		String password_id     = password_input.getClientId();
+		UIInput password_input     = (UIInput) page_component.findComponent("firstpass");
+		String password            = password_input.getLocalValue() == null ? ""
+					               : password_input.getLocalValue().toString();
+		String password_id         = password_input.getClientId();
 		
-		UIInput password_input_2 = (UIInput) page_component.findComponent("secondpass");
-		String password_2		 = password_input_2.getLocalValue() == null ? ""
-								 : password_input_2.getLocalValue().toString();
+		UIInput password_input_2   = (UIInput) page_component.findComponent("secondpass");
+		String password_2		   = password_input_2.getLocalValue() == null ? ""
+								   : password_input_2.getLocalValue().toString();
 
 		if(password.isEmpty() || password_2.isEmpty())
 			return;
 
-		if( site.validatePassword( username ) ) {
-			FacesMessage message = new FacesMessage("Username already exists");
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(username_id, message);
-			faces_context.renderResponse();
+		if( !( site.validatePassword( faces_context, username,   username_id,
+									  password,      password_2, password_id ) ) ) {
+			System.err.println( "ERROR:\n\tCould not validate account password." );
 		}
-
-		if(password.length()<6){
-			FacesMessage message = new FacesMessage("Password must be atleast 6 characters");
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(password_id, message);
-			faces_context.renderResponse();
-		}
-
-		if(!password.equals(password_2)){
-			FacesMessage message = new FacesMessage("Passwords must match");
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(password_id, message);
-			faces_context.renderResponse();
-		}
-
 	}
 	
 	

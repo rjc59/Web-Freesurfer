@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
-import osgtesting.dao.UserDao;
+import osgtesting.dao.UserDAO;
 
 public class ServerLogic {
 	//Global Declarations
@@ -28,7 +31,7 @@ public class ServerLogic {
 	private UserDTO current_user;
 	
 	private CryptoToolbox crypto = new CryptoToolbox();
-	private UserDao userDao      = new UserDao();
+	private UserDAO userDao      = new UserDAO();
 	
 	private List<JobsDTO> job_list   = new ArrayList<JobsDTO>();
 	private List<UserDTO> admin_list = new ArrayList<UserDTO>();
@@ -189,7 +192,71 @@ public class ServerLogic {
 		return Arrays.equals(return_password.getBytes(), password_to_check);
 	}
 	
-	public boolean validatePassword( String form_username ) {
+	public boolean validatePassword( FacesContext faces_context, String username, String username_id, String password, String password_2, String password_id ) {
+		boolean return_value = true;
+		
+		if( !( checkUsernameAvailability( username, username_id, faces_context ) ) ) {
+			return_value = false;
+			System.err.println( "WARNING:\n\tUsername is taken." );
+		}
+		
+		if( !(	checkPasswordLength( password, password_id, faces_context ) ) ) {
+			return_value = false;
+			System.err.println( "WARNING:\n\tPassword is too short." );
+		}
+
+		if( !( checkPasswordMatch( password, password_2, password_id, faces_context ) ) ) {
+			return_value = false;
+			System.err.println( "WARNING:\n\tPasswords must match." );
+		}
+		
+		return return_value;
+	}
+	
+	//returns false if username is unavailable
+	private boolean  checkUsernameAvailability( String username, String username_id, FacesContext faces_context ) {
+		boolean return_value = validateUser( username );
+		
+		if( return_value ) {
+			FacesMessage message = new FacesMessage("Username already exists");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			faces_context.addMessage(username_id, message);
+			faces_context.renderResponse();
+		}
+		
+		return !( return_value );
+	}
+	
+	//returns false if password is too short
+	private boolean checkPasswordLength( String password, String password_id, FacesContext faces_context ) {
+		boolean return_value = password.length() < 6;
+		
+		if( return_value ) {
+			FacesMessage message = new FacesMessage("Password must be atleast 6 characters");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			faces_context.addMessage(password_id, message);
+			faces_context.renderResponse();
+		}
+		
+		return !( return_value );
+	}
+	
+	//returns false if passwords don't match
+	private boolean checkPasswordMatch( String password, String password_2, String password_id, FacesContext faces_context ) {
+		boolean return_value = password.equals( password_2 );
+		
+		if( !( return_value ) ) {
+			FacesMessage message = new FacesMessage("Passwords must match");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			faces_context.addMessage(password_id, message);
+			faces_context.renderResponse();
+		}
+		
+		return return_value;
+	}
+	
+	//returns true if user already exists
+	public boolean validateUser( String form_username ) {
 		ResultSet edit = userDao.edit( form_username );
 		try {
 			if ( edit.next() ) {
