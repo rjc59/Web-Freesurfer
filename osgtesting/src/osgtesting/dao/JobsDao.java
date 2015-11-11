@@ -9,7 +9,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-public class JobsDao {
+public class JobsDAO {
 	private Connection con;
 	private String dbURL;
 	private String osg_interface_url;
@@ -17,7 +17,7 @@ public class JobsDao {
 	private CryptoToolbox hasher;
 	private String timeStamp;
 	private String token;
-	public JobsDao(UserDTO user){
+	public JobsDAO(UserDTO user){
 		dbURL = "jdbc:postgresql://webfreesurferdb.cbiow68bwd0c.us-east-1.rds.amazonaws.com:5432/osgtestdb";
 		client = new OkHttpClient();
 		hasher = new CryptoToolbox();

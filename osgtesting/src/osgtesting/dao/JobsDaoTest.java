@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 
-public class JobsDaoTest {
+public class JobsDAOTest {
 
 	@Test
 	public void testWrite() {
