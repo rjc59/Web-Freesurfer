@@ -24,10 +24,21 @@ public class ServerApplication {
 	private ServerLogic site      = new ServerLogic();
 	
 	//functions
+	
+	/**
+	 * ServerApplication
+	 * Constructor function for the ServerApplication class.
+	 */
 	public ServerApplication () {
 		
 	}
 	
+	/**
+	 * redirect
+	 * A convenience function to handle redirection attempts and failures
+	 * 
+	 * @param page - A String holding the name of the page that is desired to be redirected
+	 */
 	private void redirect( String page ) {
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect( page );
@@ -39,10 +50,21 @@ public class ServerApplication {
 		}
 	}
 	
+	/**
+	 * getFormValue
+	 * Returns the String value contained within a form field given the field id.
+	 * 
+	 * @param form_id - The ID of a form field given in string format
+	 * @return        - A string containing the value within form_id
+	 */
 	private String getFormValue( String form_id ) {
 		return (String)( ( (UIInput)( FacesContext.getCurrentInstance().getViewRoot().findComponent( form_id ) ) ).getValue() );
 	}
 	
+	/**
+	 * login
+	 * Attempts to log a user in to the server.
+	 */
 	public void login() {
 		if( site.login(getFormValue("mainform:username"), getFormValue("mainform:password") ) ) {
 			System.out.println("Password matches");
@@ -50,10 +72,18 @@ public class ServerApplication {
 		}
 	}
 	
+	/**
+	 * logout
+	 * Sets the user to be logged out of the server.
+	 */
 	public void logout() {
 		site.logout();
 	}
 	
+	/**
+	 * upload
+	 * I didn't make this and I don't know what id does aside from adding a job to the joblist
+	 */
 	public void upload(){
 		Calendar calendar = Calendar.getInstance();
 		Date date = calendar.getTime();
@@ -63,6 +93,10 @@ public class ServerApplication {
 		//jobList.add(new JobsDTO(id,name,status,strDate));
 	}
 	
+	/**
+	 * newAccount
+	 * Attempts to create a new account from information gathered from a form.
+	 */
 	public void newAccount() {
 		UserDTO new_account = new UserDTO( getFormValue("accountform:userName"), 
 										   "",
@@ -80,6 +114,10 @@ public class ServerApplication {
 		redirect( "index.xhtml" );
 	}
 	
+	/**
+	 * updateAccount
+	 * Attempts to update an account from information gathered from a form
+	 */
 	public void updateAccount() {
 				if( !(site.updateAccount( getFormValue("accountupdateform:userName"),
 										  getFormValue("accountupdateform:firstName"),
@@ -93,34 +131,57 @@ public class ServerApplication {
 				redirect( "index.xhtml" );
 	}
 	
+	/**
+	 * editAccount
+	 * Makes the ServerLogic class get ready for the account editing page
+	 */
 	public void editAccount() {
 		site.editAccount();
+		
 		redirect( "account.xhtml" );
 	}
 	
+	/**
+	 * updatePassword
+	 * Attempts to update the password from the information gathered from a form
+	 */
 	public void updatePassword() {
 		site.updatePassword( getFormValue("passwordupdateform:newPass") );
 		
 		redirect( "index.xhtml" );
 	}
 	
+	/**
+	 * editPassword
+	 * Makes the ServerLogic class get ready for the password editing page
+	 */
 	public void editPassword() {
 		site.editPassword();
 		
 		redirect( "passwrod.xhtml" );
 	}
 	
-	public void adminPower() {
+	/**
+	 * adminRedirect
+	 * Checks to see if the user has administrator privilege and redirects if so.
+	 */
+	public void adminRedirect() {
 		if( site.adminPower() ) {
 			redirect( "admin.xhtml" );
 		}
 	}
 	
-	
-	public void validatePassword(ComponentSystemEvent e) {
+	/**
+	 * validatePassword
+	 * Ensures that the passwords entered into the account creation form are valid and congruent
+	 * 
+	 * @param component_event - A ComponentSystemEvent that is triggered by modifications to the
+	 *                          password fields in the account creation form
+	 */
+	public void validatePassword( ComponentSystemEvent component_event ) {
 
 		FacesContext faces_context = FacesContext.getCurrentInstance();
-		UIComponent page_component = e.getComponent();
+		UIComponent page_component = component_event.getComponent();
 
 		UIInput username_input     = (UIInput) page_component.findComponent("userName");
 		String username            = (String) username_input.getLocalValue();
@@ -145,11 +206,17 @@ public class ServerApplication {
 	}
 	
 	
-	//gotta finish fixing this
-	public void revalidatePass(ComponentSystemEvent e){
+	/**
+	 * revalidatePassword
+	 * Ensures that the passwords entered into the password change form are valid and congruent.
+	 * 
+	 * @param component_event - A ComponentSystemEvent that is triggered by modifications to the
+	 *                          password fields in the account creation form
+	 */
+	public void revalidatePass( ComponentSystemEvent component_event ){
 
 		FacesContext faces_context = FacesContext.getCurrentInstance();
-		UIComponent page_component = e.getComponent();
+		UIComponent page_component = component_event.getComponent();
 
 		UIInput old_password_input = (UIInput) page_component.findComponent("oldPass");
 		String  old_password       = old_password_input.getLocalValue() == null ? ""
@@ -168,26 +235,9 @@ public class ServerApplication {
 		if( password.isEmpty() || password_2.isEmpty() || old_password.isEmpty() )
 			return;
 
-		if(!checkPassword(currentuser.getPass().trim(),currentuser.getSalt().trim(),old_password)){
-			System.out.println("INCORRECT PASSWORD");
-			FacesMessage msg = new FacesMessage("Incorrect Password");
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(old_password_id, msg);
-			faces_context.renderResponse();
+		if( !( site.revalidatePassword( faces_context, old_password, old_password_id,
+										password,      password_2,   password_id) ) ) {
+			System.err.println( "ERROR:\n\tCould not validate new account password." );
 		}
-
-		if(password.length()<6){
-			FacesMessage msg = new FacesMessage("Password must be atleast 6 characters");
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(password_id, msg);
-			faces_context.renderResponse();
-		}
-
-			FacesMessage msg = new FacesMessage("Passwords must match");
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			faces_context.addMessage(password_id, msg);
-			faces_context.renderResponse();
-		}
-
 	}
 }

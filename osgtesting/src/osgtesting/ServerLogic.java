@@ -213,6 +213,27 @@ public class ServerLogic {
 		return return_value;
 	}
 	
+	public boolean revalidatePassword( FacesContext faces_context, String old_password, String old_password_id, String password, String password_2, String password_id ) {
+		boolean return_value = true;
+		
+		if( !( checkPasswordAncestor( old_password, old_password_id, faces_context ) ) ) {
+			return_value = false;
+			System.err.println( "WARNING:\n\tPassword doesn't match the stored information." );
+		}
+		
+		if( !(	checkPasswordLength( password, password_id, faces_context ) ) ) {
+			return_value = false;
+			System.err.println( "WARNING:\n\tPassword is too short." );
+		}
+
+		if( !( checkPasswordMatch( password, password_2, password_id, faces_context ) ) ) {
+			return_value = false;
+			System.err.println( "WARNING:\n\tPasswords must match." );
+		}
+		
+		return return_value;
+	}
+	
 	//returns false if username is unavailable
 	private boolean  checkUsernameAvailability( String username, String username_id, FacesContext faces_context ) {
 		boolean return_value = validateUser( username );
@@ -249,6 +270,21 @@ public class ServerLogic {
 			FacesMessage message = new FacesMessage("Passwords must match");
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			faces_context.addMessage(password_id, message);
+			faces_context.renderResponse();
+		}
+		
+		return return_value;
+	}
+	
+	//returns false if the entered old password doesn't match the new one
+	private boolean checkPasswordAncestor ( String old_password, String old_password_id, FacesContext faces_context ) {
+		boolean return_value = checkPassword( current_user.getPass().trim(), current_user.getSalt().trim(), old_password );
+		
+		if( !( return_value ) ) {
+			System.out.println( "INCORRECT PASSWORD" );
+			FacesMessage message = new FacesMessage( "Incorrect Password" );
+			message.setSeverity( FacesMessage.SEVERITY_ERROR );
+			faces_context.addMessage( old_password_id, message );
 			faces_context.renderResponse();
 		}
 		
