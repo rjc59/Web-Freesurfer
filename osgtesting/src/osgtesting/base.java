@@ -25,7 +25,7 @@ import javax.faces.event.ComponentSystemEvent;
 
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
-import osgtesting.dao.UserDao;
+import osgtesting.dao.UserDAO;
 import osgtesting.Util.CryptoToolbox;
 
 public class base {
@@ -40,7 +40,7 @@ public class base {
 	private List<JobsDTO> jobList=new ArrayList<JobsDTO>();
 	private List<UserDTO> adminList=new ArrayList<UserDTO>();
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-	private UserDao userDao=new UserDao();
+	private UserDAO userDao=new UserDAO();
 	private boolean loggedout=true;
 	private boolean admin=false;
 	private MessageDigest digest;

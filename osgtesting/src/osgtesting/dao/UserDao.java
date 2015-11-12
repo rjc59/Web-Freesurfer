@@ -6,13 +6,13 @@ import java.util.List;
 
 import osgtesting.Model.UserDTO;
 
-public class UserDao {
+public class UserDAO {
 	private Connection con;
 
 	/**
 	 * Constructor: creates connection to application db
 	 */
-	public UserDao(){
+	public UserDAO(){
 		try{
 			DriverManager.registerDriver(new org.postgresql.Driver());
 			con = DriverManager.getConnection("jdbc:postgresql://webfreesurferdb.cbiow68bwd0c.us-east-1.rds.amazonaws.com:5432/osgtestdb","administrator","osgtestdatabase");
