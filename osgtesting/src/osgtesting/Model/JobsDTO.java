@@ -1,16 +1,11 @@
 package osgtesting.Model;
 
-import java.util.*;
-import osgtesting.Util.CryptoToolbox;
 import osgtesting.Model.UserDTO;
-import java.io.File;
 public class JobsDTO{
 	private String id;
 	private UserDTO author;
 	private String status;
-	private String updated;
-	private File job_file;
-	
+	private String updated;	
 	
 	public JobsDTO(String id, UserDTO author, String status, String updated){
 		this.id=id;
@@ -19,13 +14,6 @@ public class JobsDTO{
 		this.updated=updated;
 	}
 
-	public File getJobFile(){
-		return job_file;
-	}
-	
-	public void setJobFile(File job_file){
-		this.job_file=job_file;
-	}
 	
 	public String getId() {
 		return id;
