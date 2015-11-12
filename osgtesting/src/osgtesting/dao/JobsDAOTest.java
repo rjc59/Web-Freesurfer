@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Assert;
 import org.junit.Test;
-import osgtesting.dao.JobsDao;
+import osgtesting.dao.JobsDAO;
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /*
  * Requires freesurfer_test.py to be running on localhost
  * */
-public class JobsDaoTest {
+public class JobsDAOTest {
 		
 	
 	/***************************/
@@ -29,7 +29,7 @@ public class JobsDaoTest {
 									   "412-867-5309", "SodiumChloride" );
 		try{
 			test_user.setId("12345678");
-			JobsDao tester = new JobsDao(test_user);
+			JobsDAO tester = new JobsDAO(test_user);
 			//Test file
 			File test_file = File.createTempFile("test_file", "mgz");
 			//Test JobsDTO
@@ -59,7 +59,7 @@ public class JobsDaoTest {
 		ArrayList<JobsDTO> job_list = new ArrayList<JobsDTO>();
 		
 		try{
-			JobsDao tester = new JobsDao(test_user);
+			JobsDAO tester = new JobsDAO(test_user);
 			int http_code = tester.GetJobs(test_user, job_list);
 			Assert.assertNotEquals(400, http_code);
 		}

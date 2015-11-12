@@ -15,7 +15,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.HttpUrl;
-public class JobsDao {
+public class JobsDAO {
 	private String freesurfer_interface;
 	private int port;
 	private OkHttpClient client;
@@ -24,7 +24,7 @@ public class JobsDao {
 	private String token;
 	
 	
-	public JobsDao(UserDTO user){
+	public JobsDAO(UserDTO user){
 		client = new OkHttpClient();
 		hasher = new CryptoToolbox();
 		//Get Unix Epoch time
