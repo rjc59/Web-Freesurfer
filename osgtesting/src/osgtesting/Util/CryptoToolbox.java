@@ -94,8 +94,8 @@ public class CryptoToolbox {
 	public boolean checkPassword(String retpass, String retsalt,String attempt_text){
 		byte[] old_salt=null,oldpass=null,attempt_to_check=null;
 		try{
-			old_salt=retsalt.getBytes();
-			oldpass=retpass.getBytes();
+			old_salt=retsalt.getBytes("UTF-8");
+			oldpass=retpass.getBytes("UTF-8");
 			attempt_to_check = passwordHash(attempt_text, old_salt);
 
 		}catch(Exception e){
