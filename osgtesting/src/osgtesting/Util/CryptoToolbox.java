@@ -1,5 +1,4 @@
 package osgtesting.Util;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
