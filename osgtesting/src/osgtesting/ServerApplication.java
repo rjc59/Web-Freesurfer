@@ -16,12 +16,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 
 import osgtesting.Model.UserDTO;
+import osgtesting.Util.CryptoToolbox;
+import osgtesting.email.*;
 
 
 public class ServerApplication {
 	//global declarations
 	private DateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private ServerLogic site      = new ServerLogic();
+	private CryptoToolbox hasher = new CryptoToolbox();
 	
 	//functions
 	
@@ -110,8 +113,11 @@ public class ServerApplication {
 		if( !( site.newAccount( new_account, getFormValue("accountform:firstpass") ) ) ) {
 			System.err.println( "ERROR:\n\tCould not create account." );
 		}
-
+		
+		
+		
 		redirect( "index.xhtml" );
+		
 	}
 	
 	/**
