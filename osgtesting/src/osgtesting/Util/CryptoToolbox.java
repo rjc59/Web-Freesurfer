@@ -7,10 +7,17 @@ import java.util.Date;
 import javax.xml.bind.DatatypeConverter;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+<<<<<<< HEAD
+import javax.xml.bind.DatatypeConverter;
+
+import osgtesting.Model.UserDTO;
+
+=======
 /**
  * CryptoToolBox
  * Utility class for securely creating and checking passwords.
  */
+>>>>>>> master
 public class CryptoToolbox {
 	private String algorithm = "PBKDF2WithHmacSHA1";
 	private int derived_key_length = 64;
@@ -49,6 +56,23 @@ public class CryptoToolbox {
 			System.err.println("Unsupported Encoding");
 		}
 		return salt;
+	}
+	
+	public String[] makeToken(UserDTO user){
+		String[] tsToken=new String[2];
+		byte[] token_hash=null;
+		String timeStamp = Long.toString((System.currentTimeMillis() / 1000L));
+		tsToken[0]=timeStamp;
+		try{
+		String shared_secret = new String(hashSHA256(user.getSalt().concat(user.getPass()).getBytes("UTF-8")));
+		token_hash = hashSHA256(shared_secret.concat(timeStamp).getBytes("UTF-8"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		String token = DatatypeConverter.printBase64Binary(token_hash);
+		tsToken[1]=token;
+		
+		return tsToken;
 	}
 	
 	/**

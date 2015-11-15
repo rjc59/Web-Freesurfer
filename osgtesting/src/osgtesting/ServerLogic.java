@@ -13,6 +13,15 @@ import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import osgtesting.dao.UserDAO;
+import osgtesting.email.Emailer;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.HttpUrl;
 
 public class ServerLogic {
 	//Global Declarations
@@ -31,6 +40,7 @@ public class ServerLogic {
 	private UserDTO current_user;
 	
 	private CryptoToolbox crypto = new CryptoToolbox();
+	private Emailer mailer=new Emailer();
 	private UserDAO userDAO      = new UserDAO();
 	
 	private List<JobsDTO> job_list   = new ArrayList<JobsDTO>();
@@ -60,12 +70,14 @@ public class ServerLogic {
 	public boolean login( String form_username, String form_password ) {
 		ResultSet result = userDAO.login(form_username, form_password);
 		try {
+			System.out.println(form_username);
 			if(!result.next()){
 				System.out.println("NO USERNAME");
 				return false;
 			} else {  
 				if (checkPassword(result.getString(2).trim(), result.getString(3).trim(), form_password)) {
 					setUsername(form_username);
+					setLoggedOut(false);
 					if(form_username.equals("admin")){
 						setAdmin(true);
 					}
@@ -91,6 +103,7 @@ public class ServerLogic {
 		username = "";
 		
 		setLoggedOut(true);
+		
 	}
 	
 	/**
@@ -131,6 +144,7 @@ public class ServerLogic {
 	 * @return              - A boolean indicating the success of the operation
 	 */
 	public boolean newAccount( UserDTO new_account, String password_text ) {
+		
 		byte[] salt     = crypto.makeSalt();
 		String new_salt = new String(salt);
 		
@@ -146,11 +160,41 @@ public class ServerLogic {
 		try {
 			userDAO.write(new_account);
 			userDAO.read();
-			return true;
+			
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			return false;
 		}
+		
+		//generate token
+		String[] tsToken=crypto.makeToken(new_account);
+		String Ts=tsToken[0];
+		String token= tsToken[1];
+		String id=new_account.getUserName();
+		
+		//generate url?
+		OkHttpClient client=new OkHttpClient();
+		String freesurfer_interface = "localhost";
+		int port = 8085;
+		HttpUrl request_url = new HttpUrl.Builder()
+		.scheme("http")
+		.host(freesurfer_interface)
+		.port(port)
+		.addPathSegment("freesurfer")
+		.addPathSegment("jobs")
+		.addQueryParameter("userid", id)
+		.addQueryParameter("token", token)
+		.addQueryParameter("timestamp",Ts)
+		.build();
+		
+		mailer.setTo(new_account.getEmail());
+		message=request_url.toString();
+		mailer.sendToken(message);
+			
+		
+		
+		return true;
+		
 	}
 	
 	/**
@@ -558,6 +602,14 @@ public class ServerLogic {
 
 	public void setAdminList(List<UserDTO> admin_list) {
 		this.admin_list = admin_list;
+	}
+
+	public UserDTO getCurrent_user() {
+		return current_user;
+	}
+
+	public void setCurrent_user(UserDTO current_user) {
+		this.current_user = current_user;
 	}
 	
 }

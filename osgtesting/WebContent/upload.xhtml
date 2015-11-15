@@ -44,12 +44,12 @@
                 <li class="dropdown">
                   <a href="upload.xhtml" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><h:form><h:link value="Register" rendered="#{base.loggedout}" outcome="register.xhtml"/></h:form></li>
-                    <li><h:form><h:link value="Job Statuses" rendered="#{!base.loggedout}" outcome="status.xhtml"/></h:form></li>
-				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{base.editAccount}" rendered="#{!base.loggedout}" outcome="account.xhtml"/></h:form></li>
-					<li><h:form><h:commandLink value = "Change Password" actionListener="#{base.editPass}" rendered="#{!base.loggedout}" outcome="password.xhtml"/></h:form></li>
-					<li><h:form><h:commandLink value = "Admin Functions" actionListener="#{base.adminPower}" rendered="#{base.admin}" outcome="admin.xhtml"/></h:form></li>
-					<li><h:form><h:commandLink value="Logout" actionListener="#{base.logout}" rendered="#{!base.loggedout}" outcome="index.xhtml"/></h:form></li>
+                   <li><h:form><h:link value="Register" rendered="#{serverApplication.loggedout}" outcome="register.xhtml"/></h:form></li>
+                    <li><h:form><h:link value="Job Statuses" rendered="#{!serverApplication.loggedout}" outcome="status.xhtml"/></h:form></li>
+				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{serverApplication.editAccount}" rendered="#{!serverApplication.loggedout}" outcome="account.xhtml"/></h:form></li>
+					<li><h:form><h:commandLink value = "Change Password" actionListener="#{serverApplication.editPassword}" rendered="#{!serverApplication.loggedout}" outcome="password.xhtml"/></h:form></li>
+					<li><h:form><h:commandLink value = "Admin Functions" actionListener="#{serverApplication.adminRedirect}" rendered="#{serverApplication.admin}" outcome="admin.xhtml"/></h:form></li>
+					<li><h:form><h:commandLink value="Logout" actionListener="#{serverApplication.logout}" rendered="#{!serverApplication.loggedout}" outcome="index.xhtml"/></h:form></li>
                   </ul>
                 </li>
               </ul>
@@ -64,7 +64,7 @@
 <h:panelGrid>
 <h:inputFile></h:inputFile>
 </h:panelGrid>
-<h:commandButton actionListener="#{base.upload()}" value="Upload Job"></h:commandButton>
+<h:commandButton actionListener="#{serverApplication.upload()}" value="Upload Job"></h:commandButton>
 </h:form>
 
 	<!-- Bootstrap core JavaScript
