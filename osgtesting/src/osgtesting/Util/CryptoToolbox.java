@@ -7,17 +7,16 @@ import java.util.Date;
 import javax.xml.bind.DatatypeConverter;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-<<<<<<< HEAD
+
 import javax.xml.bind.DatatypeConverter;
 
 import osgtesting.Model.UserDTO;
 
-=======
 /**
  * CryptoToolBox
  * Utility class for securely creating and checking passwords.
  */
->>>>>>> master
+
 public class CryptoToolbox {
 	private String algorithm = "PBKDF2WithHmacSHA1";
 	private int derived_key_length = 64;
