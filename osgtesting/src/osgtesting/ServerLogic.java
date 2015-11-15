@@ -146,10 +146,10 @@ public class ServerLogic {
 	public boolean newAccount( UserDTO new_account, String password_text ) {
 		
 		byte[] salt     = crypto.makeSalt();
-		String new_salt = new String(salt);
+		String new_salt = crypto.base64Encode(salt);
 		
 		byte[] password_to_store = crypto.passwordHash( password_text, salt );
-		String new_password      = new String(password_to_store);
+		String new_password      = crypto.base64Encode(password_to_store);
 
 		System.out.println(new_password);
 		System.out.println(new_salt);
