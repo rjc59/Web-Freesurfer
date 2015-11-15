@@ -15,7 +15,13 @@ import osgtesting.Util.CryptoToolbox;
 import osgtesting.dao.UserDAO;
 import osgtesting.email.Emailer;
 
-import com.squareup.okhttp.*;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.HttpUrl;
 
 public class ServerLogic {
 	//Global Declarations
@@ -64,12 +70,14 @@ public class ServerLogic {
 	public boolean login( String form_username, String form_password ) {
 		ResultSet result = userDAO.login(form_username, form_password);
 		try {
+			System.out.println(form_username);
 			if(!result.next()){
 				System.out.println("NO USERNAME");
 				return false;
 			} else {  
 				if (checkPassword(result.getString(2).trim(), result.getString(3).trim(), form_password)) {
 					setUsername(form_username);
+					setLoggedOut(false);
 					if(form_username.equals("admin")){
 						setAdmin(true);
 					}
@@ -95,6 +103,7 @@ public class ServerLogic {
 		username = "";
 		
 		setLoggedOut(true);
+		
 	}
 	
 	/**
@@ -593,6 +602,14 @@ public class ServerLogic {
 
 	public void setAdminList(List<UserDTO> admin_list) {
 		this.admin_list = admin_list;
+	}
+
+	public UserDTO getCurrent_user() {
+		return current_user;
+	}
+
+	public void setCurrent_user(UserDTO current_user) {
+		this.current_user = current_user;
 	}
 	
 }

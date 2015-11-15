@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.faces.application.FacesMessage;
@@ -15,6 +16,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 
+import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import osgtesting.email.*;
@@ -81,6 +83,7 @@ public class ServerApplication {
 	 */
 	public void logout() {
 		site.logout();
+		redirect("index.xhtml");
 	}
 	
 	/**
@@ -103,7 +106,7 @@ public class ServerApplication {
 	public void newAccount() {
 		UserDTO new_account = new UserDTO( getFormValue("accountform:userName"), 
 										   "",
-										   getFormValue("accountform:fistName"),
+										   getFormValue("accountform:firstName"),
 										   getFormValue("accountform:lastName"),
 										   getFormValue("accountform:email"),
 										   getFormValue("accountform:inst"),
@@ -164,7 +167,7 @@ public class ServerApplication {
 	public void editPassword() {
 		site.editPassword();
 		
-		redirect( "passwrod.xhtml" );
+		redirect( "password.xhtml" );
 	}
 	
 	/**
@@ -245,5 +248,24 @@ public class ServerApplication {
 										password,      password_2,   password_id) ) ) {
 			System.err.println( "ERROR:\n\tCould not validate new account password." );
 		}
+	}
+	public boolean isLoggedout(){
+		return site.isLoggedOut();
+	}
+	public boolean isAdmin(){
+		return site.isAdmin();
+	}
+	
+	public UserDTO getCurrentUser(){
+		return site.getCurrent_user();
+	}
+	public List<UserDTO> getAdminList() {
+		return site.getAdminList();
+	}
+	public String getMessage(){
+		return site.getMessage();
+	}
+	public List<JobsDTO> getJobList() {
+		return site.getJobList();
 	}
 }
