@@ -4,7 +4,6 @@ import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import java.io.File;
 import java.util.ArrayList;
-import java.sql.SQLException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import javax.xml.bind.DatatypeConverter;
@@ -15,6 +14,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.HttpUrl;
+
 public class JobsDAO {
 	private String freesurfer_interface;
 	private int port;
@@ -22,11 +22,12 @@ public class JobsDAO {
 	private CryptoToolbox hasher;
 	private String timeStamp;
 	private String token;
-	
-	
+	private UserDTO user;
+
 	public JobsDAO(UserDTO user){
 		client = new OkHttpClient();
 		hasher = new CryptoToolbox();
+		this.user = user;
 		//Get Unix Epoch time
 		timeStamp = Long.toString((System.currentTimeMillis() / 1000L));
 		//token = SHA256(SHA256(Salt + User's Password) + Epoch time)
@@ -39,16 +40,14 @@ public class JobsDAO {
 			e.printStackTrace();
 		}
 		
-		freesurfer_interface = "localhost";
-		port = 8085;
+		freesurfer_interface = "zane-Latitude-E6410";
+		port = 8080;
 	}
-	/** GetJobs
-	 *  Takes a UserDTO and returns the a list of all jobs
-	 *  
-	 *  @param user -    A UserDTO to query a jobs list for
-	 *   
+	
+	/** getUrllRequest
+	 * creates a get request url with the user's query parameters
 	 */
-	public int GetJobs(UserDTO user, ArrayList<JobsDTO> job_list) throws IOException
+	private HttpUrl getUrlRequest()
 	{
 		//create url
 		HttpUrl request_url = new HttpUrl.Builder()
@@ -60,28 +59,117 @@ public class JobsDAO {
 				.addQueryParameter("userid", user.getId())
 				.addQueryParameter("token", token)
 				.build();
+		return request_url;
+	}
+	
+	
+	/** getHTTPRequest
+	 * takes a get http request url and forms a get HTTP request
+	 * @param request_url - a request url with query parameters added 
+	 */
+	private Request getHTTPRequest(HttpUrl request_url)
+	{
+		Request http_request = new Request.Builder()
+				.url(request_url)
+				.get()
+				.build();
+		return http_request;
+	}
+	
+	
+	/** writeUrlRequest
+	 * takes a JobsDTO and a the Job file name to create a request url with query parameters
+	 * @param job - containing data about the job being submitted
+	 * @param job_file_name - String of the filename of the job file 
+	 */
+	private HttpUrl writeUrlRequest(JobsDTO job, String job_file_name)
+	{
+		HttpUrl request_url = new HttpUrl.Builder()
+				.scheme("http")
+				.host(freesurfer_interface)
+				.port(port)
+				.addPathSegment("freesurfer")
+				.addPathSegment("jobs")
+				.addQueryParameter("userid", job.getAuthor().getId())
+				.addQueryParameter("token", token)
+				.addQueryParameter("filename", job_file_name)
+				.addQueryParameter("singlecore", "true")
+				.addQueryParameter("jobname", job_file_name)
+				.build();
+		return request_url;
+	}
+	/** writeHTTPRequest
+	 * takes a write request url and a post request body to generate a write(POST) HttpRequest
+	 * 
+	 * @param request_url - a HttpUrl object with the server end point and query parameters
+	 * @param request_body - a post request body containing the job file
+	 *
+	 */
+	private Request writeHTTPRequest(HttpUrl request_url, RequestBody request_body)
+	{
+		Request http_request = new Request.Builder()
+				.url(request_url)
+				.post(request_body)
+				.build();
+		return http_request;
+	}
+	
+	/** createFileBody
+	 * takes a new job file object and returns a request body containing the file
+	 * 
+	 * @param job_file -  a java File object containing the new job file
+	 * 
+	 */
+	private RequestBody createFileBody(File job_file)
+	{
+		RequestBody file_body = RequestBody.create(MediaType.parse("application/plain"), job_file);
+		RequestBody request_body = new MultipartBuilder().type(MultipartBuilder.FORM)
+				.addFormDataPart("jobfile", job_file.getName(), file_body)
+				.build();
+		return request_body;
+	}
+	
+	/** handleHttpResponse
+	 *  Takes a htt_response and throws exceptions for bad responses
+	 *  
+	 *  @param http_response - 	A http_response from freesurfer_interface
+	 *  
+	*/
+	private void handleHttpResponse(Response http_response) throws IOException
+	{
+		switch(http_response.code())
+		{
+			case 200:
+				System.err.println("Jobfile was successfully submitted. Code:200");
+				break;
+			case 400:
+				System.err.println("Job submission for file had malformed parameters. Code 400");
+				throw new IOException("Error Code:400 Malformed Parameters");
+			case 500:
+				System.err.println("Job submission for file caused a server error. Code 500");
+				throw new IOException("Error Code:500 Internal Server Error");
+			default:
+				System.err.println("Job submission for file returned unknown");
+				break;
+		}
+	}
+	
+	/** GetJobs
+	 *  Takes a UserDTO and returns the a list of all jobs
+	 *  
+	 *  @param user -    A UserDTO to query a jobs list for
+	 *   
+	 */
+	public int GetJobs(UserDTO user, ArrayList<JobsDTO> job_list) throws IOException
+	{
+		HttpUrl request_url = getUrlRequest();
 		//create post request
 		System.err.println("URL: "+ request_url);
-		Request http_request = new Request.Builder()
-			.url(request_url)
-			.get()
-			.build();
-				//make RESTful calls to OSGConnect freesurfer_interface		
-		
+		Request http_request = getHTTPRequest(request_url);
+		//make RESTful calls to OSGConnect freesurfer_interface		
 		Response http_response;
 		http_response = client.newCall(http_request).execute();	
-			switch(http_response.code())
-			{
-				case 200:
-					System.err.println("Sucessfully queried for running jobs Code:200");
-					break;
-				case 400:
-					System.err.println("Malformed Http parameters for jobs query Code:400");
-					break;
-				case 500:
-					System.err.println("Query for jobs caused server error Code:500");
-					break;
-			}
+		handleHttpResponse(http_response);
 		//dummy call right now	
 		job_list = new ArrayList<JobsDTO>();
 		return http_response.code();
@@ -95,43 +183,17 @@ public class JobsDAO {
 	public int Write(JobsDTO job, File job_file) throws IOException
 	{
 		//create request body
-		RequestBody file_body = RequestBody.create(MediaType.parse("application/plain"), job_file);
-		RequestBody request_body = new MultipartBuilder().type(MultipartBuilder.FORM)
-				.addFormDataPart("jobfile", job_file.getName(), file_body)
-				.build();
+		
+		RequestBody request_body = createFileBody(job_file);
 		//create url
-		HttpUrl request_url = new HttpUrl.Builder()
-				.scheme("http")
-				.host(freesurfer_interface)
-				.port(port)
-				.addPathSegment("freesurfer")
-				.addPathSegment("jobs")
-				.addQueryParameter("userid", job.getAuthor().getId())
-				.addQueryParameter("token", token)
-				.addQueryParameter("singlecore", "true")
-				.addQueryParameter("jobname", job_file.getName())
-				.build();
+		HttpUrl request_url = writeUrlRequest(job, job_file.getName());
 		//create post request
 		System.err.println("URL: "+ request_url);
-		Request http_request = new Request.Builder()
-			.url(request_url)
-			.post(request_body)
-			.build();
+		Request http_request = writeHTTPRequest(request_url, request_body);
 		//make RESTful calls to OSGConnect freesurfer_interface
 		Response http_response;
 		http_response = client.newCall(http_request).execute();	
-		switch(http_response.code())
-		{
-			case 200:
-				System.err.println("Jobfile:"+job_file.getName()+" was successfully submitted. Code:200");
-				break;
-			case 400:
-				System.err.println("Job submission for file:"+ job_file.getName() + " had malformed parameters. Code 400");
-				break;
-			case 500:
-				System.err.println("Job submission for file:"+ job_file.getName() + " caused a server error. Code 500");
-				break;
-		}
+		handleHttpResponse(http_response);
 		return http_response.code();
 	}
 }

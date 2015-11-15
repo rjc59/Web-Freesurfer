@@ -9,5 +9,10 @@
 		<managed-bean-class>osgtesting.base</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>serverApplication</managed-bean-name>
+		<managed-bean-class>osgtesting.ServerApplication</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 
 </faces-config>

@@ -62,8 +62,34 @@ public class Emailer {
 		}
 	}
 	
+	public void sendToken(String link)
+	{
+		message="link";
+		if (to == null)
+		{
+			throw new NullPointerException();
+		}
+		else
+		{
+			try
+			{
+				email.setFrom(from);
+				email.setText(message);
+				email.addRecipient(RecipientType.TO, new InternetAddress(to));
+				email.setSubject(subject);
+				email.setText(message);
+				Transport.send(email);
+				
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void setTo(String to){
-		to = to;
+		this.to = to;
 	}
 	
 	public String getTo(){
@@ -71,7 +97,7 @@ public class Emailer {
 	}
 	
 	public void setSubject(String subject){
-		subject = subject;
+		this.subject = subject;
 	}
 	
 	public String getSubject(){
@@ -79,7 +105,7 @@ public class Emailer {
 	}
 	
 	public void setMessage(String message){
-		message = message;
+		this.message = message;
 	}
 	
 	public String getMessage(){
