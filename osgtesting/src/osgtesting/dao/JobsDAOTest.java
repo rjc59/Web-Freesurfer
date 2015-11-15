@@ -31,7 +31,7 @@ public class JobsDAOTest {
 			test_user.setId("12345678");
 			JobsDAO tester = new JobsDAO(test_user);
 			//Test file
-			File test_file = File.createTempFile("test_file", "mgz");
+			File test_file = File.createTempFile("test_file", ".mgz");
 			//Test JobsDTO
 			String time_stamp = Long.toString((System.currentTimeMillis() / 1000L));
 			JobsDTO test_job = new JobsDTO("123123", test_user, "UPLOADED",time_stamp);
@@ -41,7 +41,7 @@ public class JobsDAOTest {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			fail("Exception: "+ e.toString()+" was thown.");
+			fail("Exception: "+ e.toString()+" was thrown.");
 		}
 	}
 	/***************************/

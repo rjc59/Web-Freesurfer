@@ -1,18 +1,23 @@
 package osgtesting.Util;
-
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Date;
-
+import javax.xml.bind.DatatypeConverter;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+<<<<<<< HEAD
 import javax.xml.bind.DatatypeConverter;
 
 import osgtesting.Model.UserDTO;
 
+=======
+/**
+ * CryptoToolBox
+ * Utility class for securely creating and checking passwords.
+ */
+>>>>>>> master
 public class CryptoToolbox {
 	private String algorithm = "PBKDF2WithHmacSHA1";
 	private int derived_key_length = 64;
@@ -20,7 +25,10 @@ public class CryptoToolbox {
 	private MessageDigest digest;
 	private int iterations = 1000;
 	
-	
+	/**
+	 * CryptoToolbox
+	 * Initializes CryptoToolbox.
+	 */
 	public CryptoToolbox()
 	{
 		try{
@@ -35,6 +43,10 @@ public class CryptoToolbox {
 		
 	}
 	
+	/**
+	 * makeSalt
+	 * Creates a salt using the current time.
+	 */
 	public byte[] makeSalt () {
 		Date creationTime = new Date();
 		byte[] salt = null;
@@ -63,10 +75,23 @@ public class CryptoToolbox {
 		return tsToken;
 	}
 	
+	/**
+	 * hashSHA256
+	 * Applies a SHA-256 hash to a byte array.
+	 * @param toHash The byte array to be hashed.
+	 * @return The hashed byte array.
+	 */
 	public byte[] hashSHA256(byte[] toHash) {
 		return digest.digest(toHash);
 	}
 	
+	/**
+	 * passwordHash
+	 * sha256 Hashes a plaintext password and salts it with pbkdf2
+	 * @param password_text The plaintext password
+	 * @param salt The salt to use in the hash.
+	 * @return A hashed byte array.
+	 */
 	public byte[] passwordHash(String password_text, byte[]salt) {
 		try{
 			String password_hash_str = new String(hashSHA256(password_text.getBytes("UTF-8")));
@@ -81,17 +106,46 @@ public class CryptoToolbox {
 		
 	}
 	
+	/**
+	 * checkPassword
+	 * Checks the password that the user entered and compares it to the
+	 * password stored on the server.
+	 * @param retpass The hashed password retrieved from the server.
+	 * @param retsalt The salt retrieved from the server.
+	 * @param attempt_text The password that the user entered.
+	 * @return True if the passwords match, false otherwise.
+	 */
 	public boolean checkPassword(String retpass, String retsalt,String attempt_text){
 		byte[] old_salt=null,oldpass=null,attempt_to_check=null;
 		try{
-			old_salt=retsalt.getBytes();
-			oldpass=retpass.getBytes();
+			old_salt=retsalt.getBytes("UTF-8");
+			oldpass=retpass.getBytes("UTF-8");
 			attempt_to_check = passwordHash(attempt_text, old_salt);
 
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return Arrays.equals(oldpass, attempt_to_check);
+	}
+	/**
+	 * base64Encode
+	 * Base64 encodes a byte array.
+	 * @param message Byte array to be encoded.
+	 * @return Base64 encoded String
+	 */
+	public String base64Encode(byte[] message)
+	{
+		return DatatypeConverter.printBase64Binary(message);
+	}
+	/**
+	 * base64Decode
+	 * Base64 decodes a String.
+	 * @param message String to be decoded.
+	 * @return Decoded Base64 byte array
+	 */
+	public byte[] base64Decode(String message)
+	{
+		return DatatypeConverter.parseBase64Binary(message);
 	}
 
 }
