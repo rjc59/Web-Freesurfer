@@ -40,8 +40,8 @@ public class JobsDAO {
 			e.printStackTrace();
 		}
 		
-		freesurfer_interface = "localhost";
-		port = 8085;
+		freesurfer_interface = "zane-Latitude-E6410";
+		port = 8080;
 	}
 	
 	/** getUrllRequest
@@ -92,6 +92,7 @@ public class JobsDAO {
 				.addPathSegment("jobs")
 				.addQueryParameter("userid", job.getAuthor().getId())
 				.addQueryParameter("token", token)
+				.addQueryParameter("filename", job_file_name)
 				.addQueryParameter("singlecore", "true")
 				.addQueryParameter("jobname", job_file_name)
 				.build();
