@@ -1,6 +1,7 @@
 package osgtesting;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -63,7 +64,15 @@ public class ServerApplication {
 	 * @return        - A string containing the value within form_id
 	 */
 	private String getFormValue( String form_id ) {
-		return (String)( ( (UIInput)( FacesContext.getCurrentInstance().getViewRoot().findComponent( form_id ) ) ).getValue() );
+		String ret_string;	
+		try {
+			byte[] ui_bytes =  ((String)( (UIInput)( FacesContext.getCurrentInstance().getViewRoot().findComponent( form_id ) ) ).getValue()).getBytes("UTF-8");
+			ret_string = new String(ui_bytes, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			ret_string = "ERROR";
+		}
+		return ret_string;
 	}
 	
 	/**
