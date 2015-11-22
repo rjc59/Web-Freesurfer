@@ -32,7 +32,7 @@ public class CryptoToolbox {
 	{
 		try{
 			digest = MessageDigest.getInstance("SHA-256");
-			factory=SecretKeyFactory.getInstance(algorithm);	
+			factory=SecretKeyFactory.getInstance(algorithm);
 		}
 		catch(NoSuchAlgorithmException e)
 		{
@@ -93,7 +93,7 @@ public class CryptoToolbox {
 	 */
 	public byte[] passwordHash(String password_text, byte[]salt) {
 		try{
-			String password_hash_str = new String(hashSHA256(password_text.getBytes("UTF-8")));
+			String password_hash_str = new String(hashSHA256(password_text.getBytes("UTF-8")),"UTF-8");
 			KeySpec spec = new PBEKeySpec(password_hash_str.toCharArray(), salt, iterations, derived_key_length);
 			return factory.generateSecret(spec).getEncoded();
 		}
@@ -117,12 +117,12 @@ public class CryptoToolbox {
 	public boolean checkPassword(String retpass, String retsalt,String attempt_text){
 		byte[] old_salt=null,oldpass=null,attempt_to_check=null;
 		try{
-			System.out.println("oldsalt:"+ retsalt);
+			System.out.println("oldsalt: "+ retsalt);
 			old_salt=base64Decode(retsalt);
-			System.out.println("old pass" + retpass);
+			System.out.println("old pass: " + retpass);
 			oldpass=base64Decode(retpass);
 			attempt_to_check = passwordHash(attempt_text, old_salt);
-			System.out.println("password attempt: "+ new String(attempt_to_check));
+			System.out.println("password attempt: "+ base64Encode(attempt_to_check));
 
 		}catch(Exception e){
 			e.printStackTrace();
