@@ -9,19 +9,13 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import com.squareup.okhttp.HttpUrl;
+
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import osgtesting.dao.UserDAO;
 import osgtesting.email.Emailer;
-
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.MultipartBuilder;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.HttpUrl;
 
 public class ServerLogic {
 	//Global Declarations
@@ -173,20 +167,16 @@ public class ServerLogic {
 		String id=new_account.getUserName();
 		
 		//generate url?
-		OkHttpClient client=new OkHttpClient();
-		String freesurfer_interface = "localhost";
 		int port = 8085;
 		HttpUrl request_url = new HttpUrl.Builder()
 		.scheme("http")
-		.host(freesurfer_interface)
+		.host("localhost")
 		.port(port)
-		.addPathSegment("freesurfer")
-		.addPathSegment("jobs")
+		.addPathSegment("verify")
 		.addQueryParameter("userid", id)
 		.addQueryParameter("token", token)
 		.addQueryParameter("timestamp",Ts)
 		.build();
-		
 		mailer.setTo(new_account.getEmail());
 		message=request_url.toString();
 		mailer.sendToken(message);
