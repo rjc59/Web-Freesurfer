@@ -117,15 +117,16 @@ public class CryptoToolbox {
 	public boolean checkPassword(String retpass, String retsalt,String attempt_text){
 		byte[] old_salt=null,oldpass=null,attempt_to_check=null;
 		try{
-			System.out.println("oldsalt:"+ new String(old_salt));
+			System.out.println("oldsalt:"+ retsalt);
 			old_salt=base64Decode(retsalt);
-			System.out.println("old pass" + new String(oldpass));
+			System.out.println("old pass" + retpass);
 			oldpass=base64Decode(retpass);
 			attempt_to_check = passwordHash(attempt_text, old_salt);
 			System.out.println("password attempt: "+ new String(attempt_to_check));
 
 		}catch(Exception e){
 			e.printStackTrace();
+			return false;
 		}
 		return Arrays.equals(oldpass, attempt_to_check);
 	}
