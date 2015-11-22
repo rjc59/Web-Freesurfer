@@ -32,7 +32,7 @@ public class CryptoToolbox {
 	{
 		try{
 			digest = MessageDigest.getInstance("SHA-256");
-			factory=SecretKeyFactory.getInstance(algorithm);	
+			factory=SecretKeyFactory.getInstance(algorithm);
 		}
 		catch(NoSuchAlgorithmException e)
 		{
@@ -93,7 +93,7 @@ public class CryptoToolbox {
 	 */
 	public byte[] passwordHash(String password_text, byte[]salt) {
 		try{
-			String password_hash_str = new String(hashSHA256(password_text.getBytes("UTF-8")));
+			String password_hash_str = new String(hashSHA256(password_text.getBytes("UTF-8")),"UTF-8");
 			KeySpec spec = new PBEKeySpec(password_hash_str.toCharArray(), salt, iterations, derived_key_length);
 			return factory.generateSecret(spec).getEncoded();
 		}
