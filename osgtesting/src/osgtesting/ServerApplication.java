@@ -67,7 +67,7 @@ public class ServerApplication {
 		String ret_string;	
 		try {
 			byte[] ui_bytes =  ((String)( (UIInput)( FacesContext.getCurrentInstance().getViewRoot().findComponent( form_id ) ) ).getValue()).getBytes("UTF-8");
-			ret_string = new String(ui_bytes, "UTF-8");
+			ret_string = new String(ui_bytes, "UTF-8").replaceAll("(\\r|\\n)", "");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			ret_string = "ERROR";
