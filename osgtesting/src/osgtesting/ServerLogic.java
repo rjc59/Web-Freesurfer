@@ -64,12 +64,14 @@ public class ServerLogic {
 	public boolean login( String form_username, String form_password ) {
 		ResultSet result = userDAO.login(form_username, form_password);
 		try {
-			System.out.println(form_username);
+			System.out.println("Username : "+form_username);
 			if(!result.next()){
 				System.out.println("NO USERNAME");
 				return false;
-			} else {  
-				if (checkPassword(result.getString(2).trim(), result.getString(3).trim(), form_password)) {
+			} else {
+				System.out.println("Got into correct login block");
+				boolean pass_check = checkPassword(result.getString(2).trim(), result.getString(3).trim(), form_password);
+				if (pass_check) {
 					setUsername(form_username);
 					setLoggedOut(false);
 					if(form_username.equals("admin")){
@@ -144,9 +146,9 @@ public class ServerLogic {
 		
 		byte[] password_to_store = crypto.passwordHash( password_text, salt );
 		String new_password      = crypto.base64Encode(password_to_store);
-
-		System.out.println(new_password);
-		System.out.println(new_salt);
+		
+		System.out.println("New password: "+ new_password);
+		System.out.println("New Salt: "+ new_salt);
 
 		new_account.setPass(new_password);
 		new_account.setSalt(new_salt);
@@ -303,11 +305,11 @@ public class ServerLogic {
 	 * @return                - A boolean indicating whether or not the passwords match.
 	 */
 	public boolean checkPassword(String return_password, String return_salt,String check_password){
-		byte[] password_to_check = crypto.passwordHash( check_password, return_salt.getBytes() );
-
-		System.out.println(return_password);
-		System.out.println(password_to_check.toString());
-		return Arrays.equals(return_password.getBytes(), password_to_check);
+		//byte[] password_to_check = crypto.passwordHash( check_password, return_salt.getBytes() );
+		//System.out.println(return_password);
+		//System.out.println(password_to_check.toString());
+		//return Arrays.equals(return_password.getBytes(), password_to_check);
+		return crypto.checkPassword(return_password, return_salt, check_password);
 	}
 	
 	/**
