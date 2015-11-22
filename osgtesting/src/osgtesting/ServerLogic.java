@@ -260,10 +260,10 @@ public class ServerLogic {
 	 */  //we may want to see if there's a way to address the failure of this as it happens
 	public boolean updatePassword(String password_text) {
 		byte[] salt     = crypto.makeSalt();
-		String new_salt = new String(salt);
+		String new_salt = crypto.base64Encode(salt);
 		
 		byte[] password_to_store = crypto.passwordHash( password_text, salt );
-		String new_password    = new String(password_to_store);
+		String new_password    = crypto.base64Encode(password_to_store);
 
 		System.out.println(new_password);
 		System.out.println(new_salt);
