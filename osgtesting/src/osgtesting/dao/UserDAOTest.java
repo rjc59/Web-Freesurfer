@@ -83,7 +83,7 @@ public class UserDAOTest {
 	@Test(timeout=500)
 	public void testUserDaoWrite() {
 		UserDAO tester = new UserDAO();
-		UserDTO account = new UserDTO("1","test", "test123", "testfirst", "testlast", "test@test.com", "tester", "1231231234", "abcd");
+		UserDTO account = new UserDTO("1","test", "test123", "testfirst", "testlast", "test@test.com", "tester", "1231231234", "abcd", true);
 		try {
 			tester.write(account);	
 		} catch ( Exception e ) {
@@ -100,7 +100,7 @@ public class UserDAOTest {
 	@Test(timeout=500)
 	public void testUserDaoUpdateAccount() {
 		UserDAO tester = new UserDAO();
-		UserDTO account = new UserDTO("1","test", "test123", "testfirst", "testlast", "test@test.com", "tester", "1231231234", "abcd");
+		UserDTO account = new UserDTO("1","test", "test123", "testfirst", "testlast", "test@test.com", "tester", "1231231234", "abcd", true);
 		try {
 			tester.update(account);	
 		} catch ( Exception e ) {

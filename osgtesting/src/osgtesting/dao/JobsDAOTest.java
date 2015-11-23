@@ -27,7 +27,7 @@ public class JobsDAOTest {
 	public void testWriteGoodParam() {
 		UserDTO test_user = new UserDTO("1","username", "password","Bill", "Laboon",
 									   "laboon@laboon.com","Univ of Pitt", 
-									   "412-867-5309", "SodiumChloride" );
+									   "412-867-5309", "SodiumChloride", true );
 		try{
 			test_user.setId("12345678");
 			JobsDAO tester = new JobsDAO(test_user);
@@ -55,8 +55,9 @@ public class JobsDAOTest {
 		UserDTO test_user = new UserDTO("1",
 				   "username", "password","Bill", "Laboon",
 				   "laboon@billlaboon.com","Univ of Pitt", 
-				   "412-867-5309", "SodiumChloride" );
-		List<JobsDTO> job_list;
+				   "412-867-5309", "SodiumChloride" ,true);
+		test_user.setId("12345678");
+		List<JobsDTO> job_list = new ArrayList<JobsDTO>();
 		
 		try{
 			JobsDAO tester = new JobsDAO(test_user);

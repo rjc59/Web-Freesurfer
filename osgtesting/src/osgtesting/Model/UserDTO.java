@@ -10,9 +10,10 @@ public class UserDTO {
 	private String phone;
 	private String salt;
 	private String id;
+	private boolean enabled;
 	
 	public UserDTO(String id, String userName, String pass, String name, String surname,
-			String email, String inst, String phone,String salt) {
+			String email, String inst, String phone,String salt, boolean isEnabled) {
 		super();
 		this.userName = userName;
 		this.pass = pass;
@@ -23,6 +24,7 @@ public class UserDTO {
 		this.phone = phone;
 		this.salt=salt;
 		this.id = id;
+		this.enabled = isEnabled;
 	}
 	public UserDTO() {
 	}
@@ -81,6 +83,12 @@ public class UserDTO {
 	}
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+	public boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 }

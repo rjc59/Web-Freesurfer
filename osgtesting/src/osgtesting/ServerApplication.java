@@ -120,7 +120,7 @@ public class ServerApplication {
 										   getFormValue("accountform:email"),
 										   getFormValue("accountform:inst"),
 										   getFormValue("accountform:phoneNumber"),
-									   	   "" );
+									   	   "",true );
 		
 		if( !( site.newAccount( new_account, getFormValue("accountform:firstpass") ) ) ) {
 			System.err.println( "ERROR:\n\tCould not create account." );
@@ -258,12 +258,22 @@ public class ServerApplication {
 			System.err.println( "ERROR:\n\tCould not validate new account password." );
 		}
 	}
+
 	public void loadJobs()
 	{
 		site.updateJobsList();
 		redirect("status.xhtml");
 	}
 	
+
+	public String toggleId(){
+		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
+				getExternalContext().getRequestParameterMap());
+		String id = values.get("idToToggle");
+		site.toggle(id);
+		return id;
+	}
+
 	public String deleteId(){
 		
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
