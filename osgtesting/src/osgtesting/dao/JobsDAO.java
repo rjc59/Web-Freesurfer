@@ -180,12 +180,15 @@ public class JobsDAO {
 			JSONArray json_arr = json_obj.getJSONArray("jobs");
 			for(int i = 0; i < json_arr.length(); i++)
 			{
+			
 				JSONObject job_json = json_arr.getJSONObject(i);
-				JobsDTO new_job = new JobsDTO(job_json.getString("id"),
+			
+				JobsDTO new_job = new JobsDTO(Integer.toString(job_json.getInt("id")),
 											  user,
-											  job_json.getString("url"),
+											  job_json.getString("status"),
 											  "",
-											  job_json.getString("job_name"));
+											  job_json.getString("name"));
+				new_job.setOutput(job_json.getString("output"));
 				job_list.add(new_job);
 			}
 		} catch (Exception e) {
