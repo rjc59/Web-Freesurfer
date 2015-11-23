@@ -7,12 +7,15 @@ public class JobsDTO{
 	private String status;
 	private String updated;	
 	private String name;
+	private String output;
+	
 	public JobsDTO(String id, UserDTO author, String status, String updated, String name){
 		this.id=id;
 		this.author=author;
 		this.status=status;
 		this.updated=updated;
 		this.name=name;
+		this.setOutput("");
 	}
 
 	
@@ -63,5 +66,15 @@ public class JobsDTO{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public String getOutput() {
+		return output;
+	}
+
+
+	public void setOutput(String output) {
+		this.output = output;
 	}	
 }
