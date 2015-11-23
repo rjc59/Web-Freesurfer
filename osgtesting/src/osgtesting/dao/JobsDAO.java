@@ -4,6 +4,7 @@ import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import javax.xml.bind.DatatypeConverter;
@@ -142,16 +143,16 @@ public class JobsDAO {
 		switch(http_response.code())
 		{
 			case 200:
-				System.err.println("Jobfile was successfully submitted. Code:200");
+				System.err.println("Rest api call was successful Code:200");
 				break;
 			case 400:
-				System.err.println("Job submission for file had malformed parameters. Code 400");
+				System.err.println("Rest api called had malformed parameters. Code 400");
 				throw new IOException("Error Code:400 Malformed Parameters");
 			case 500:
-				System.err.println("Job submission for file caused a server error. Code 500");
+				System.err.println("Rest api call caused server error. Code 500");
 				throw new IOException("Error Code:500 Internal Server Error");
 			default:
-				System.err.println("Job submission for file returned unknown");
+				System.err.println("Rest api returned unknown");
 				break;
 		}
 	}
@@ -160,9 +161,9 @@ public class JobsDAO {
 	 *  Takes a UserDTO and returns the a list of all jobs
 	 *  
 	 *  @param user -    A UserDTO to query a jobs list for
-	 *   
+	 *  @param jobs_list	- A list to store the jobs for this user 
 	 */
-	public int GetJobs(UserDTO user, ArrayList<JobsDTO> job_list) throws IOException
+	public List<JobsDTO> GetJobs(UserDTO user) throws IOException
 	{
 		HttpUrl request_url = getUrlRequest();
 		//create post request
@@ -173,7 +174,7 @@ public class JobsDAO {
 		http_response = client.newCall(http_request).execute();	
 		handleHttpResponse(http_response);
 		JSONObject json_obj;
-		job_list = new ArrayList<JobsDTO>();
+		List<JobsDTO> job_list = new ArrayList<JobsDTO>();
 		try {
 			json_obj= new JSONObject(http_response.body().string());
 			JSONArray json_arr = json_obj.getJSONArray("jobs");
@@ -194,7 +195,7 @@ public class JobsDAO {
 		//{"jobs":[{"id":"1","input":"subj_1.mgz","job_name":"job_name1","url":"PROCESSING"},{"id":"23","input":"subj_182.mgz","job_name":"my_job2","url":"COMPLETED"}]}
 		
 		//dummy call right now	
-		return http_response.code();
+		return job_list;
 	}
 	/** Write
 	 *  Takes a JobsDTO and and an Image file and submits it to be processed

@@ -10,6 +10,7 @@ import osgtesting.Model.UserDTO;
 
 import java.io.IOException;
 import java.io.File;
+import java.util.List;
 
 import java.util.ArrayList;
 /*
@@ -55,13 +56,12 @@ public class JobsDAOTest {
 				   "username", "password","Bill", "Laboon",
 				   "laboon@billlaboon.com","Univ of Pitt", 
 				   "412-867-5309", "SodiumChloride" );
-		test_user.setId("12345678");
-		ArrayList<JobsDTO> job_list = new ArrayList<JobsDTO>();
+		List<JobsDTO> job_list;
 		
 		try{
 			JobsDAO tester = new JobsDAO(test_user);
-			int http_code = tester.GetJobs(test_user, job_list);
-			Assert.assertNotEquals(400, http_code);
+			job_list = tester.GetJobs(test_user);
+			Assert.assertNotNull(job_list);
 		}
 		catch(Exception e){
 			e.printStackTrace();

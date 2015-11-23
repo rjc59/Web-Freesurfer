@@ -38,7 +38,7 @@ public class ServerLogic {
 	private CryptoToolbox crypto = new CryptoToolbox();
 	private Emailer mailer=new Emailer();
 	private UserDAO userDAO      = new UserDAO();
-	private JobsDAO jobsDAO;
+	private JobsDAO jobsDAO = null;
 	
 	private List<JobsDTO> job_list   = new ArrayList<JobsDTO>();
 	private List<UserDTO> admin_list = new ArrayList<UserDTO>();
@@ -513,14 +513,17 @@ public class ServerLogic {
 			if(!account.next()){
 				System.out.println("Bad resultset in login"); 
 			}
-			current_user=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
-			jobsDAO = new JobsDAO(current_user);
+			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			
+			if(jobsDAO == null)
+			{
+				jobsDAO = new JobsDAO(current_user);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		int http_code;
 		try {
-			http_code = jobsDAO.GetJobs(current_user, (ArrayList<JobsDTO>)job_list);
+			job_list = jobsDAO.GetJobs(current_user);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

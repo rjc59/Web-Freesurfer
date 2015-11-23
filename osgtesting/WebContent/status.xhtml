@@ -21,7 +21,6 @@
     <script src="./index_files/ie-emulation-modes-warning.js" type="text/javascript"></script>
 
     <link href="./index_files/carousel.css" rel="stylesheet" />
-    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/dt/jq-2.1.4,dt-1.10.10/datatables.min.css"/>
  
 	<script type="text/javascript" src="https://cdn.datatables.net/s/dt/jq-2.1.4,dt-1.10.10/datatables.min.js"></script>
@@ -74,10 +73,6 @@
 	#{jobs.name}
 	</h:column>
 	<h:column >
-	<c:facet name="header">Author</c:facet>
-	#{jobs.author.userName}
-	</h:column>
-	<h:column >
 	<c:facet name="header">Status</c:facet>
 	#{jobs.status}
 	</h:column>
@@ -85,23 +80,14 @@
 	<c:facet name="header">Last Update</c:facet>
 	#{jobs.updated}
 	</h:column>
-		
 </h:dataTable>
 </div>
-<script type="text/javascript">
+	<script type="text/javascript">
 		$(function(){
 			$('#jobsTable').dataTable();
 		});
-</script>
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./index_files/jquery.min.js" type="text/javascript"></script>
-    <script src="./index_files/bootstrap.min.js" type="text/javascript"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <script src="./index_files/holder.min.js" type="text/javascript"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./index_files/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
+	</script>
+	
 
 
 </h:body>
