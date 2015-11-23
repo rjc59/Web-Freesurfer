@@ -27,7 +27,6 @@ public class ServerApplication {
 	//global declarations
 	private DateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private ServerLogic site      = new ServerLogic();
-	private CryptoToolbox hasher = new CryptoToolbox();
 	
 	//functions
 	
@@ -258,6 +257,12 @@ public class ServerApplication {
 			System.err.println( "ERROR:\n\tCould not validate new account password." );
 		}
 	}
+	public void loadJobs()
+	{
+		site.updateJobsList();
+		redirect("status.xhtml");
+	}
+	
 	public boolean isLoggedout(){
 		return site.isLoggedOut();
 	}

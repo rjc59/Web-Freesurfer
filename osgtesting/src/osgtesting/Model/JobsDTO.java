@@ -12,7 +12,7 @@ public class JobsDTO{
 		this.author=author;
 		this.status=status;
 		this.updated=updated;
-		this.name = name;
+		this.name=name;
 	}
 
 	
@@ -53,5 +53,15 @@ public class JobsDTO{
 
 	public void setUpdated(String updated) {
 		this.updated = updated;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
 	}	
 }

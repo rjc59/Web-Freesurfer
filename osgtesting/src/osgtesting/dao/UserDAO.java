@@ -17,6 +17,7 @@ public class UserDAO {
 			DriverManager.registerDriver(new org.postgresql.Driver());
 			con = DriverManager.getConnection("jdbc:postgresql://webfreesurferdb.cbiow68bwd0c.us-east-1.rds.amazonaws.com:5432/osgtestdb","administrator","osgtestdatabase");
 			System.out.println(con.equals(null));
+			
 		}
 		catch(Exception e){
 			System.out.println("uh-oh");
@@ -38,6 +39,7 @@ public class UserDAO {
 			pst=con.prepareStatement("Select username,password,salt from freesurfer_interface.users Where username=?");
 			pst.setString(1, username);
 			rs=pst.executeQuery();
+			//pst.close();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -52,14 +54,16 @@ public class UserDAO {
 	 * @return Single entry containing all account info matching username provided
 	 */
 	public ResultSet edit(String username){
-		PreparedStatement pst;
+		PreparedStatement pst=null;
 		ResultSet rs=null;
 		try{
-			pst=con.prepareStatement("Select * from freesurfer_interface.users where username=?");
+			pst=con.prepareStatement("Select * from freesurfer_interface.users Where username=?");
 			pst.setString(1,username);
 			rs=pst.executeQuery();
 		}catch(SQLException e){
-		e.printStackTrace();}
+		e.printStackTrace();
+		}
+			
 		
 		return rs;
 	}

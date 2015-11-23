@@ -1,5 +1,6 @@
 package osgtesting;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import osgtesting.dao.UserDAO;
+import osgtesting.dao.JobsDAO;
 import osgtesting.email.Emailer;
 
 public class ServerLogic {
@@ -36,6 +38,7 @@ public class ServerLogic {
 	private CryptoToolbox crypto = new CryptoToolbox();
 	private Emailer mailer=new Emailer();
 	private UserDAO userDAO      = new UserDAO();
+	private JobsDAO jobsDAO;
 	
 	private List<JobsDTO> job_list   = new ArrayList<JobsDTO>();
 	private List<UserDTO> admin_list = new ArrayList<UserDTO>();
@@ -72,11 +75,14 @@ public class ServerLogic {
 				System.out.println("Got into correct login block");
 				boolean pass_check = checkPassword(result.getString(2).trim(), result.getString(3).trim(), form_password);
 				if (pass_check) {
+					
 					setUsername(form_username);
 					setLoggedOut(false);
 					if(form_username.equals("admin")){
 						setAdmin(true);
 					}
+					result.close();
+					
 					return true;
 				} else {
 					System.out.println("Password does not match");
@@ -180,7 +186,7 @@ public class ServerLogic {
 		.addQueryParameter("timestamp",Ts)
 		.build();
 		mailer.setTo(new_account.getEmail());
-		message=request_url.toString();
+		String email_message=request_url.toString();
 		mailer.sendToken(message);
 			
 		
@@ -499,6 +505,26 @@ public class ServerLogic {
 		}
 		return false;
 	}
+	
+	public void updateJobsList()
+	{
+		ResultSet account=userDAO.edit("testuser");
+		try {
+			if(!account.next()){
+				System.out.println("Bad resultset in login"); 
+			}
+			current_user=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			jobsDAO = new JobsDAO(current_user);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		int http_code;
+		try {
+			http_code = jobsDAO.GetJobs(current_user, (ArrayList<JobsDTO>)job_list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public String getMessage() {
 		return message;
@@ -584,7 +610,7 @@ public class ServerLogic {
 		return job_list;
 	}
 
-	public void setJobList(List<JobsDTO> job_list) {
+	public void setJobList(ArrayList<JobsDTO> job_list) {
 		this.job_list = job_list;
 	}
 
