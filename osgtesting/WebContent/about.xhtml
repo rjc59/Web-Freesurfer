@@ -45,7 +45,7 @@
                   <a href="about.xhtml" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><h:form><h:link value="Register" rendered="#{serverApplication.loggedout}" outcome="register.xhtml"/></h:form></li>
-                    <li><h:form><h:link value="Job Statuses" rendered="#{!serverApplication.loggedout}" outcome="status.xhtml"/></h:form></li>
+                    <li><h:form><h:commandLink value="Job Statuses" actionListener="#{serverApplication.loadJobs}" rendered="#{!serverApplication.loggedout}" outcome="status.xhtml"/></h:form></li>
 				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{serverApplication.editAccount}" rendered="#{!serverApplication.loggedout}" outcome="account.xhtml"/></h:form></li>
 					<li><h:form><h:commandLink value = "Change Password" actionListener="#{serverApplication.editPassword}" rendered="#{!serverApplication.loggedout}" outcome="password.xhtml"/></h:form></li>
 					<li><h:form><h:commandLink value = "Admin Functions" actionListener="#{serverApplication.adminRedirect}" rendered="#{serverApplication.admin}" outcome="admin.xhtml"/></h:form></li>

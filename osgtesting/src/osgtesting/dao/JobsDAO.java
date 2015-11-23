@@ -16,7 +16,6 @@ import com.squareup.okhttp.Response;
 import com.squareup.okhttp.HttpUrl;
 import org.json.JSONObject;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 public class JobsDAO {
 	private String freesurfer_interface;
@@ -188,7 +187,7 @@ public class JobsDAO {
 											  job_json.getString("job_name"));
 				job_list.add(new_job);
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IOException("Bad JSON");
 		}

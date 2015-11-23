@@ -258,6 +258,11 @@ public class ServerApplication {
 			System.err.println( "ERROR:\n\tCould not validate new account password." );
 		}
 	}
+	public void loadJobs()
+	{
+		site.updateJobsList();
+		redirect("status.xhtml");
+	}
 	
 	public String deleteId(){
 		

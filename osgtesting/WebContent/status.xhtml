@@ -21,6 +21,10 @@
     <script src="./index_files/ie-emulation-modes-warning.js" type="text/javascript"></script>
 
     <link href="./index_files/carousel.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/dt/jq-2.1.4,dt-1.10.10/datatables.min.css"/>
+ 
+	<script type="text/javascript" src="https://cdn.datatables.net/s/dt/jq-2.1.4,dt-1.10.10/datatables.min.js"></script>
 </h:head> 
 <h:body >
 <div class="navbar-wrapper">
@@ -45,7 +49,7 @@
                   <a href="status.xhtml" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                      <li><h:form><h:link value="Register" rendered="#{serverApplication.loggedout}" outcome="register.xhtml"/></h:form></li>
-                    <li><h:form><h:link value="Job Statuses" rendered="#{!serverApplication.loggedout}" outcome="status.xhtml"/></h:form></li>
+                    <li><h:form><h:commandLink value="Job Statuses" actionListener="#{serverApplication.loadJobs}" rendered="#{!serverApplication.loggedout}" outcome="status.xhtml"/></h:form></li>
 				    <li><h:form><h:commandLink value="Edit Account" actionListener="#{serverApplication.editAccount}" rendered="#{!serverApplication.loggedout}" outcome="account.xhtml"/></h:form></li>
 					<li><h:form><h:commandLink value = "Change Password" actionListener="#{serverApplication.editPassword}" rendered="#{!serverApplication.loggedout}" outcome="password.xhtml"/></h:form></li>
 					<li><h:form><h:commandLink value = "Admin Functions" actionListener="#{serverApplication.adminRedirect}" rendered="#{serverApplication.admin}" outcome="admin.xhtml"/></h:form></li>
@@ -59,14 +63,19 @@
       </div>
     </div>		
 	<br/><br/><br/><br/><br/>
-<h:dataTable value="#{serverApplication.jobList}" var="jobs">
+<div class="container">
+<h:dataTable id="jobsTable" value="#{serverApplication.jobList}" var="jobs" columnClasses="col1,col2,col3,col4,col5">
 	<h:column >
 	<c:facet name="header">Job ID</c:facet>
 	#{jobs.id}
 	</h:column>
 	<h:column >
+	<c:facet name="header">Job Name</c:facet>
+	#{jobs.name}
+	</h:column>
+	<h:column >
 	<c:facet name="header">Author</c:facet>
-	#{jobs.author}
+	#{jobs.author.userName}
 	</h:column>
 	<h:column >
 	<c:facet name="header">Status</c:facet>
@@ -78,7 +87,12 @@
 	</h:column>
 		
 </h:dataTable>
-
+</div>
+<script type="text/javascript">
+		$(function(){
+			$('#jobsTable').dataTable();
+		});
+</script>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
