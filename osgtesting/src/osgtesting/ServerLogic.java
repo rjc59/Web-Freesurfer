@@ -505,7 +505,11 @@ public class ServerLogic {
 		}
 		return false;
 	}
-	
+	/**
+	 * updateJobsList
+	 * Updates the job_list for the current user, creates a new list
+	 * 
+	 */
 	public void updateJobsList()
 	{
 		ResultSet account=userDAO.edit(username);
@@ -528,12 +532,15 @@ public class ServerLogic {
 			e.printStackTrace();
 		}
 	}
-
-	public void delete(String id){
+	/**
+	 * deleteUserID
+	 * Delete the user with the primary key id
+	 * @param id - The primary key id for the user
+	 */
+	public void deleteUserID(String id){
 		try {
 			userDAO.delete(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

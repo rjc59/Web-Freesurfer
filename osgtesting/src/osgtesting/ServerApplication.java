@@ -269,7 +269,7 @@ public class ServerApplication {
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
 				getExternalContext().getRequestParameterMap());
 		String id = values.get("idToDelete");
-		site.delete(id);
+		site.deleteUserID(id);
 		return id;
 	}
 	public boolean isLoggedout(){
