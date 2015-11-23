@@ -38,7 +38,7 @@ public class JobsDAOTest {
 			JobsDTO test_job = new JobsDTO("123123", test_user, "UPLOADED",time_stamp, "test_job");
 			//Perform the Write
 			int http_code = tester.Write(test_job, test_file);
-			Assert.assertNotEquals(400, http_code);
+			Assert.assertNotEquals(401, http_code);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -71,4 +71,27 @@ public class JobsDAOTest {
 		
 	}
 	
+	/*******************************/
+	/**  GetJobsGoodParameterTest **/
+	/**
+	 **  @throws IOException *****/
+	/*  Valid delete param test*/
+	@Test
+	public void testDeleteJobGoodParam() throws IOException{
+		UserDTO test_user = new UserDTO("1",
+				   "username", "password","Bill", "Laboon",
+				   "laboon@billlaboon.com","Univ of Pitt", 
+				   "412-867-5309", "SodiumChloride" ,true);
+		
+		try{
+			JobsDAO tester = new JobsDAO(test_user);
+			int code = tester.delete(test_user, "1");
+			Assert.assertNotEquals(401, code);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			fail("Exception: "+ e.toString()+" was thown.");
+		}
+		
+	}
 }

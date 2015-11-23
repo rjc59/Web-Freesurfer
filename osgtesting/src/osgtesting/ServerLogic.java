@@ -543,7 +543,6 @@ public class ServerLogic {
 			userDAO.delete(id);
 			setAdminList(userDAO.read());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

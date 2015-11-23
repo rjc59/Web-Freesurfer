@@ -136,7 +136,7 @@ public class JobsDAO {
 	 *  Takes a htt_response and throws exceptions for bad responses
 	 *  
 	 *  @param http_response - 	A http_response from freesurfer_interface
-	 *  
+	 *  @throws IOException
 	*/
 	private void handleHttpResponse(Response http_response) throws IOException
 	{
@@ -161,7 +161,8 @@ public class JobsDAO {
 	 *  Takes a UserDTO and returns the a list of all jobs
 	 *  
 	 *  @param user -    A UserDTO to query a jobs list for
-	 *  @param jobs_list	- A list to store the jobs for this user 
+	 *  @return     - A list to store the jobs for this user 
+	 *  @throws IOException
 	 */
 	public List<JobsDTO> GetJobs(UserDTO user) throws IOException
 	{
@@ -195,16 +196,15 @@ public class JobsDAO {
 			e.printStackTrace();
 			throw new IOException("Bad JSON");
 		}
-		//{"jobs":[{"id":"1","input":"subj_1.mgz","job_name":"job_name1","url":"PROCESSING"},{"id":"23","input":"subj_182.mgz","job_name":"my_job2","url":"COMPLETED"}]}
 		
-		//dummy call right now	
 		return job_list;
 	}
 	/** Write
 	 *  Takes a JobsDTO and and an Image file and submits it to be processed
 	 *  
-	 *  @param user -    A JobsDTO containing the information for the new job
-	 *  @param job_file - A java File object to reference the image sequence file 
+	 *  @param job      - A JobsDTO containing the information for the new job
+	 *  @param job_file - A java File object to reference the image sequence file
+	 *  @throws IOException 
 	 */
 	public int Write(JobsDTO job, File job_file) throws IOException
 	{
@@ -222,9 +222,16 @@ public class JobsDAO {
 		handleHttpResponse(http_response);
 		return http_response.code();
 	}
-	
+	/** delete
+	 *  Takes a JobsDTO and and an Image file and submits it to be processed
+	 *  
+	 *  @param user -    A UserDTO containing the information for the user deleting the job.
+	 *  @param job_id - A string containing the primary key job_id for the selected job.
+	 *  @throws IOException
+	 */
 	public int delete(UserDTO user, String job_id) throws IOException
 	{
+		//create URL
 		HttpUrl request_url = new HttpUrl.Builder()
 				.scheme("http")
 				.host(freesurfer_interface)
@@ -235,14 +242,17 @@ public class JobsDAO {
 				.addQueryParameter("token", token)
 				.addQueryParameter("jobid", job_id)
 				.build();
-		
+		//Create delete request
 		Request http_request = new Request.Builder()
 				.url(request_url)
 				.delete()
 				.build();
 		Response http_response;
+		//make the call
 		http_response = client.newCall(http_request).execute();	
+		//handle response
 		handleHttpResponse(http_response);
+		//return the response code
 		return http_response.code();
 	}
 }
