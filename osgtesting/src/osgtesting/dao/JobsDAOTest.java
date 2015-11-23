@@ -34,7 +34,7 @@ public class JobsDAOTest {
 			File test_file = File.createTempFile("test_file", ".mgz");
 			//Test JobsDTO
 			String time_stamp = Long.toString((System.currentTimeMillis() / 1000L));
-			JobsDTO test_job = new JobsDTO("123123", test_user, "UPLOADED",time_stamp);
+			JobsDTO test_job = new JobsDTO("123123", test_user, "UPLOADED",time_stamp, "test_job");
 			//Perform the Write
 			int http_code = tester.Write(test_job, test_file);
 			Assert.assertNotEquals(400, http_code);

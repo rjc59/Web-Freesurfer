@@ -14,6 +14,9 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.HttpUrl;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class JobsDAO {
 	private String freesurfer_interface;
@@ -40,8 +43,8 @@ public class JobsDAO {
 			e.printStackTrace();
 		}
 		
-		freesurfer_interface = "zane-Latitude-E6410";
-		port = 8080;
+		freesurfer_interface = "Scott-PC";
+		port = 8085;
 	}
 	
 	/** getUrllRequest
@@ -170,8 +173,28 @@ public class JobsDAO {
 		Response http_response;
 		http_response = client.newCall(http_request).execute();	
 		handleHttpResponse(http_response);
-		//dummy call right now	
+		JSONObject json_obj;
 		job_list = new ArrayList<JobsDTO>();
+		try {
+			json_obj= new JSONObject(http_response.body().string());
+			JSONArray json_arr = json_obj.getJSONArray("jobs");
+			for(int i = 0; i < json_arr.length(); i++)
+			{
+				JSONObject job_json = json_arr.getJSONObject(i);
+				JobsDTO new_job = new JobsDTO(job_json.getString("id"),
+											  user,
+											  job_json.getString("url"),
+											  "",
+											  job_json.getString("job_name"));
+				job_list.add(new_job);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			throw new IOException("Bad JSON");
+		}
+		//{"jobs":[{"id":"1","input":"subj_1.mgz","job_name":"job_name1","url":"PROCESSING"},{"id":"23","input":"subj_182.mgz","job_name":"my_job2","url":"COMPLETED"}]}
+		
+		//dummy call right now	
 		return http_response.code();
 	}
 	/** Write
@@ -191,6 +214,29 @@ public class JobsDAO {
 		System.err.println("URL: "+ request_url);
 		Request http_request = writeHTTPRequest(request_url, request_body);
 		//make RESTful calls to OSGConnect freesurfer_interface
+		Response http_response;
+		http_response = client.newCall(http_request).execute();	
+		handleHttpResponse(http_response);
+		return http_response.code();
+	}
+	
+	public int delete(UserDTO user, String job_id) throws IOException
+	{
+		HttpUrl request_url = new HttpUrl.Builder()
+				.scheme("http")
+				.host(freesurfer_interface)
+				.port(port)
+				.addPathSegment("freesurfer")
+				.addPathSegment("jobs")
+				.addQueryParameter("userid", user.getId())
+				.addQueryParameter("token", token)
+				.addQueryParameter("jobid", job_id)
+				.build();
+		
+		Request http_request = new Request.Builder()
+				.url(request_url)
+				.delete()
+				.build();
 		Response http_response;
 		http_response = client.newCall(http_request).execute();	
 		handleHttpResponse(http_response);

@@ -6,12 +6,13 @@ public class JobsDTO{
 	private UserDTO author;
 	private String status;
 	private String updated;	
-	
-	public JobsDTO(String id, UserDTO author, String status, String updated){
+	private String name;
+	public JobsDTO(String id, UserDTO author, String status, String updated, String name){
 		this.id=id;
 		this.author=author;
 		this.status=status;
 		this.updated=updated;
+		this.name = name;
 	}
 
 	
