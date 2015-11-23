@@ -508,7 +508,7 @@ public class ServerLogic {
 	
 	public void updateJobsList()
 	{
-		ResultSet account=userDAO.edit("testuser");
+		ResultSet account=userDAO.edit(username);
 		try {
 			if(!account.next()){
 				System.out.println("Bad resultset in login"); 
