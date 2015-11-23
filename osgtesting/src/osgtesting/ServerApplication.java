@@ -258,14 +258,21 @@ public class ServerApplication {
 			System.err.println( "ERROR:\n\tCould not validate new account password." );
 		}
 	}
-
+	/**
+	 * loadJobs
+	 * loads the user's jobs into the job_list then redirects to the status page
+	 */
 	public void loadJobs()
 	{
 		site.updateJobsList();
 		redirect("status.xhtml");
 	}
 	
-
+	/**
+	 * toggleID
+	 * Gets the ID from the form submission and calls ServerLogic to enable/disable their account
+	 * @return - Returns a String with the user's ID
+	 */
 	public String toggleId(){
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
 				getExternalContext().getRequestParameterMap());
@@ -273,7 +280,11 @@ public class ServerApplication {
 		site.toggle(id);
 		return id;
 	}
-
+	/**
+	 * deleteId
+	 * Gets the selected user ID from the form submission and calls ServerLogic to delete that user.
+	 * @return - Returns a String with the deleted user's ID.
+	 */
 	public String deleteId(){
 		
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
@@ -288,7 +299,6 @@ public class ServerApplication {
 	public boolean isAdmin(){
 		return site.isAdmin();
 	}
-	
 	public UserDTO getCurrentUser(){
 		return site.getCurrent_user();
 	}
