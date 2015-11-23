@@ -18,5 +18,7 @@
 	<classpathentry kind="lib" path="lib/jackson-core-2.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/okhttp-2.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/okio-1.6.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSF 2.2 (Mojarra 2.2.0)"/>
+	<classpathentry kind="lib" path="lib/org.json-20120521.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
