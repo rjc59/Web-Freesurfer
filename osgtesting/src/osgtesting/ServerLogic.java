@@ -506,10 +506,14 @@ public class ServerLogic {
 		}
 		return false;
 	}
-	
+	/**
+	 * updateJobsList
+	 * Updates the job_list for the current user, creates a new list
+	 * 
+	 */
 	public void updateJobsList()
 	{
-		ResultSet account=userDAO.edit("testuser");
+		ResultSet account=userDAO.edit(username);
 		try {
 			if(!account.next()){
 				System.out.println("Bad resultset in login"); 
@@ -529,8 +533,12 @@ public class ServerLogic {
 			e.printStackTrace();
 		}
 	}
-
-	public void delete(String id){
+	/**
+	 * deleteUserID
+	 * Delete the user with the primary key id
+	 * @param id - The primary key id for the user
+	 */
+	public void deleteUserID(String id){
 		try {
 			userDAO.delete(id);
 			setAdminList(userDAO.read());
@@ -544,7 +552,6 @@ public class ServerLogic {
 			userDAO.toggle(id);
 			setAdminList(userDAO.read());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
