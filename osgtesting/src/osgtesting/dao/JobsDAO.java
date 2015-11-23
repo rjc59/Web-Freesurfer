@@ -43,7 +43,7 @@ public class JobsDAO {
 			e.printStackTrace();
 		}
 		
-		freesurfer_interface = "Scott-PC";
+		freesurfer_interface = "zane-Latitude-E6410";
 		port = 8085;
 	}
 	

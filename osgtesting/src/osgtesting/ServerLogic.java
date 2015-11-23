@@ -546,7 +546,15 @@ public class ServerLogic {
 			e.printStackTrace();
 		}
 	}
-	public void toggle(String id){
+	public void deleteJobId(String id){
+		try {
+			jobsDAO.delete(current_user,id);
+			setAdminList(userDAO.read());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void toggleUserId(String id){
 		try {
 			userDAO.toggle(id);
 			setAdminList(userDAO.read());
