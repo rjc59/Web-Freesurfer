@@ -29,6 +29,7 @@ public class ServerLogic {
 	private String institution  = new String("");
 	private String email        = new String("");
 	private String phone_number = new String("");
+	private boolean enabled = false;
 	
 	private boolean logged_out = true;
 	private boolean admin      = false;
@@ -121,7 +122,7 @@ public class ServerLogic {
 				System.out.println("whoops     "); 
 				return false;
 			}
-			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9),account.getBoolean(10));
 			System.out.println(current_user.getName());
 	
 			setAdminList(userDAO.read());
@@ -246,7 +247,7 @@ public class ServerLogic {
 				System.out.println("whoops     "); 
 				return false;
 			}
-			current_user = new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user = new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9),account.getBoolean(10));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -292,7 +293,7 @@ public class ServerLogic {
 				System.out.println("whoops     "); 
 				return false;
 			}
-			current_user = new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user = new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9),account.getBoolean(10));
 			System.out.println(current_user.getName());
 			return true;
 		} catch (Exception e) {
@@ -513,7 +514,7 @@ public class ServerLogic {
 			if(!account.next()){
 				System.out.println("Bad resultset in login"); 
 			}
-			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9),account.getBoolean(10));
 			
 			if(jobsDAO == null)
 			{
@@ -532,6 +533,16 @@ public class ServerLogic {
 	public void delete(String id){
 		try {
 			userDAO.delete(id);
+			setAdminList(userDAO.read());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void toggle(String id){
+		try {
+			userDAO.toggle(id);
+			setAdminList(userDAO.read());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -599,6 +610,14 @@ public class ServerLogic {
 
 	public void setPhoneNumber(String phone_number) {
 		this.phone_number = phone_number;
+	}
+	
+	public boolean getAcctEnabled() {
+		return enabled;
+	}
+
+	public void setAcctEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public boolean isLoggedOut() {
