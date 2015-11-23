@@ -1,5 +1,6 @@
 package osgtesting;
 
+import java.util.HashMap;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ public class ServerApplication {
 	//global declarations
 	private DateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private ServerLogic site      = new ServerLogic();
-	
+	private CryptoToolbox hasher = new CryptoToolbox();
 	//functions
 	
 	/**
@@ -112,7 +113,7 @@ public class ServerApplication {
 	 * Attempts to create a new account from information gathered from a form.
 	 */
 	public void newAccount() {
-		UserDTO new_account = new UserDTO( getFormValue("accountform:userName"), 
+		UserDTO new_account = new UserDTO( "",getFormValue("accountform:userName"), 
 										   "",
 										   getFormValue("accountform:firstName"),
 										   getFormValue("accountform:lastName"),
@@ -263,6 +264,14 @@ public class ServerApplication {
 		redirect("status.xhtml");
 	}
 	
+	public String deleteId(){
+		
+		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
+				getExternalContext().getRequestParameterMap());
+		String id = values.get("idToDelete");
+		site.delete(id);
+		return id;
+	}
 	public boolean isLoggedout(){
 		return site.isLoggedOut();
 	}

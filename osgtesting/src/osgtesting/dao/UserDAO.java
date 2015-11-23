@@ -67,7 +67,7 @@ public class UserDAO {
 		
 		return rs;
 	}
-
+	
 	/**
 	 * Writes new account DTO to db
 	 * 
@@ -88,7 +88,12 @@ public class UserDAO {
 		
 		pst.execute();
 	}
-
+	public void delete(String id) throws SQLException{
+		PreparedStatement pst;
+		pst = con.prepareStatement("DELETE FROM freesurfer_interface.users WHERE id=?");
+		pst.setInt(1, Integer.parseInt(id));
+		pst.execute();
+	}
 	/**
 	 * Method to ensure db connection and users exist
 	 * 
@@ -100,7 +105,7 @@ public class UserDAO {
 			PreparedStatement pstmt=con.prepareStatement("Select * from freesurfer_interface.users");
 			ResultSet rs=pstmt.executeQuery();
 			while (rs.next()) {
-			results.add(new UserDTO(rs.getString(2),rs.getString(8),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(9)));
+			results.add(new UserDTO(rs.getString(1),rs.getString(2),rs.getString(8),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(9)));
 			}
 			if(!rs.equals(null)){
 			}

@@ -24,7 +24,7 @@ public class JobsDAOTest {
 	/*  Valid Write Good Param Test */
 	@Test
 	public void testWriteGoodParam() {
-		UserDTO test_user = new UserDTO("username", "password","Bill", "Laboon",
+		UserDTO test_user = new UserDTO("1","username", "password","Bill", "Laboon",
 									   "laboon@laboon.com","Univ of Pitt", 
 									   "412-867-5309", "SodiumChloride" );
 		try{
@@ -51,7 +51,7 @@ public class JobsDAOTest {
 	/*  Valid Write Param Test */
 	@Test
 	public void testGetJobsGoodParam() throws IOException{
-		UserDTO test_user = new UserDTO(
+		UserDTO test_user = new UserDTO("1",
 				   "username", "password","Bill", "Laboon",
 				   "laboon@billlaboon.com","Univ of Pitt", 
 				   "412-867-5309", "SodiumChloride" );
