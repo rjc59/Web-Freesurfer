@@ -11,7 +11,7 @@ public class UserDTO {
 	private String salt;
 	private String id;
 	
-	public UserDTO(String userName, String pass, String name, String surname,
+	public UserDTO(String id, String userName, String pass, String name, String surname,
 			String email, String inst, String phone,String salt) {
 		super();
 		this.userName = userName;
@@ -22,6 +22,7 @@ public class UserDTO {
 		this.inst = inst;
 		this.phone = phone;
 		this.salt=salt;
+		this.id = id;
 	}
 	public UserDTO() {
 	}

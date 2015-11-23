@@ -99,7 +99,7 @@ public class ServerLogic {
 		username = "";
 		
 		setLoggedOut(true);
-		
+		admin=false;
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class ServerLogic {
 				System.out.println("whoops     "); 
 				return false;
 			}
-			current_user=new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
 			System.out.println(current_user.getName());
 	
 			setAdminList(userDAO.read());
@@ -240,7 +240,7 @@ public class ServerLogic {
 				System.out.println("whoops     "); 
 				return false;
 			}
-			current_user = new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user = new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -286,7 +286,7 @@ public class ServerLogic {
 				System.out.println("whoops     "); 
 				return false;
 			}
-			current_user = new UserDTO(account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
+			current_user = new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9));
 			System.out.println(current_user.getName());
 			return true;
 		} catch (Exception e) {
@@ -499,7 +499,14 @@ public class ServerLogic {
 		}
 		return false;
 	}
-
+	public void delete(String id){
+		try {
+			userDAO.delete(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public String getMessage() {
 		return message;
 	}
