@@ -270,7 +270,7 @@ public class ServerApplication {
 	
 	/**
 	 * toggleUserID
-	 * Gets the ID from the form submission and calls ServerLogic to enable/disable their account
+	 * Gets the ID from the table and calls ServerLogic to enable/disable their account
 	 * @return - Returns a String with the user's ID
 	 */
 	public String toggleUserId(){
@@ -282,7 +282,7 @@ public class ServerApplication {
 	}
 	/**
 	 * deleteUserId
-	 * Gets the selected user ID from the form submission and calls ServerLogic to delete that user.
+	 * Gets the selected user ID from the table and calls ServerLogic to delete that user.
 	 * @return - Returns a String with the deleted user's ID.
 	 */
 	public String deleteUserId(){
@@ -293,6 +293,11 @@ public class ServerApplication {
 		site.deleteUserID(id);
 		return id;
 	}
+	/**
+	 * deleteJobId
+	 * Gets the selected job ID from the table and calls ServerLogic to delete that user.
+	 * @return - Returns a String with the deleted job's ID.
+	 */
 	public String deleteJobId(){
 		
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().

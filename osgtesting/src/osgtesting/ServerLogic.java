@@ -546,6 +546,11 @@ public class ServerLogic {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * deleteJobId
+	 * Uses JobsDAO to delete the specified Job
+	 * @param id - Job ID to delete
+	 */
 	public void deleteJobId(String id){
 		try {
 			jobsDAO.delete(current_user,id);
@@ -554,6 +559,11 @@ public class ServerLogic {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * toggleUserId
+	 * Uses UserDAO to toggle the status of the specified user
+	 * @param id - User ID to toggle enabled/disabled
+	 */
 	public void toggleUserId(String id){
 		try {
 			userDAO.toggle(id);
