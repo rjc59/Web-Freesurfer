@@ -67,7 +67,7 @@
     </div>		
 	<br/><br/><br/><br/><br/>
 <div class="container">
-<h:dataTable id="jobsTable" value="#{serverApplication.jobList}" var="jobs" columnClasses="col1,col2,col3,col4,col5">
+<h:dataTable id="jobsTable" value="#{serverApplication.jobList}" var="jobs" columnClasses="col1,col2,col3,col4,col5,col6">
 	<h:column >
 	<c:facet name="header">Job ID</c:facet>
 	#{jobs.id}
@@ -83,6 +83,13 @@
 	<h:column >
 	<c:facet name="header">Output</c:facet>
 	#{jobs.output}
+	</h:column>
+	<h:column >
+	<c:facet name="header"></c:facet>
+	<h:form id="deleteForm">
+	<input type="hidden" name="idToDelete" value="#{jobs.id}"/>
+	<h:commandButton value="Delete Job" action="#{serverApplication.deleteJobId}" />
+	</h:form>
 	</h:column>
 </h:dataTable>
 </div>

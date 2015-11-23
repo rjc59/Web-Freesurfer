@@ -269,28 +269,36 @@ public class ServerApplication {
 	}
 	
 	/**
-	 * toggleID
+	 * toggleUserID
 	 * Gets the ID from the form submission and calls ServerLogic to enable/disable their account
 	 * @return - Returns a String with the user's ID
 	 */
-	public String toggleId(){
+	public String toggleUserId(){
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
 				getExternalContext().getRequestParameterMap());
 		String id = values.get("idToToggle");
-		site.toggle(id);
+		site.toggleUserId(id);
 		return id;
 	}
 	/**
-	 * deleteId
+	 * deleteUserId
 	 * Gets the selected user ID from the form submission and calls ServerLogic to delete that user.
 	 * @return - Returns a String with the deleted user's ID.
 	 */
-	public String deleteId(){
+	public String deleteUserId(){
 		
 		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
 				getExternalContext().getRequestParameterMap());
 		String id = values.get("idToDelete");
 		site.deleteUserID(id);
+		return id;
+	}
+	public String deleteJobId(){
+		
+		HashMap<String, String> values = new HashMap<String,String>(FacesContext.getCurrentInstance().
+				getExternalContext().getRequestParameterMap());
+		String id = values.get("idToDelete");
+		site.deleteJobId(id);
 		return id;
 	}
 	public boolean isLoggedout(){

@@ -101,14 +101,14 @@
 	<c:facet name="header"></c:facet>
 	<h:form id="deleteForm">
 	<input type="hidden" name="idToDelete" value="#{users.id}"/>
-	<h:commandButton value="Delete user" action="#{serverApplication.deleteId}" />
+	<h:commandButton value="Delete user" action="#{serverApplication.deleteUserId}" />
 	</h:form>
 	</h:column>
 	<h:column >
 	<c:facet name="header"></c:facet>
 	<h:form id="toggleForm">
 	<input type="hidden" name="idToToggle" value="#{users.id}"/>
-	<h:commandButton value="Enable/Disable User" action="#{serverApplication.toggleId}" />
+	<h:commandButton value="Enable/Disable User" action="#{serverApplication.toggleUserId}" />
 	</h:form>
 	</h:column>
 		
