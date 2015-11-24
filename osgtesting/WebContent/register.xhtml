@@ -61,7 +61,7 @@
 	<br/><br/><br/><br/><br/>
 
 	<h:form id="accountform">
-	
+	<h:panelGrid style="margin: 0 auto;">
 	<h:panelGrid columns="3">
 	
 	<c:event listener="#{serverApplication.validatePassword}" type="postValidate"/>
@@ -98,7 +98,7 @@
 	<h:inputText id = "phoneNumber" required="True" requiredMessage="Please enter a phone number"/>
 	<h:message for="phoneNumber" style="color:red;"/>
 	<h:commandButton value="Create Account" actionListener="#{serverApplication.newAccount()}"/>
-	
+	</h:panelGrid>
 	</h:panelGrid>
 	
 	
