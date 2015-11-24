@@ -1,8 +1,13 @@
 package osgtesting;
 
 import java.util.HashMap;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -17,11 +22,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.servlet.http.*;
+
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 import osgtesting.Model.JobsDTO;
 import osgtesting.Model.UserDTO;
 import osgtesting.Util.CryptoToolbox;
 import osgtesting.email.*;
+import static java.nio.file.StandardCopyOption.*;
 
 
 public class ServerApplication {
@@ -29,8 +38,9 @@ public class ServerApplication {
 	private DateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	private ServerLogic site      = new ServerLogic();
 	private CryptoToolbox hasher = new CryptoToolbox();
+	private Part file;
 	//functions
-	
+
 	/**
 	 * ServerApplication
 	 * Constructor function for the ServerApplication class.
@@ -99,13 +109,26 @@ public class ServerApplication {
 	 * upload
 	 * I didn't make this and I don't know what id does aside from adding a job to the joblist
 	 */
-	public void upload(){
-		Calendar calendar = Calendar.getInstance();
-		Date date = calendar.getTime();
-		String strDate= dateformat.format(date);
-		String status="Uploaded";
-		String id=UUID.randomUUID().toString();
-		//jobList.add(new JobsDTO(id,name,status,strDate));
+	public String uploadFile(){
+		System.out.println("made it!");
+		Path old_file_path = null;
+		try (InputStream input = file.getInputStream()) {
+			for (String cd : file.getHeader("content-disposition").split(";")) {
+				if (cd.trim().startsWith("filename")) {
+					old_file_path= Paths.get(cd.substring(cd.indexOf('=') + 1).trim()
+							.replace("\"", ""));
+				}
+			}
+			String old_file_name = old_file_path.getFileName().toString();
+			File file_to_send = File.createTempFile(old_file_name, ".mgz");
+	        Files.copy(input, file_to_send.toPath(), REPLACE_EXISTING);
+	        site.uploadFile(file_to_send,  old_file_name);
+	        return "SUCCESS";
+	    }
+	    catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		return "FAILED";
 	}
 	
 	/**
@@ -323,5 +346,11 @@ public class ServerApplication {
 	}
 	public List<JobsDTO> getJobList() {
 		return site.getJobList();
+	}
+	public Part getFile() {
+		return file;
+	}
+	public void setFile(Part file) {
+		this.file = file;
 	}
 }

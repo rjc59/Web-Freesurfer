@@ -62,8 +62,8 @@
 
 <h:form enctype="multipart/form-data">
 <h:panelGrid style="margin: 0 auto;">
-<h:inputFile></h:inputFile>
-<h:commandButton actionListener="#{serverApplication.upload()}" value="Upload Job"></h:commandButton>
+<h:inputFile value="#{serverApplication.file}"/>
+<h:commandButton actionListener="#{serverApplication.uploadFile()}" value="Upload Job"></h:commandButton>
 </h:panelGrid>
 </h:form>
 

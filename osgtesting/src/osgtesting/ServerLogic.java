@@ -1,5 +1,6 @@
 package osgtesting;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -513,20 +514,9 @@ public class ServerLogic {
 	 */
 	public void updateJobsList()
 	{
-		ResultSet account=userDAO.edit(username);
-		try {
-			if(!account.next()){
-				System.out.println("Bad resultset in login"); 
-			}
-			current_user=new UserDTO(account.getString(1),account.getString(2),account.getString(8),account.getString(3),account.getString(4),account.getString(5),account.getString(6),account.getString(7),account.getString(9),account.getBoolean(10));
-			
-			if(jobsDAO == null)
-			{
-				jobsDAO = new JobsDAO(current_user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		initUser();
+		jobsDAO = new JobsDAO(current_user);
+		
 		try {
 			job_list = jobsDAO.GetJobs(current_user);
 		} catch (IOException e) {
@@ -569,6 +559,44 @@ public class ServerLogic {
 			userDAO.toggle(id);
 			setAdminList(userDAO.read());
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * uploadFile
+	 * Uploads a file for the current user
+	 * @param file_to_send - the image file to be processed
+	 * @param old_filename 
+	 * @throws IOException
+	 */
+	public void uploadFile(File file_to_send, String old_filename) throws IOException {
+		initUser();
+		jobsDAO = new JobsDAO(current_user);
+		JobsDTO job = new JobsDTO("", current_user, "", "", old_filename); 
+		jobsDAO.Write(job, file_to_send);
+		
+	}
+	
+	/**
+	 * initUser
+	 * Initializes the UserDTO for this user from a the Data base
+	 */
+	public void initUser()
+	{
+		ResultSet account=userDAO.edit(username);
+		try {
+			if(!account.next()){
+				System.out.println("Bad resultset in login"); 
+			}
+			current_user=new UserDTO(account.getString(1),account.getString(2),
+									 account.getString(8),account.getString(3),
+									 account.getString(4),account.getString(5),
+									 account.getString(6),account.getString(7),
+									 account.getString(9),account.getBoolean(10));
+		account.close();
+		}catch(SQLException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -683,5 +711,7 @@ public class ServerLogic {
 	public void setCurrent_user(UserDTO current_user) {
 		this.current_user = current_user;
 	}
+
+
 	
 }
