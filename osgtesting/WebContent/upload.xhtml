@@ -62,9 +62,9 @@
 
 <h:form enctype="multipart/form-data">
 <h:panelGrid>
-<h:inputFile></h:inputFile>
+<h:inputFile value="#{serverApplication.file}"/>
 </h:panelGrid>
-<h:commandButton actionListener="#{serverApplication.upload()}" value="Upload Job"></h:commandButton>
+<h:commandButton actionListener="#{serverApplication.uploadFile()}" value="Upload Job"></h:commandButton>
 </h:form>
 
 	<!-- Bootstrap core JavaScript

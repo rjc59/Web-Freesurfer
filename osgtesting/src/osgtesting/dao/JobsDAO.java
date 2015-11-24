@@ -95,9 +95,9 @@ public class JobsDAO {
 				.addPathSegment("jobs")
 				.addQueryParameter("userid", job.getAuthor().getId())
 				.addQueryParameter("token", token)
-				.addQueryParameter("filename", job_file_name)
+				.addQueryParameter("filename", job.getName())
 				.addQueryParameter("singlecore", "true")
-				.addQueryParameter("jobname", job_file_name)
+				.addQueryParameter("jobname", job.getName())
 				.build();
 		return request_url;
 	}
@@ -123,11 +123,11 @@ public class JobsDAO {
 	 * @param job_file -  a java File object containing the new job file
 	 * 
 	 */
-	private RequestBody createFileBody(File job_file)
+	private RequestBody createFileBody(File job_file, JobsDTO job)
 	{
 		RequestBody file_body = RequestBody.create(MediaType.parse("application/plain"), job_file);
 		RequestBody request_body = new MultipartBuilder().type(MultipartBuilder.FORM)
-				.addFormDataPart("jobfile", job_file.getName(), file_body)
+				.addFormDataPart("jobfile", job.getName(), file_body)
 				.build();
 		return request_body;
 	}
@@ -210,7 +210,7 @@ public class JobsDAO {
 	{
 		//create request body
 		
-		RequestBody request_body = createFileBody(job_file);
+		RequestBody request_body = createFileBody(job_file, job);
 		//create url
 		HttpUrl request_url = writeUrlRequest(job, job_file.getName());
 		//create post request

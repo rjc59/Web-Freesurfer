@@ -6,11 +6,6 @@
 	<classpathentry kind="lib" path="lib/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.4-1204.jdbc41.jar"/>
 	<classpathentry kind="lib" path="lib/JSF 2.2 (Mojarra 2.2.0)/mojarra-2.2.0-FCS/lib/javax.faces.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/jjwt-0.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.4.2.jar"/>
@@ -20,5 +15,16 @@
 	<classpathentry kind="lib" path="lib/okio-1.6.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSF 2.2 (Mojarra 2.2.0)"/>
 	<classpathentry kind="lib" path="lib/org.json-20120521.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_60">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
