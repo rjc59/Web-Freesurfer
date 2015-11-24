@@ -59,13 +59,21 @@
       </div>
     </div>		
 	<br/><br/><br/><br/><br/>
-
+<div id="userStatus" style="display: none;">#{serverApplication.loggedout}</div>
+<div id ="formDiv" class="container">
 <h:form enctype="multipart/form-data">
 <h:panelGrid style="margin: 0 auto;">
-<h:inputFile value="#{serverApplication.file}"/>
+<h:inputFile value="#{serverApplication.file}"/><br/>
+<input type="checkbox" id="anonCheckbox" /> I certify that I have properly anonymized any data that I wish to upload. <br/><br/>
+<div id="hiddenButtonDiv" style="display: none;">
 <h:commandButton actionListener="#{serverApplication.uploadFile()}" value="Upload Job"></h:commandButton>
 </h:panelGrid>
+</div>
 </h:form>
+</div>
+<div class="container" id="loggedOutMessage" style="display: none;">
+You must be logged in to upload files.
+</div>
 
 	<!-- Bootstrap core JavaScript
     ================================================== -->
@@ -76,6 +84,22 @@
     <script src="./index_files/holder.min.js" type="text/javascript"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./index_files/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
-
+<script type="text/javascript">
+	$(function(){
+		$("#anonCheckbox").change(function() {
+		    if(this.checked) {
+		        $('#hiddenButtonDiv').fadeIn();
+		    }
+		    else{
+		    	$('#hiddenButtonDiv').hide();
+		    }
+		});
+		if($("#userStatus").html()=="true"){
+			$("#formDiv").hide();
+			$("#loggedOutMessage").fadeIn();
+		}
+		
+	});
+</script>
 </h:body>
 </html>
