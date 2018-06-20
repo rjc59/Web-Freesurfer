@@ -1,2 +1,4 @@
 # webfreesurfer
-A web front end for freesurfer workflows to the OSG
+A web front end for submitting freesurfer workflows to the OSG
+
+Developed using JSF
